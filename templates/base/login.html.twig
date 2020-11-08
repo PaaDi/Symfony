@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pyramide{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: #0e9453ff;
+            padding-top: 25vh;
+            padding-bottom: 25vh;
+        }
+        #loginBox
+        {
+            width: 120vh;
+            background: linear-gradient(90deg, #ffffff 45%, #EEE 50%);
+            height: 50vh;
+            min-height: auto;
+        }
+        @media (max-width: 768px)
+        {
+            #loginBox
+            {
+                width: 90vw;
+            }
+        }
+        @media (max-width: 992px)
+        {
+            #loginBox
+            {
+                width: 90vw;
+                background: linear-gradient(90deg, #EEE 45%, #EEE 50%);
+            }
+        }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+    <div id="loginBox" class="container mx-auto rounded shadow">
+        <div class="row">
+            <div class="col-md-6 col-md-4 d-none d-lg-block" style="height: 50vh">
+                <img src="http://madera.melvinkr.fr/Contenus/logo2.2.2.png" class="img-fluid float-left" style="max-height: 50vh">
+            </div>
+
+            <div class="col-lg-6 col-md-12 text-left" style="margin-top: 2rem">
+                <h1 class="text-center text-monospace">PYRAMIDE</h1>
+                <h6 class="text-center w-100 font-italic lead">Propulsé par Madera</h6>
+
+                <div class="form-row align-items-center" style="width: 80%; margin-left: 10%">
+                    <div class="col-12 mt-3">
+                        <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Nom d'utilisateur">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <input type="password" class="form-control mb-2" id="inlineFormInput2" placeholder="Mot de passe">
+                    </div>
+                    <div class="col-sm-6 col-xs-12 mt-3">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="autoSizingCheck">
+                            <label class="form-check-label" for="autoSizingCheck">
+                                Se souvenir de moi
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12 mt-3 text-right">
+                        <button type="submit" class="btn btn-success mb-2"
+                                onclick="location.href = '{{ path('base-appSelection') }}'"
+                        >Se connecter</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

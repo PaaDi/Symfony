@@ -1,0 +1,17 @@
+Création du projet symfony
+
+installation du bundle "Symfony Maker Bundle" qui permet de faire les cmd make:
+
+Création du controller Base
+
+Création du dossier "Service", création de la classe baseService (avec PHPStorm)
+
+Ajout du code Boostrap dans les templates
+
+Création du dossier "Content/site-images/" pour stocker les images du site
+Création du dossier "Content/temp-images/" pour stocker les images "stock" pendant le dev
+
+Création de la page "login" dans le controlleur Base.
+
+Création du controller GestionDevis.
+Création du twig "template.html.twig" pour faire références a toutes les pages de l'app

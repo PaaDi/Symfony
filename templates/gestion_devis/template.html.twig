@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pyramide - Gestion de devis{% endblock %}
+
+{% block body %}
+
+    {% include "base/header.html.twig" %}
+
+    <nav class="bg-secondary row" style="border-bottom: 2px #DDD solid">
+        <ul class="nav">
+            <li class="nav-item">
+                <button class="btn btn-light btn-outline-dark mr-3 ml-0 text-left"
+                        style="border-radius: 0 !important; border-color: transparent; width: 10rem"
+                        onclick="location.href = '{{ path('base-appSelection') }}'"
+                        onmouseenter="document.getElementById('appNom').innerText = ' APPS'"
+                        onmouseleave="document.getElementById('appNom').innerText = ' COMMERCIAL'">
+                    <i> </i>
+                    <i class="fas fa-ellipsis-v"></i><i class="fas fa-ellipsis-v"></i><i class="fas fa-ellipsis-v"></i>
+                    <i id="appNom" class="m-0"> COMMERCIAL</i>
+                </button>
+            </li>
+            <li class="nav-item"><button class="btn btn-secondary btn-outline-success" style="border-radius: 0 !important;color: white; border-color: transparent">
+                    Dashboard</button></li>
+            <li class="nav-item dropdown">
+                <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
+                    Projets</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#"><i class="fas fa-project-diagram"></i> En cours</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-archive"></i> Archivés</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
+                    Chantiers</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#"><i class="fas fa-paint-roller"></i> En cours (<i>Username</i>)</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-paint-roller"></i> En cours (Tous)</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-archive"></i> Archivés</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
+                    Devis</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#"><i class="fas fa-file-invoice"></i> En attentes</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-archive"></i> Archivés</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
+                    Clients</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#"><i class="fas fa-id-card"></i></i> Afficher Contacts</a>
+                    <a class="dropdown-item" href="#"><i class="far fa-building"></i> Afficher Entreprises</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><i class="fas fa-id-card"></i> Nouveau Contact</a>
+                    <a class="dropdown-item" href="#"><i class="far fa-building"></i> Nouvelle Entreprise</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
+                    Outils</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#"><i class="far fa-sticky-note"></i> Notes rapides</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-receipt"></i> Prix module</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    {% block contenu %}{% endblock %}
+
+{% endblock %}
