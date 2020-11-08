@@ -1,0 +1,43 @@
+        <div class="row align-items-center" style="background-color: #0e9453ff">
+
+            <div class="col">
+
+                <img src="http://madera.melvinkr.fr/Contenus/logo2.2.2.png" class="float-left mu-1 md-1" style="height: 3rem" >
+
+                <h4 class="align-middle mt-2" style="color: white">PYRAMIDE</h4>
+
+            </div>
+
+            <div class="col text-center">
+
+                <div class="input-group mb-auto row">
+                    <select class="custom-select col-3" id="inputGroupSelectRecherche2">
+
+                        {% for option in headerRechercheOptions %}
+                            <option value="{{ loop.index }}">{{ option }}</option>
+                        {% endfor %}
+
+                    </select>
+                    <input type="text" class="form-control" placeholder="Recherche...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success btn-light" type="button" id="texte-bouton"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col text-right">
+
+                <button type="button" class="btn btn-light mr-2"><i class="far fa-question-circle"></i></button>
+
+                <button type="button" class="btn btn-light mr-2"><i class="fas fa-cogs"></i></button>
+
+                <button class="btn btn-light mr-2 dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user-tie"></i> Username</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#"><i class="fas fa-id-card-alt"></i> Mon profil</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Paramètres de compte</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('base-login') }}" style="color: red"><i class="fas fa-sign-out-alt"></i> Deconnexion</a>
+                </div>
+            </div>
+        </div>
