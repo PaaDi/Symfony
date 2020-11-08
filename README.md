@@ -1,2 +1,0 @@
-# Symfony
-Projet Madera Symfony
