@@ -21,4 +21,5 @@ class GestionDevisController extends AbstractController
             , 'MAJ coordonnées Mr. Brabantia')
         ]);
     }
+
 }

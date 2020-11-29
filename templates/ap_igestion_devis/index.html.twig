@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello APIgestionDevisController!{% endblock %}
+
+{% block body %}
+    <form action="{{ path('API-login') }}">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="pswd">Password:</label><br>
+        <input type="text" id="pswd" name="pswd">
+        <input type="submit" value="Connexion" formmethod="post">
+    </form>
+{% endblock %}

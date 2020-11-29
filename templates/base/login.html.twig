@@ -46,30 +46,43 @@
                 <h1 class="text-center text-monospace">PYRAMIDE</h1>
                 <h6 class="text-center w-100 font-italic lead">Propulsé par Madera</h6>
 
-                <div class="form-row align-items-center" style="width: 80%; margin-left: 10%">
+                <div id="noticeErreur" class="bg-danger w-100 rounded text-center text-light">Le nom d'utilisateur et/ou mot de passe est erroné.</div>
+
+
+                <form class="form-row align-items-center" style="width: 80%; margin-left: 10%" action="{{ path('base-login-submit') }}">
                     <div class="col-12 mt-3">
-                        <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Nom d'utilisateur">
+                        <input type="text" name="username" class="form-control mb-2" id="inlineFormInput" placeholder="Nom d'utilisateur">
                     </div>
                     <div class="col-12 mt-3">
-                        <input type="password" class="form-control mb-2" id="inlineFormInput2" placeholder="Mot de passe">
+                        <input type="password" name="pswd" class="form-control mb-2" id="inlineFormInput2" placeholder="Mot de passe">
                     </div>
                     <div class="col-sm-6 col-xs-12 mt-3">
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="autoSizingCheck">
+                            <input class="form-check-input" type="checkbox"  name="rememberMe" id="autoSizingCheck">
                             <label class="form-check-label" for="autoSizingCheck">
                                 Se souvenir de moi
                             </label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-xs-12 mt-3 text-right">
-                        <button type="submit" class="btn btn-success mb-2"
-                                onclick="location.href = '{{ path('base-appSelection') }}'"
-                        >Se connecter</button>
+                        <input type="submit" class="btn btn-success mb-2" formmethod="post" value="Se connecter">
                     </div>
-                </div>
+                </form>
 
             </div>
         </div>
 
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#noticeErreur').hide();
+        {% if erreur %}
+        $(document).ready( function () {
+            $('#noticeErreur').show(400);
+        });
+        {% endif %}
+
+    </script>
 {% endblock %}

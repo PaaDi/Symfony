@@ -4,11 +4,16 @@ namespace App\Controller;
 
 use App\Service\baseService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class BaseController extends AbstractController
 {
+
+
     /**
      * @Route("/", name="base-appSelection")
      * @param baseService $baseService
@@ -17,6 +22,7 @@ class BaseController extends AbstractController
     public function index(baseService $baseService)
     {
         $cheminImagesSite = "Content/site-images/";
+
         $listeDesApps = array(
             array("nom" => "Gestion de devis", "description" => "Gérez les projet, chantiers devis et clients de l'entreprise.",
                 "chemin_image" => $cheminImagesSite."ico-comm.png",
@@ -56,14 +62,36 @@ class BaseController extends AbstractController
 
 
     /**
-     * @Route("/login", name="base-login")
+     * @Route("/login/", name="base-login")
      * @param baseService $baseService
      * @return Response
      */
     public function login(baseService $baseService)
     {
         return $this->render('base/login.html.twig', [
-            'controller_name' => 'BaseController',
+            'erreur' => false,
         ]);
     }
+
+    /**
+     * @Route("/login/submit/", name="base-login-submit")
+     * @param baseService $baseService
+     * @return Response
+     */
+    public function loginSubmit(baseService $baseService)
+    {
+        //Ce code permet de récuperer les valeurs passée en POST
+        $request = Request::createFromGlobals();
+        if ($baseService->testConnexionUser($request->request->get('username'), $request->request->get('pswd')))
+        {
+            return $this->redirectToRoute('base-appSelection');
+        }
+        return $this->render('base/login.html.twig', [
+            'erreur' => true,
+        ]);
+
+    }
+
 }
+
+
