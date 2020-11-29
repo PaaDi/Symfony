@@ -12,7 +12,7 @@ class APIgestionDevisService
             'valide' => true,
             'nom' => $username,
             'bdd' => array(
-                'perso' => array(
+                'user' => array(
                     'nom' => "Patoche",
                     'prenom' => "Didier",
                     'tel' => "",

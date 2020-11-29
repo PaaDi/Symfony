@@ -23,7 +23,7 @@ class APIgestionDevisController extends AbstractController
      */
     public function vue_connexion(APIgestionDevisService $APIgestionDevisService)
     {
-        return $this->render('ap_igestion_devis/index.html.twig', [
+        return $this->render('api_gestion_devis/index.html.twig', [
             'controller_name' => 'BaseController',
         ]);
     }

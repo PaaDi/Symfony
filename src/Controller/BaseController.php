@@ -63,10 +63,9 @@ class BaseController extends AbstractController
 
     /**
      * @Route("/login/", name="base-login")
-     * @param baseService $baseService
      * @return Response
      */
-    public function login(baseService $baseService)
+    public function login()
     {
         return $this->render('base/login.html.twig', [
             'erreur' => false,
