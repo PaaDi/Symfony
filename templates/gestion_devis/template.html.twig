@@ -2,9 +2,11 @@
 
 {% block title %}Pyramide - Gestion de devis{% endblock %}
 
+{% block stylesheets %}  <link rel="stylesheet" type="text/css" href="../css/nav_gestion_devis.css" media="all"/> {% endblock %}
 {% block body %}
 
     {% include "base/header.html.twig" %}
+
 
     <nav class="bg-secondary row" style="border-bottom: 2px #DDD solid">
         <ul class="nav">
@@ -19,13 +21,13 @@
                     <i id="appNom" class="m-0"> COMMERCIAL</i>
                 </button>
             </li>
-            <li class="nav-item"><button class="btn btn-secondary btn-outline-success" style="border-radius: 0 !important;color: white; border-color: transparent">
+            <li id="dashboard" class="btn-menu nav-item"><button class="btn btn-secondary btn-outline-success" style="border-radius: 0 !important;color: white; border-color: transparent">
                     Dashboard</button></li>
-            <li class="nav-item dropdown">
+            <li  class="nav-item dropdown">
                 <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
                     Projets</button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"><i class="fas fa-project-diagram"></i> En cours</a>
+                    <a id="projet_encours" class="btn-menu dropdown-item" href="{{ path('projet_encours') }}"><i class="fas fa-project-diagram"></i> En cours</a>
                     <a class="dropdown-item" href="#"><i class="fas fa-archive"></i> Archivés</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>
@@ -76,4 +78,11 @@
 
     {% block contenu %}{% endblock %}
 
+
+
 {% endblock %}
+
+
+    {% block javascripts %}
+        <script src="../js/nav_gestion_devis.js"></script>
+    {% endblock %}

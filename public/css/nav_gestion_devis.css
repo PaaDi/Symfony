@@ -1,0 +1,8 @@
+.btn-success{
+    background-color: #0e9453ff;
+    box-shadow: none;
+}
+.btn-outline-success:focus{
+    box-shadow: none;
+}
+

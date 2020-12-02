@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 class GestionDevisController extends AbstractController
 {
@@ -21,4 +22,20 @@ class GestionDevisController extends AbstractController
             , 'MAJ coordonnées Mr. Brabantia')
         ]);
     }
+
+    /**
+     * @Route("/testRoute/", name="projet_encours")
+     */
+
+    public function select_page()
+    {
+        return $this->render('gestion_devis/projet_encours.html.twig', [
+            'controller_name' => 'GestionDevisController',
+            'headerRechercheOptions' => array("En cours", "Archivés","Clients")
+        ]);
+    }
 }
+
+
+
+
