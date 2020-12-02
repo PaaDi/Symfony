@@ -23,6 +23,7 @@ class GestionDevisController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/testRoute/", name="projet_encours")
      */
@@ -34,6 +35,7 @@ class GestionDevisController extends AbstractController
             'headerRechercheOptions' => array("En cours", "Archivés","Clients")
         ]);
     }
+
 }
 
 
