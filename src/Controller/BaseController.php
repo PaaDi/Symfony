@@ -53,43 +53,41 @@ class BaseController extends AbstractController
                 "chemin_app" => $this->generateUrl('gestion_devis')),
         );
         return $this->render('base/appSelection.html.twig', [
-            'controller_name' => 'BaseController',
-            'test' => $baseService->envoyerMsgTest(),
-            'headerRechercheOptions' => array("Apps", "Option 2", "Opt 3"),
+            'headerRechercheOptions' => array("Apps"),
             'listeDesApps' => $listeDesApps,
         ]);
     }
 
 
-    /**
-     * @Route("/login/", name="base-login")
-     * @return Response
-     */
-    public function login()
-    {
-        return $this->render('base/login.html.twig', [
-            'erreur' => false,
-        ]);
-    }
-
-    /**
-     * @Route("/login/submit/", name="base-login-submit")
-     * @param baseService $baseService
-     * @return Response
-     */
-    public function loginSubmit(baseService $baseService)
-    {
-        //Ce code permet de récuperer les valeurs passée en POST
-        $request = Request::createFromGlobals();
-        if ($baseService->testConnexionUser($request->request->get('username'), $request->request->get('pswd')))
-        {
-            return $this->redirectToRoute('base-appSelection');
-        }
-        return $this->render('base/login.html.twig', [
-            'erreur' => true,
-        ]);
-
-    }
+    /* NE PAS UTILISER, LE LOGIN EST GERE PAR LE CONTROLLER SECURITY */
+//    /**
+//     * @Route("/loginOLD/", name="base-login")
+//     * @return Response
+//     */
+//    public function login()
+//    {
+//        return $this->render('base/login.html.twig', [
+//            'erreur' => false,
+//        ]);
+//    }
+//
+//    /**
+//     * @Route("/loginOLD/submit/", name="base-login-submit")
+//     * @param baseService $baseService
+//     * @return Response
+//     */
+//    public function loginSubmit(baseService $baseService)
+//    {
+//        //Ce code permet de récuperer les valeurs passée en POST
+//        $request = Request::createFromGlobals();
+//        if ($baseService->testConnexionUser($request->request->get('username'), $request->request->get('pswd')))
+//        {
+//            return $this->redirectToRoute('base-appSelection');
+//        }
+//        return $this->render('base/login.html.twig', [
+//            'erreur' => true,
+//        ]);
+//    }
 
 }
 

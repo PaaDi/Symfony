@@ -45,19 +45,27 @@
                 <h1 class="text-center text-monospace">PYRAMIDE</h1>
                 <h6 class="text-center w-100 font-italic lead">Propulsé par Madera</h6>
 
-                <div id="noticeErreur" class="bg-danger w-100 rounded text-center text-light">Le nom d'utilisateur et/ou mot de passe est erroné.</div>
+                {% if app.user %}
+                    <div id="" class="bg-danger w-100 rounded text-center text-light">Vous êtes connecté en temps que {{ app.user.username }}, <a class="text-danger bg-light px-1 rounded" href="{{ path('app_logout') }}">Deconnexion</a></div>
+                {% endif %}
+
+                {% if error %}
+{#                <div id="noticeErreur" class="bg-danger w-100 rounded text-center text-light">Le nom d'utilisateur et/ou mot de passe est erroné.</div>#}
+                <div id="noticeErreur" class="bg-danger w-100 rounded text-center text-light">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
 
 
-                <form class="form-row align-items-center" style="width: 80%; margin-left: 10%" action="{{ path('base-login-submit') }}">
+
+                <form class="form-row align-items-center" style="width: 80%; margin-left: 10%">
                     <div class="col-12 mt-3">
-                        <input type="text" name="username" class="form-control mb-2" id="inlineFormInput" placeholder="Nom d'utilisateur">
+                        <input type="text" value="{{ last_username }}" name="username" class="form-control mb-2" id="inputUsername" placeholder="Nom d'utilisateur" required autofocus>
                     </div>
                     <div class="col-12 mt-3">
-                        <input type="password" name="pswd" class="form-control mb-2" id="inlineFormInput2" placeholder="Mot de passe">
+                        <input type="password" name="password" class="form-control mb-2" id="inputPassword" placeholder="Mot de passe">
                     </div>
                     <div class="col-sm-6 col-xs-12 mt-3">
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox"  name="rememberMe" id="autoSizingCheck">
+                            <input class="form-check-input" type="checkbox"  name="_rememberMe" id="autoSizingCheck">
                             <label class="form-check-label" for="autoSizingCheck">
                                 Se souvenir de moi
                             </label>
@@ -66,6 +74,10 @@
                     <div class="col-sm-6 col-xs-12 mt-3 text-right">
                         <input type="submit" class="btn btn-success mb-2" formmethod="post" value="Se connecter">
                     </div>
+
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}"
+                    >
                 </form>
 
             </div>
@@ -77,7 +89,7 @@
 {% block javascripts %}
     <script>
         $('#noticeErreur').hide();
-        {% if erreur %}
+        {% if error %}
         $(document).ready( function () {
             $('#noticeErreur').show(400);
         });

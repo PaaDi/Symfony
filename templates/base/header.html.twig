@@ -32,12 +32,12 @@
 
                 <button type="button" class="btn btn-light mr-2"><i class="fas fa-cogs"></i></button>
 
-                <button class="btn btn-light mr-2 dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user-tie"></i> Username</button>
+                <button class="btn btn-light mr-2 dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user-tie"></i>&nbsp;&nbsp;{{ app.user.username }}</button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#"><i class="fas fa-id-card-alt"></i> Mon profil</a>
                     <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Paramètres de compte</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ path('base-login') }}" style="color: red"><i class="fas fa-sign-out-alt"></i> Deconnexion</a>
+                    <a class="dropdown-item" href="{{ path('app_logout') }}" style="color: red"><i class="fas fa-sign-out-alt"></i> Deconnexion</a>
                 </div>
             </div>
         </div>
