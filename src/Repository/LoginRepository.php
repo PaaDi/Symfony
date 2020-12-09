@@ -22,6 +22,22 @@ class LoginRepository extends ServiceEntityRepository
     // /**
     //  * @return Login[] Returns an array of Login objects
     //  */
+    public function findByExampleField($value)
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('l.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+    // /**
+    //  * @return Login[] Returns an array of Login objects
+    //  */
     /*
     public function findByExampleField($value)
     {
