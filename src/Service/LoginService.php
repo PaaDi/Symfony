@@ -5,6 +5,9 @@ namespace App\Service;
 
 use App\Entity\Login;
 use App\Repository\LoginRepository;
+use App\Security\User;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class LoginService
 {
@@ -14,6 +17,53 @@ class LoginService
         LoginRepository $loginRepository
     ){
         $this->loginRepository = $loginRepository;
+    }
+
+    public function getUserByUsername(string $username)
+    {
+        $login = $this->loginRepository->findOneBy(['username' => $username]);
+
+        if ($login == null)
+        {
+            throw new UsernameNotFoundException;
+        }
+
+        $userConnecte = new User();
+        $userConnecte->setUsername($login->getUsername());
+        $userConnecte->setPrenom($login->getPrenom());
+        $userConnecte->setNomDeFamille($login->getNom());
+        $userConnecte->setPassword($login->getPassword());
+        $userConnecte->setRoles(array('ROLE_USER'));
+
+        return $userConnecte;
+    }
+
+    public function refreshUser(UserInterface $user)
+    {
+        $login = $this->loginRepository->findOneBy(['username' => $user->getUsername()]);
+
+        if ($login == null)
+        {
+            throw new UsernameNotFoundException;
+        }
+
+        $user->setUsername($login->getUsername());
+        $user->setPassword($login->getPassword());
+        $user->setRoles(array('ROLE_USER'));
+
+        return $user;
+    }
+
+
+    public function checkConnexionUser(string $username, string $password)
+    {
+        $login = $this->loginRepository->findOneBy(['username' => $username, 'password' => $password]);
+
+        if ($login == null)
+        {
+            return false;
+        }
+        return true;
     }
 
     public function getAllUsers()

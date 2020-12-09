@@ -4,7 +4,9 @@ namespace App\Security;
 
 use App\Entity\Login;
 use App\Repository\LoginRepository;
+use App\Service\LoginService;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -14,12 +16,12 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
 
-    private $loginRepository;
+    private $loginService;
 
     public function __construct(
-        LoginRepository $loginRepository
+        LoginService $loginService
     ){
-        $this->loginRepository = $loginRepository;
+        $this->loginService = $loginService;
     }
 
     /**
@@ -42,21 +44,7 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
 
 //        throw new \Exception('TODO: fill in loadUserByUsername() inside '.__FILE__);
 
-        $login = $this->loginRepository->findOneBy(['username' => $username]);
-
-        if ($login == null)
-        {
-            throw new UsernameNotFoundException;
-        }
-
-        $userConnecte = new User();
-        $userConnecte->setUsername($login->getUsername());
-        $userConnecte->setPrenom($login->getPrenom());
-        $userConnecte->setNomDeFamille($login->getNom());
-        $userConnecte->setPassword($login->getPassword());
-        $userConnecte->setRoles(array('ROLE_USER'));
-
-        return $userConnecte;
+        return $this->loginService->getUserByUsername($username);
 
 
     }
@@ -72,6 +60,7 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
      * If your firewall is "stateless: true" (for a pure API), this
      * method is not called.
      *
+     * @param UserInterface $user
      * @return UserInterface
      */
     public function refreshUser(UserInterface $user)
@@ -83,18 +72,7 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
         // Return a User object after making sure its data is "fresh".
         // Or throw a UsernameNotFoundException if the user no longer exists.
 
-        $login = $this->loginRepository->findOneBy(['username' => $user->getUsername()]);
-
-        if ($login == null)
-        {
-            throw new UsernameNotFoundException;
-        }
-
-        $user->setUsername($login->getUsername());
-        $user->setPassword($login->getPassword());
-        $user->setRoles(array('ROLE_USER'));
-
-        return $user;
+        return $this->loginService->refreshUser($user);
 //        throw new \Exception('TODO: fill in refreshUser() inside '.__FILE__);
     }
 
