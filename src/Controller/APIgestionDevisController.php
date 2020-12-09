@@ -39,6 +39,13 @@ class APIgestionDevisController extends AbstractController
     public function login(APIgestionDevisService $APIgestionDevisService, LoginService $loginService)
     {
         $request = Request::createFromGlobals();
+        if ($request->request->get('username') == null || $request->request->get('password') == null)
+        {
+            return new JsonResponse(array(
+                'valide' => false,
+                'Erreur' => "Les arguments en POST sont NULL",
+            ));
+        }
         if ($loginService->checkConnexionUser($request->request->get('username'), $request->request->get('password')))
         {
             return new JsonResponse($APIgestionDevisService->genererBDDmobile($request->request->get('username')));
@@ -47,6 +54,7 @@ class APIgestionDevisController extends AbstractController
 
         return new JsonResponse(array(
             'valide' => false,
+            'Erreur' => "Les identifiants sont faux",
         ));
     }
 
