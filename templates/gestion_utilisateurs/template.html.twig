@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pyramide - Gestion des utilisateurs{% endblock %}
+
+{% block body %}
+
+    {% include "base/header.html.twig" %}
+
+    <nav class="bg-secondary row" style="border-bottom: 2px #DDD solid">
+        <ul class="nav">
+            <li class="nav-item">
+                <button class="btn btn-light btn-outline-dark mr-3 ml-0 text-left"
+                        style="border-radius: 0 !important; border-color: transparent; width: 10rem"
+                        onclick="location.href = '{{ path('base-appSelection') }}'"
+                        onmouseenter="document.getElementById('appNom').innerText = ' APPS'"
+                        onmouseleave="document.getElementById('appNom').innerText = ' GEST. USERS'">
+                    <i> </i>
+                    <i class="fas fa-ellipsis-v"></i><i class="fas fa-ellipsis-v"></i><i class="fas fa-ellipsis-v"></i>
+                    <i id="appNom" class="m-0"> GEST. USERS</i>
+                </button>
+            </li>
+            <li class="nav-item">
+                <a id="menu_btn_utilisateurs" class="btn btn-secondary btn-outline-success" style="border-radius: 0 !important;color: white; border-color: transparent" href="{{ path('gestion_utilisateurs') }}">
+                    Utilisateurs
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="menu_btn_roles" class="btn btn-secondary btn-outline-success" style="border-radius: 0 !important;color: white; border-color: transparent"  href="{{ path('gestion_roles') }}">
+                    Roles
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+    {% block contenu %}{% endblock %}
+
+
+{% endblock %}

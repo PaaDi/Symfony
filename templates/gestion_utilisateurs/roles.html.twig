@@ -1,0 +1,55 @@
+{% extends 'gestion_utilisateurs/template.html.twig' %}
+
+
+{% block contenu %}
+
+    <div class="row mt-2">
+        <div class="col mt-auto mb-auto font-weight-bold">Bonjour, {{ app.user.prenom }}.</div>
+        <div class="col text-right">
+            <a class="btn btn-success mr-2 text-light" href="?newrole=1#new"><i class="fas fa-id-card-alt"></i> Créer un role</a>
+        </div>
+    </div>
+
+    <div class="row mt-4 mx-2">
+        <form class="col-12 row mx-auto w-100">
+            <h5 class="col-11">Les roles utilisateurs</h5>
+            <input type="submit" value="Enregistrer" class="col-md-1 btn btn-success my-2" formmethod="post">
+            <table class="col-12 mx-auto w-100">
+                <tr class="bg-secondary text-light">
+                    <th>ID</th>
+                    <th>Role</th>
+                    <th>Admin?</th>
+                </tr>
+                {% for role in roles  %}
+                    <tr>
+                        <td>{{ role.idrole }}</td>
+                        <td><input type="text" name="role_{{ role.idrole }}[role]" value="{{ role.role }}"></td>
+                        <td><input type="checkbox" name="role_{{ role.idrole }}[estadmin]" {% if role.estadmin %} checked {% endif %}> <label for="role_{{ role.idrole }}[estadmin]">est admin ?</label> </td>
+                        <input type="text" name="role_{{ role.idrole }}[idrole]" value="{{ role.idrole }}" hidden>
+                    </tr>
+                {% endfor %}
+                {% if newRole %}
+                    <tr id="new">
+                        <td><i class="fas fa-id-card-alt"></i></td>
+                        <td><input type="text" name="role_NEW[role]" value="" REQUIRED></td>
+                        <td><input type="checkbox" name="role_NEW[delete]"> <label for="role_NEW[delete]">est admin?</label> </td>
+                        <input type="text" name="role_NEW[idrole]" value="-1" hidden>
+                    </tr>
+                {% endif %}
+            </table>
+            <input type="submit" value="Enregistrer" class="col-md-1 offset-md-11 btn btn-success my-2" formmethod="post">
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    // Mettre le bouton du menu en surlignage.
+    menu = $('#menu_btn_roles');
+    menu.removeClass('btn-secondary');
+    menu.removeClass('btn-outline-success');
+    menu.addClass('btn-light');
+    menu.addClass('text-success');
+</script>
+{% endblock %}

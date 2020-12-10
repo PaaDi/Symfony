@@ -5,7 +5,7 @@
 {% block contenu %}
 
     <div class="row mt-2">
-        <div class="col mt-auto mb-auto font-weight-bold">Bonjour, Maximilien!</div>
+        <div class="col mt-auto mb-auto font-weight-bold">Bonjour, {{ app.user.prenom }}.</div>
         <div class="col text-right">
             <button type="button" class="btn btn-success mr-2"><i class="fas fa-project-diagram"></i> Créer un projet</button>
             <button type="button" class="btn btn-success mr-2"><i class="fas fa-id-card"></i> Créer un client</button>

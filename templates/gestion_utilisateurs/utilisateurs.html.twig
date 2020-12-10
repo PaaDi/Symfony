@@ -1,0 +1,69 @@
+{% extends 'gestion_utilisateurs/template.html.twig' %}
+
+
+{% block contenu %}
+
+    <div class="row mt-2">
+        <div class="col mt-auto mb-auto font-weight-bold">Bonjour, {{ app.user.prenom }}.</div>
+        <div class="col text-right">
+            <a class="btn btn-success mr-2 text-light" href="?newuser=1#new"><i class="fas fa-user-plus"></i> Créer un user</a>
+        </div>
+    </div>
+
+    <div class="row mt-4 mx-2">
+        <form class="col-12 row mx-auto w-100">
+            <h5 class="col-11">Les utilisateurs</h5>
+            <input type="submit" value="Enregistrer" class="col-md-1 btn btn-success my-2" formmethod="post">
+            <table class="col-12 mx-auto w-100">
+                <tr class="bg-secondary text-light">
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Role</th>
+                    <th>Prenom</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Supprimer</th>
+                </tr>
+                {% for user in users  %}
+                    <tr>
+                        <td>{{ user.iduser }}</td>
+                        <td><input type="text" name="user_{{ user.username }}[username]" value="{{ user.username }}"></td>
+                        <td><input type="text" name="user_{{ user.username }}[password]" value="{{ user.password }}"></td>
+                        <td><input type="text" name="user_{{ user.username }}[idrole]" value="{{ user.idrole }}"></td>
+                        <td><input type="text" name="user_{{ user.username }}[prenom]" value="{{ user.prenom }}"></td>
+                        <td><input type="text" name="user_{{ user.username }}[nom]" value="{{ user.nom }}"></td>
+                        <td><input type="text" name="user_{{ user.username }}[email]" value="{{ user.email }}"></td>
+                        <td><input type="checkbox" name="user_{{ user.username }}[delete]"> <label for="user_{{ user.username }}[delete]"><i class="fas fa-trash-alt text-danger"></i></label> </td>
+                        <input type="text" name="user_{{ user.username }}[iduser]" value="{{ user.iduser }}" hidden>
+                    </tr>
+                {% endfor %}
+                {% if newUser %}
+                    <tr id="new">
+                        <td><i class="fas fa-user-plus"></i></td>
+                        <td><input type="text" name="user_NEW[username]" value="" REQUIRED></td>
+                        <td><input type="text" name="user_NEW[password]" value="" REQUIRED></td>
+                        <td><input type="text" name="user_NEW[idrole]" value="" REQUIRED></td>
+                        <td><input type="text" name="user_NEW[prenom]" value="" REQUIRED></td>
+                        <td><input type="text" name="user_NEW[nom]" value="" REQUIRED></td>
+                        <td><input type="text" name="user_NEW[email]" value="" REQUIRED></td>
+                        <td></td>
+                        <input type="text" name="user_NEW[iduser]" value="-1" hidden>
+                    </tr>
+                {% endif %}
+            </table>
+            <input type="submit" value="Enregistrer" class="col-md-1 offset-md-11 btn btn-success my-2" formmethod="post">
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    // Mettre le bouton du menu en surlignage.
+    $('#menu_btn_utilisateurs').removeClass('btn-secondary');
+    $('#menu_btn_utilisateurs').removeClass('btn-outline-success');
+    $('#menu_btn_utilisateurs').addClass('btn-light');
+    $('#menu_btn_utilisateurs').addClass('text-success');
+</script>
+{% endblock %}

@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Login;
 use App\Service\APIgestionDevisService;
 use App\Service\baseService;
+use App\Service\LoginService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,14 +32,21 @@ class APIgestionDevisController extends AbstractController
 
     /**
      * @Route("/API/login/", name="API-login")
-     * @param baseService $baseService
+     * @param LoginService $loginService
      * @param APIgestionDevisService $APIgestionDevisService
      * @return Response
      */
-    public function login(APIgestionDevisService $APIgestionDevisService, baseService $baseService)
+    public function login(APIgestionDevisService $APIgestionDevisService, LoginService $loginService)
     {
         $request = Request::createFromGlobals();
-        if ($baseService->testConnexionUser($request->request->get('username'), $request->request->get('pswd')))
+        if ($request->request->get('username') == null || $request->request->get('password') == null)
+        {
+            return new JsonResponse(array(
+                'valide' => false,
+                'Erreur' => "Les arguments en POST sont NULL",
+            ));
+        }
+        if ($loginService->checkConnexionUser($request->request->get('username'), $request->request->get('password')))
         {
             return new JsonResponse($APIgestionDevisService->genererBDDmobile($request->request->get('username')));
         }
@@ -45,14 +54,17 @@ class APIgestionDevisController extends AbstractController
 
         return new JsonResponse(array(
             'valide' => false,
+            'Erreur' => "Les identifiants sont faux",
         ));
     }
 
     /**
-     * @Route("/API/requete", name="API-requete")
+     * @Route("/API/requete/{requete}/{crud}", name="API-requete")
+     * @param string $requete
+     * @param string $crud
      * @return Response
      */
-    public function requete()
+    public function requete(string $requete, string $crud)
     {
         $response = new JsonResponse(array(
             'valide' => true,

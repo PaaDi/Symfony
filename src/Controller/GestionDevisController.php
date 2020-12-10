@@ -14,7 +14,6 @@ class GestionDevisController extends AbstractController
     public function index()
     {
         return $this->render('gestion_devis/dashboard.html.twig', [
-            'controller_name' => 'GestionDevisController',
             'headerRechercheOptions' => array("Tout", "Projets", "Chantiers", "Devis", "Clients"),
             'tachesRapides' => array('Appeler someCompagny, urgent!'
             , 'Erreur dans le devis #454'
