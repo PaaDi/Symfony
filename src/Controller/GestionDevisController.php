@@ -51,7 +51,7 @@ class GestionDevisController extends AbstractController
      * @Route("/gestiondevis/projets/creerNouveau/", name="creerNouveau")
      */
 
-    public function toCreerNouveauProjets()
+    public function toCreerNouveau()
     {
         return $this->render('gestion_devis/projets/creerNouveau.html.twig', [
             'controller_name' => 'GestionDevisController',
@@ -107,6 +107,123 @@ class GestionDevisController extends AbstractController
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
         ]);
     }
+
+    /**
+     * @Route("/gestiondevis/devis/creerNouveau/", name="creerNouveauDevis")
+     */
+
+    public function toCreerNouveauDevis()
+    {
+        return $this->render('gestion_devis/devis/creerNouveauDevis.html.twig', [
+            'controller_name' => 'GestionDevisController',
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+        ]);
+    }
+
+    /**
+     * @Route("/gestiondevis/devis/devisArchives/", name="devisArchives")
+     */
+
+    public function toDevisArchives()
+    {
+        return $this->render('gestion_devis/devis/devisArchives.html.twig', [
+            'controller_name' => 'GestionDevisController',
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+        ]);
+    }
+
+
+    /**
+     * @Route("/gestiondevis/devis/devisEnAttente/", name="devisEnAttente")
+     */
+
+    public function toDevisEnAttente()
+    {
+        return $this->render('gestion_devis/devis/devisEnAttente.html.twig', [
+            'controller_name' => 'GestionDevisController',
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+        ]);
+
+    }
+
+    /**
+     * @Route("/gestiondevis/clients/afficherContacts/", name="afficherContacts")
+     */
+
+    public function toAfficherContact()
+    {
+        return $this->render('gestion_devis/clients/afficherContacts.html.twig', [
+            'controller_name' => 'GestionDevisController',
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+        ]);
+
+    }
+
+    /**
+     * @Route("/gestiondevis/clients/afficherEntreprises/", name="afficherEntreprises")
+     */
+
+    public function toAfficherEntreprises()
+    {
+        return $this->render('gestion_devis/clients/afficherEntreprises.html.twig', [
+            'controller_name' => 'GestionDevisController',
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+        ]);
+
+    }
+
+    /**
+     * @Route("/gestiondevis/clients/creerNouveauContact/", name="creerNouveauContact")
+     */
+
+    public function toCreerNouveauContact()
+    {
+        return $this->render('gestion_devis/clients/creerNouveauContact.html.twig', [
+            'controller_name' => 'GestionDevisController',
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+        ]);
+
+    }
+
+    /**
+     * @Route("/gestiondevis/clients/creerNouvelleEntreprise/", name="creerNouvelleEntreprise")
+     */
+
+    public function toCreerNouvelleEntreprise()
+    {
+        return $this->render('gestion_devis/clients/creerNouvelleEntreprise.html.twig', [
+            'controller_name' => 'GestionDevisController',
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+        ]);
+
+    }
+
+    /**
+     * @Route("/gestiondevis/outils/notesRapides/", name="notesRapides")
+     */
+
+    public function toNotesRapides()
+    {
+        return $this->render('gestion_devis/outils/notesRapides.html.twig', [
+            'controller_name' => 'GestionDevisController',
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+        ]);
+
+    }
+
+    /**
+     * @Route("/gestiondevis/outils/prixModules/", name="prixModules")
+     */
+
+    public function toPrixModules()
+    {
+        return $this->render('gestion_devis/outils/prixModules.html.twig', [
+            'controller_name' => 'GestionDevisController',
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+        ]);
+
+    }
+
 
 }
 
