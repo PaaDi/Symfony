@@ -21,56 +21,56 @@
                     <i id="appNom" class="m-0"> COMMERCIAL</i>
                 </button>
             </li>
-            <li id="dashboard" class="btn-menu nav-item"><button class="btn btn-secondary btn-outline-success" style="border-radius: 0 !important;color: white; border-color: transparent">
-                    Dashboard</button></li>
+            <li id="dashboard" class="btn-menu nav-item"><a class="btn btn-secondary btn-outline-success" href="{{ path('gestion_devis') }}" style="border-radius: 0 !important;color: white; border-color: transparent">
+                    Dashboard</a></li>
             <li  class="nav-item dropdown">
                 <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
                     Projets</button>
                 <div class="dropdown-menu">
-                    <a id="projet_encours" class="btn-menu dropdown-item" href="{{ path('projet_encours') }}"><i class="fas fa-project-diagram"></i> En cours</a>
-                    <a class="dropdown-item" href="#"><i class="fas fa-archive"></i> Archivés</a>
+                    <a id="projet_encours" class="btn-menu dropdown-item" href="{{ path('enCours') }}"><i class="fas fa-project-diagram"></i> En cours</a>
+                    <a class="dropdown-item" href="{{ path('archives') }}"><i class="fas fa-archive"></i> Archivés</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>
+                    <a class="dropdown-item" href="{{ path('creerNouveau') }}"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
                     Chantiers</button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"><i class="fas fa-paint-roller"></i> En cours (<i>Username</i>)</a>
-                    <a class="dropdown-item" href="#"><i class="fas fa-paint-roller"></i> En cours (Tous)</a>
-                    <a class="dropdown-item" href="#"><i class="fas fa-archive"></i> Archivés</a>
+                    <a class="dropdown-item" href="{{ path('enCoursUsername') }}"><i class="fas fa-paint-roller"></i> En cours (<i>Username</i>)</a>
+                    <a class="dropdown-item" href="{{ path('enCoursTous') }}"><i class="fas fa-paint-roller"></i> En cours (Tous)</a>
+                    <a class="dropdown-item" href="{{ path('archivesChantiers') }}"><i class="fas fa-archive"></i> Archivés</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>
+                    <a class="dropdown-item" href="{{ path('creerNouveauChantier') }}"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
                     Devis</button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"><i class="fas fa-file-invoice"></i> En attentes</a>
-                    <a class="dropdown-item" href="#"><i class="fas fa-archive"></i> Archivés</a>
+                    <a class="dropdown-item" href="{{ path('enCours') }}"><i class="fas fa-file-invoice"></i> En attentes</a>
+                    <a class="dropdown-item" href="{{ path('enCours') }}"><i class="fas fa-archive"></i> Archivés</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>
+                    <a class="dropdown-item" href="{{ path('enCours') }}"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
                     Clients</button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"><i class="fas fa-id-card"></i></i> Afficher Contacts</a>
-                    <a class="dropdown-item" href="#"><i class="far fa-building"></i> Afficher Entreprises</a>
+                    <a class="dropdown-item" href="{{ path('enCours') }}"><i class="fas fa-id-card"></i></i> Afficher Contacts</a>
+                    <a class="dropdown-item" href="{{ path('enCours') }}"><i class="far fa-building"></i> Afficher Entreprises</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#"><i class="fas fa-id-card"></i> Nouveau Contact</a>
-                    <a class="dropdown-item" href="#"><i class="far fa-building"></i> Nouvelle Entreprise</a>
+                    <a class="dropdown-item" href="{{ path('enCours') }}"><i class="fas fa-id-card"></i> Nouveau Contact</a>
+                    <a class="dropdown-item" href="{{ path('enCours') }}"><i class="far fa-building"></i> Nouvelle Entreprise</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
                     Outils</button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"><i class="far fa-sticky-note"></i> Notes rapides</a>
-                    <a class="dropdown-item" href="#"><i class="fas fa-receipt"></i> Prix module</a>
+                    <a class="dropdown-item" href="{{ path('enCours') }}"><i class="far fa-sticky-note"></i> Notes rapides</a>
+                    <a class="dropdown-item" href="{{ path('enCours') }}"><i class="fas fa-receipt"></i> Prix module</a>
                 </div>
             </li>
         </ul>
