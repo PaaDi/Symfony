@@ -2,3 +2,11 @@
     height: 80px;
 
 }
+
+.container-fluid {
+    background-color: #EEE;
+}
+
+.container-fluid>*{
+    color : #222222;
+}

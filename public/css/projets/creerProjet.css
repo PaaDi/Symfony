@@ -1,0 +1,42 @@
+#wrapper_creation_projet{
+    width: 100%;
+    padding: calc(2vw + 2vh);
+}
+
+#form_creation_projet{
+    width: calc(35vw + 35vh);
+}
+.marges{
+    margin: calc(.25vw + .25vh) 0;
+}
+.fullwidth{
+    width: 100%;
+}
+
+.pr{
+    margin: 0;
+    padding-right: calc(.25vw + .25vh);
+}
+
+.long_input{
+    width: calc(10vw + 10vh);
+}
+
+.separator{
+    width: 80%;
+    height: 1px;
+    box-shadow: 0px 0px 1px 1px #666 inset;
+}
+
+#valid_creation_projet{
+    background-color : #0C8148;
+    color: #FFF;
+    padding: calc(.3vw + .3vh);
+    border-radius: calc(.15vw + .15vh);
+    font-weight: 500;
+    margin-top: calc(1vw + 1vh);
+}
+
+form input{
+    border: none;
+}

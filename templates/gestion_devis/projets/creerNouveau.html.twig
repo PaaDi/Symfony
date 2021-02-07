@@ -1,9 +1,80 @@
 {% extends 'gestion_devis/template.html.twig' %}
 
-
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/flex.css') }}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/projets/creerProjet.css') }}" media="all"/>
+{% endblock %}
 {% block contenu %}
+    <div id="wrapper_creation_projet" class="flex flex_aic flex_sa">
+        <form id="form_creation_projet" action="" method="post" class="flex flex_col flex_sa flex_aic">
+            <div class="flex fullwidth marges">
+                <label for="project_name" class="flex flex1 flex_end pr">Nom :</label>
+                <input type="text" class="flex flex1" placeholder="Nom du projet" name="project_name" value="Maison modulaire plein pied">
+            </div>
+            <div class="flex fullwidth marges">
+                <label for="project_creation_date" class="flex flex1 flex_end pr">Date de création du projet :</label>
+                <input type="text" class="flex flex1" placeholder="Date de création" id="project_creation_date" name="project_creation_date" value="">
+            </div>
+            <div class="separator marges"></div>
+            <div class="flex flex_col fullwidth marges">
+                <h5 class="flex fullwidth flex_aic">Coordonnées client</h5>
+                <div class="flex fullwidth marges">
+                    <label for="nom_client" class="flex flex1 flex_end pr">Nom :</label>
+                    <input type="text" class="flex flex1" placeholder="Nom du client" name="nom_client" value="">
+                </div>
+                <div class="flex fullwidth marges">
+                    <label for="prenom_client" class="flex flex1 flex_end pr">Prenom :</label>
+                    <input type="text" class="flex flex1" placeholder="Prénom du client" name="prenom_client" value="">
+                </div>
+                <div class="flex flex_aic flex_col fullwidth">
+                    <div class="flex fullwidth marges">
+                        <label for="tel_portable_client" class="flex flex1 flex_end pr">Téléphone :</label>
+                        <input type="text" class="flex flex1"  placeholder="Portable" name="tel_portable_client" value="">
+                    </div>
+                    <div class="flex fullwidth marges">
+                        <div class="flex flex1"></div>
+                        <input type="text" class="flex flex1"  placeholder="Fixe" name="tel_fixe_client" value="">
+                    </div>
+                </div>
+                <div class="flex flex_sa fullwidth marges">
+                    <label for="mail_client" class="flex flex1 flex_end pr">Mail :</label>
+                    <input type="text" class="flex flex1 long_input"  placeholder="Mail du client" name="mail_client" value="">
+                </div>
+                <div class="flex flex_aic flex_col fullwidth marges">
+                    <h5 class="flex fullwidth">Adresse</h5>
+                    <div class="flex fullwidth">
+                        <label for="num_adress"  class="flex flex1 flex_end pr">Numéro :</label>
+                        <input type="number" class="flex flex1 long_input"  placeholder="N°" name="num_adress" value="">
+                    </div>
+                    <div class="flex fullwidth marges">
+                        <label for="voie_adress"  class="flex flex1 flex_end pr">Voie :</label>
+                        <input type="text" class="flex flex1 long_input"  placeholder="Nom de la rue" name="voie_adress" value="">
+                    </div>
+                    <div class="flex flex1 fullwidth marges">
+                        <label for="complement_adress"  class="flex flex1 flex_end pr">Complément :</label>
+                        <input type="text" class="flex flex1"  placeholder="Lieu dit..." name="complement_adress" value="">
+                    </div>
+                    <div class="flex flex1 fullwidth marges">
+                        <label for="cp_adress"  class="flex flex1 flex_end pr">Code postal :</label>
+                        <input type="text" class="flex flex1"  placeholder="" name="cp_adress" value="">
+                    </div>
+                    <div class="flex flex1 fullwidth marges">
+                        <label for="ville_adress" class="flex flex1 flex_end pr">Ville :</label>
+                        <input type="text" class="flex flex1" placeholder="" name="ville_adress" value="">
+                    </div>
+                    <button type="submit" class="marges" id="valid_creation_projet" name="valid_creation_projet">Créer le projet</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(function(){
+            $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
 
-
-    <h1> ici création de nouveaux projets ! </h1>
-
+            $('#project_creation_date').off();
+            $('#project_creation_date').datepicker();
+        });
+    </script>
 {% endblock %}
