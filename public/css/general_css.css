@@ -10,3 +10,30 @@
 .container-fluid>*{
     color : #222222;
 }
+
+h2 {
+    color: #222222;
+    text-align: center;
+    margin: calc(2vw + 2vh) auto;
+}
+
+.btn_vert {
+    background-color: #0C8148;
+    color: #FFF;
+    padding: calc(.3vw + .3vh);
+    border-radius: calc(.15vw + .15vh);
+    font-weight: 500;
+    margin-top: calc(1vw + 1vh);
+    border : none;
+    box-shadow: 3px 3px 2px 1px rgba(128, 128, 128, .8);
+}
+
+/* ICONES FONTAWESOME*/
+
+.fa-user-tag,.fa-address-book{
+    margin-right: calc(0.25vw + 0.25vh);
+}
+
+.fa-calendar-alt{
+    font-size: calc(8px + 0.8vw + 0.8vh);
+}

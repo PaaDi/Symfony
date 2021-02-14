@@ -1,9 +1,78 @@
 {% extends 'gestion_devis/template.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/flex.css') }}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/general_css.css') }}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/projets/projetsEnCours.css') }}" media="all"/>
+{% endblock %}
 
 {% block contenu %}
+    <h2>Liste des projets en cours</h2>
 
+    <div id="wrapper_encours_projets" class="flex flex_aic flex_sa">
+        <div id="recherche_projets" class="flex flex1 flex_col flex_sa">
+            <h5>Recherche</h5>
+            <label for="filtre_projet">Filtres :</label><br>
+            <select id="filtre_projet1" name="filtre_projet">
+                <option value="">--Ville Projet--</option>
+                <option value="Paris">Paris</option>
+                <option value="Pau">Pau</option>
+                <option value="Toulouse">Toulouse</option>
+                <option value="Bayonne">Bayonne</option>
+                <option value="Tarbes">Tarbes</option>
+                <option value="Bordeaux">Bordeaux</option>
+            </select><br>
+            <select id="filtre_projet2" name="filtre_projet">
+                <option value="">--Nom Client--</option>
+                <option value="Martin">Dumond</option>
+                <option value="Durand">Lafayette</option>
+                <option value="Lesage">Chami</option>
+                <option value="Maidi">Legrain</option>
+                <option value="Jones">Jones</option>
+                <option value="Costa">Silva</option>
+            </select><br>
+            <select id="filtre_projet3" name="filtre_projet">
+                <option value="">--Nom Vendeur--</option>
+                <option value="Neels">Neels</option>
+                <option value="Simon">Simon</option>
+                <option value="Lee">Lee</option>
+                <option value="Heddle">Heddle</option>
+                <option value="Bonnet">Bonnet</option>
+                <option value="Tomasi">Tomasi</option>
+            </select><br>
+            <label for="search_date_debut_projet">Date de création du projet :</label>
+            <div>
+                <span class="far fa-calendar-alt"></span>
+                <input type="text" placeholder=". . / . . / . . . ." id="search_date_debut_projet" name="search_date_debut_projet" value="">
+            </div>
+        </div>
+        <div id="affichage_projets" class="flex flex4">
+            <ul id="liste_projet"class="flex flex4 flex_col">
+                <li><input type="checkbox">Projet n°1 : Monsieur Dumond - Pau</li>
+                <li><input type="checkbox">Projet n°2 : Monsieur et Madame Chami - Bayonne</li>
+                <li><input type="checkbox">Projet n°3 : Monsieur Silva - Bordeaux</li>
+                <li><input type="checkbox">Projet n°4 : Madame Lafayette - Toulouse</li>
+                <li><input type="checkbox">Projet n°5 : Monsieur et Madame Legrain - Tarbes</li>
+            </ul>
+            <div id="espace_boutons" class="flex flex1 flex_col flex_center">
+                <button id="visualisation_projet" name="visualisation_projet" class="btn_vert">
+                    <a href="{{ path('visualiserProjet') }}">Visualiser</a>
+                </button>
+                <button id="modification_projet" name="modification_projet" class="btn_vert">Modifier</button>
+                <button id="archivage_projet" name="archivage_projet" class="btn_vert">Archiver</button>
+            </div>
+        </div>
+    </div>
 
-    <h1>Coucou test pour voir si ça marche ! </h1>
+{% endblock %}
 
+{% block javascripts %}
+    <script>
+        $(function(){
+            $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
+
+            $('#search_date_debut_projet').off();
+            $('#search_date_debut_projet').datepicker();
+        });
+    </script>
 {% endblock %}
