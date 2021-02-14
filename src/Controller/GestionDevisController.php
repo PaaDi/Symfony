@@ -59,6 +59,18 @@ class GestionDevisController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/gestiondevis/projets/enCours/visualiserProjet/", name="visualiserProjet")
+     */
+
+    public function toVisualiserProjet()
+    {
+        return $this->render('gestion_devis/projets/visualiserProjet.html.twig', [
+            'controller_name' => 'GestionDevisController',
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+        ]);
+    }
+
 
     /**
      * @Route("/gestiondevis/chantiers/enCoursUsername/", name="enCoursUsername")

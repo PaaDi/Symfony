@@ -1,0 +1,96 @@
+
+/*--------------------------------------------------*/
+/*CLASSE A UTILISER POUR LES POSITIONNEMENTS EN FLEX*/
+/*--------------------------------------------------*/
+.flex{
+    display: flex;
+    display: -webkit-flex;
+}
+.flex_col{
+    flex-direction: column;
+    -webkit-flex-direction: column;
+}
+.flex_fs{
+    justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+}
+.flex_sb{
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
+}
+.flex_sa{
+    justify-content: space-around;
+    -webkit-justify-content: space-around;
+}
+.flex_center{
+    justify-content: center;
+    -webkit-justify-content: center;
+}
+.flex_end{
+    justify-content: flex-end;
+    -webkit-justify-content: flex-end;
+}
+.flex_wrap{
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+}
+.flex_wrap_reverse{
+    flex-wrap: wrap-reverse;
+    -webkit-flex-wrap: wrap-reverse;
+}
+.flex_aic{
+    align-items: center;
+    -webkit-align-items: center;
+}
+.flex_aife{
+    align-items: flex-end;
+    -webkit-align-items: flex-end;
+}
+.flex_aifs{
+    align-items: flex-start;
+    -webkit-align-items: flex-start;
+}
+.flex_acfs{
+    align-content: flex-start;
+    -webkit-align-content: flex-start;
+}
+.flex_acc{
+    align-content: center;
+    -webkit-align-content: center;
+}
+.flex_acfe{
+    align-content: flex-end;
+    -webkit-align-content: flex-end;
+}
+.flex_acfs{
+    align-content: flex-start;
+    -webkit-align-content: flex-start;
+}
+.flex_acsa{
+    align-content: space-around;
+    -webkit-align-content: space-around;
+}
+.flex_grow{
+    flex-grow: 1;
+    -webkit-flex-grow: 1;
+}
+.flex1{
+    flex: 1;
+    -webkit-flex: 1;
+}
+.flex2{
+    flex: 2;
+    -webkit-flex: 2;
+}
+.flex3{
+    flex: 3;
+    -webkit-flex: 3;
+}
+.flex4{
+    flex: 4;
+    -webkit-flex: 4;
+}
+.flex5 {
+    flex: 5;
+    -webkit-flex: 5;
+}
