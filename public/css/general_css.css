@@ -37,3 +37,10 @@ h2 {
 .fa-calendar-alt{
     font-size: calc(8px + 0.8vw + 0.8vh);
 }
+
+form input{
+    border: none;
+    background-color: #EEE;
+    border-radius: 5px;
+    padding-left: 15px;
+}
