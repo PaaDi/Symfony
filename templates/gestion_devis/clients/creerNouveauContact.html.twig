@@ -8,40 +8,44 @@
 
 {% block contenu %}
     <div class="flex flex_col flex_sa flex_aic">
-    <h2>Créer un  nouveau contact client </h2>
-       <form id="form_creer_nouveau_client" name="form_creer_nouveau_client">
-                    <h5 class="flex fullwidth flex_aic"><span class="fas fa-user-tag"></span>Coordonnées client</h5>
+    <h2>Créer un  nouveau client </h2>
+       <form id="form_creer_nouveau_client" name="form_creer_nouveau_client" method="post">
+                    <h5 class="flex fullwidth flex_aic"><span class="fas fa-user-tag"></span>
+                        Coordonnées client
+                    </h5>
                     <div class="flex fullwidth marges">
                         <label for="nom_client" class="flex flex1 flex_end pr">Nom :</label>
-                        <input type="text" class="flex flex1" placeholder="Nom du client" name="nom_client" value="">
-                    </div>
-                    <div class="flex fullwidth marges">
-                        <label for="prenom_client" class="flex flex1 flex_end pr">Prenom :</label>
-                        <input type="text" class="flex flex1" placeholder="Prénom du client" name="prenom_client" value="">
+                        <input type="text" class="flex flex1" placeholder="Nom du client" name="nom_client" value="" required>
                     </div>
                     <div class="flex flex_aic flex_col fullwidth">
                         <div class="flex fullwidth marges">
-                            <label for="tel_portable_client" class="flex flex1 flex_end pr">Téléphone :</label>
-                            <input type="text" class="flex flex1"  placeholder="Portable" name="tel_portable_client" value="">
+                            <label for="est_pro_client" class="flex flex1 flex_end pr">Est professionnel :</label>
+                            <input type="checkbox" class="flex flex1" name="est_pro_client">
                         </div>
                         <div class="flex fullwidth marges">
-                            <div class="flex flex1"></div>
-                            <input type="text" class="flex flex1"  placeholder="Fixe" name="tel_fixe_client" value="">
+                            <label for="secteur_activite_client" class="flex flex1 flex_end pr">Secteur d'activité :</label>
+                            <input type="text" class="flex flex1"  placeholder="" name="secteur_activite_client" value="">
                         </div>
                     </div>
-                    <div class="flex flex_sa fullwidth marges">
-                        <label for="mail_client" class="flex flex1 flex_end pr">Mail :</label>
-                        <input type="text" class="flex flex1 long_input"  placeholder="Mail du client" name="mail_client" value="">
+                    <div class="flex flex_aic flex_col fullwidth">
+                        <div class="flex fullwidth marges">
+                            <label for="description_client" class="flex flex1 flex_end pr">Description supplémentaire :</label>
+                            <input type="text" class="flex flex1"  placeholder="" name="description_client" value="">
+                        </div>
                     </div>
+
+
                     <div class="flex flex_aic flex_col fullwidth marges">
-                        <h5 class="flex fullwidth"><span class="fas fa-address-book"></span>Adresse client</h5>
+                        <h5 class="flex fullwidth"><span class="fas fa-address-book"></span>
+                            Adresse client
+                        </h5>
                         <div class="flex fullwidth">
                             <label for="num_adress"  class="flex flex1 flex_end pr">Numéro :</label>
                             <input type="number" class="flex flex1 long_input"  placeholder="N°" name="num_adress" value="">
                         </div>
                         <div class="flex fullwidth marges">
                             <label for="voie_adress"  class="flex flex1 flex_end pr">Voie :</label>
-                            <input type="text" class="flex flex1 long_input"  placeholder="Nom de la rue" name="voie_adress" value="">
+                            <input type="text" class="flex flex1 long_input"  placeholder="Nom de la rue" name="voie_adress" value="" required>
                         </div>
                         <div class="flex flex1 fullwidth marges">
                             <label for="complement_adress"  class="flex flex1 flex_end pr">Complément :</label>
@@ -49,11 +53,38 @@
                         </div>
                         <div class="flex flex1 fullwidth marges">
                             <label for="cp_adress"  class="flex flex1 flex_end pr">Code postal :</label>
-                            <input type="text" class="flex flex1"  placeholder="" name="cp_adress" value="">
+                            <input type="text" class="flex flex1"  placeholder="" name="cp_adress" value="" required>
                         </div>
                         <div class="flex flex1 fullwidth marges">
                             <label for="ville_adress" class="flex flex1 flex_end pr">Ville :</label>
-                            <input type="text" class="flex flex1" placeholder="" name="ville_adress" value="">
+                            <input type="text" class="flex flex1" placeholder="" name="ville_adress" value="" required>
+                        </div>
+                    </div>
+
+
+                    <div class="flex flex_aic flex_col fullwidth marges">
+                        <h5 class="flex fullwidth"><span class="fas fa-address-book"></span>
+                            Contact
+                        </h5>
+                        <div class="flex fullwidth">
+                            <label for="nom_contact"  class="flex flex1 flex_end pr">Nom :</label>
+                            <input type="text" class="flex flex1 long_input"  placeholder="" name="nom_contact" value="" required>
+                        </div>
+                        <div class="flex fullwidth marges">
+                            <label for="prenom_contact"  class="flex flex1 flex_end pr">Prenom :</label>
+                            <input type="text" class="flex flex1 long_input"  placeholder="" name="prenom_contact" value="">
+                        </div>
+                        <div class="flex flex1 fullwidth marges">
+                            <label for="fonction_contact"  class="flex flex1 flex_end pr">Fonction :</label>
+                            <input type="text" class="flex flex1"  placeholder="" name="fonction_contact" value="">
+                        </div>
+                        <div class="flex flex1 fullwidth marges">
+                            <label for="email_contact"  class="flex flex1 flex_end pr">E-mail :</label>
+                            <input type="text" class="flex flex1"  placeholder="" name="email_contact" value="" required>
+                        </div>
+                        <div class="flex flex1 fullwidth marges">
+                            <label for="tel_contact" class="flex flex1 flex_end pr">Téléphone :</label>
+                            <input type="text" class="flex flex1" placeholder="" name="tel_contact" value="" required>
                         </div>
                         <button type="submit" class="marges btn_vert" id="valid_creation_client" name="valid_creation_client">Créer le client</button>
                     </div>

@@ -1,0 +1,16 @@
+{% if clients|length > 0 %}
+    {% for client in clients %}
+        <div class="carte_client_ajax" onclick="choix_client({{ client.idclient }}, '{{ client.nom }}')">
+            <p style="font-weight: bolder">{{ client.nom }}</p>
+            <p>{{ client.ville }}</p>
+            {% if client.estprofessionnel %}
+                <p>Professionnel</p>
+            {% else %}
+                <p>Particulier</p>
+            {% endif %}
+            <i class="fas fa-user-plus" style="font-size: 1.5rem; color: #eee"></i>
+        </div>
+    {% endfor %}
+{% else %}
+<p>Pas de clients trouvés...</p>
+{% endif %}

@@ -28,12 +28,6 @@ class Client
      */
     private $nom;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=45, nullable=false)
-     */
-    private $prenom;
 
     /**
      * @var string
@@ -42,19 +36,6 @@ class Client
      */
     private $adresse;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numeroTel", type="integer", nullable=false)
-     */
-    private $numerotel;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="entreprise", type="string", length=45, nullable=false)
-     */
-    private $entreprise;
 
     /**
      * @var bool
@@ -108,18 +89,6 @@ class Client
         return $this;
     }
 
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    public function setPrenom(string $prenom): self
-    {
-        $this->prenom = $prenom;
-
-        return $this;
-    }
-
     public function getAdresse(): ?string
     {
         return $this->adresse;
@@ -128,30 +97,6 @@ class Client
     public function setAdresse(string $adresse): self
     {
         $this->adresse = $adresse;
-
-        return $this;
-    }
-
-    public function getNumerotel(): ?int
-    {
-        return $this->numerotel;
-    }
-
-    public function setNumerotel(int $numerotel): self
-    {
-        $this->numerotel = $numerotel;
-
-        return $this;
-    }
-
-    public function getEntreprise(): ?string
-    {
-        return $this->entreprise;
-    }
-
-    public function setEntreprise(string $entreprise): self
-    {
-        $this->entreprise = $entreprise;
 
         return $this;
     }

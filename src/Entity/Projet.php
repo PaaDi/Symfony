@@ -49,6 +49,11 @@ class Projet
      */
     private $idclient;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $estArchive;
+
     public function getIdprojet(): ?int
     {
         return $this->idprojet;
@@ -98,6 +103,18 @@ class Projet
     public function setIdclient(int $idclient): self
     {
         $this->idclient = $idclient;
+
+        return $this;
+    }
+
+    public function getEstArchive(): ?bool
+    {
+        return $this->estArchive;
+    }
+
+    public function setEstArchive(bool $estArchive): self
+    {
+        $this->estArchive = $estArchive;
 
         return $this;
     }

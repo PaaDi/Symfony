@@ -11,72 +11,96 @@
         <form id="form_creation_projet" action="" method="post" class="flex flex_col flex_sa flex_aic">
             <div class="flex fullwidth marges">
                 <label for="project_name" class="flex flex1 flex_end pr">Nom :</label>
-                <input type="text" class="flex flex1" placeholder="Nom du projet" name="project_name" value="Maison modulaire plein pied">
+                <input type="text" class="flex flex1" placeholder="Nom du projet" name="project_name" required>
             </div>
             <div class="flex fullwidth marges">
-                <label for="project_creation_date" class="flex flex1 flex_end pr">   Date de création du projet :</label>
-                <input type="text" class="flex flex1" placeholder="Date de création" id="project_creation_date" name="project_creation_date" value="">
+                <label for="project_creation_datex" class="flex flex1 flex_end pr">   Date de création du projet :</label>
+                <input type="date" class="flex flex1" placeholder="jj/mm/aaaa" id="project_creation_datex" name="project_creation_date" value="{{ "now"|date("Y-m-d") }}" required>
             </div>
             <div class="separator marges"></div>
             <div class="flex flex_col fullwidth marges">
-                <h5 class="flex fullwidth flex_aic"><span class="fas fa-user-tag"></span>Coordonnées client</h5>
-                <div class="flex fullwidth marges">
-                    <label for="nom_client" class="flex flex1 flex_end pr">Nom :</label>
-                    <input type="text" class="flex flex1" placeholder="Nom du client" name="nom_client" value="">
-                </div>
-                <div class="flex fullwidth marges">
-                    <label for="prenom_client" class="flex flex1 flex_end pr">Prenom :</label>
-                    <input type="text" class="flex flex1" placeholder="Prénom du client" name="prenom_client" value="">
-                </div>
-                <div class="flex flex_aic flex_col fullwidth">
-                    <div class="flex fullwidth marges">
-                        <label for="tel_portable_client" class="flex flex1 flex_end pr">Téléphone :</label>
-                        <input type="text" class="flex flex1"  placeholder="Portable" name="tel_portable_client" value="">
+                <h5 class="flex fullwidth flex_aic"><span class="fas fa-user-tag"></span>Selection du client</h5>
+                <div id="selection_client">
+                    <div class="row d-flex justify-content-between">
+                        <input type="text" class="col-8" placeholder="Recherche..." id="recherche_clients" oninput="on_recherche_client_input()">
+                        <a href="{{ path('creerNouveauContact') }}" class="col-3 btn_vert" style="margin-top: 0" target="_blank">Créer un client</a>
                     </div>
-                    <div class="flex fullwidth marges">
-                        <div class="flex flex1"></div>
-                        <input type="text" class="flex flex1"  placeholder="Fixe" name="tel_fixe_client" value="">
+                    <div id="liste_clients_ajax">
+                        <p>Veuillez commencer une recherche.</p>
                     </div>
                 </div>
-                <div class="flex flex_sa fullwidth marges">
-                    <label for="mail_client" class="flex flex1 flex_end pr">Mail :</label>
-                    <input type="text" class="flex flex1 long_input"  placeholder="Mail du client" name="mail_client" value="">
+                <div id="client_choisi">
+                    <div class="carte_client_ajax selectionner">
+                        <p style="font-weight: bolder">Nom</p>
+                        <i class="fas fa-user-check" style="font-size: 1.5rem; color: #eee"></i>
+                        <input type="text" name="idClient" hidden required>
+                    </div>
                 </div>
-                <div class="flex flex_aic flex_col fullwidth marges">
-                    <h5 class="flex fullwidth"><span class="fas fa-address-book"></span>Adresse client</h5>
-                    <div class="flex fullwidth">
-                        <label for="num_adress"  class="flex flex1 flex_end pr">Numéro :</label>
-                        <input type="number" class="flex flex1 long_input"  placeholder="N°" name="num_adress" value="">
-                    </div>
-                    <div class="flex fullwidth marges">
-                        <label for="voie_adress"  class="flex flex1 flex_end pr">Voie :</label>
-                        <input type="text" class="flex flex1 long_input"  placeholder="Nom de la rue" name="voie_adress" value="">
-                    </div>
-                    <div class="flex flex1 fullwidth marges">
-                        <label for="complement_adress"  class="flex flex1 flex_end pr">Complément :</label>
-                        <input type="text" class="flex flex1"  placeholder="Lieu dit..." name="complement_adress" value="">
-                    </div>
-                    <div class="flex flex1 fullwidth marges">
-                        <label for="cp_adress"  class="flex flex1 flex_end pr">Code postal :</label>
-                        <input type="text" class="flex flex1"  placeholder="" name="cp_adress" value="">
-                    </div>
-                    <div class="flex flex1 fullwidth marges">
-                        <label for="ville_adress" class="flex flex1 flex_end pr">Ville :</label>
-                        <input type="text" class="flex flex1" placeholder="" name="ville_adress" value="">
-                    </div>
-                    <button type="submit" class="marges btn_vert" id="valid_creation_projet" name="valid_creation_projet">Créer le projet</button>
-                </div>
+
+                <button type="submit" class="marges btn_vert" id="valid_creation_projet" name="valid_creation_projet">Créer le projet</button>
+
+                <style>
+                    #liste_clients_ajax{
+                        background-color: #f2f2f2;
+                        border-radius: 5px;
+                        border: solid 1px #2b2b2b36;
+                        padding: 1rem;
+                        margin-top: 1rem;
+                    }
+                    .carte_client_ajax{
+                        display: flex;
+                        flex-flow: row nowrap;
+                        justify-content: space-between;
+                        background-color: #9ac8b2;
+                        padding: 0.5rem;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        margin-top: 1rem;
+                    }
+                    .carte_client_ajax.selectionner{
+                        cursor: auto;
+                    }
+                    .carte_client_ajax:first-of-type{
+                        margin-top: 0;
+                    }
+                    .carte_client_ajax p{
+                        margin: 0;
+                    }
+                    .carte_client_ajax:not(.selectionner):hover{
+                        background-color: #57b88a;
+                    }
+                    .carte_client_ajax:not(.selectionner):active{
+                        background-color: #45946e;
+                    }
+                </style>
+
+                <script>
+                    $('#valid_creation_projet').hide(0);
+                    $('#client_choisi').hide(0);
+                    function on_recherche_client_input()
+                    {
+                        $('#liste_clients_ajax').load('{{ path('ajax_search_clients') }}?search=' + $('#recherche_clients').val() )
+                    }
+
+                    function choix_client(idClient, nomClient){
+                        $('#selection_client').hide(0);
+                        $('#valid_creation_projet').fadeIn(0);
+                        $('#client_choisi').fadeIn(0).find('p').text(nomClient).parent().find('input').val(idClient);
+                    }
+
+                </script>
+
             </div>
         </form>
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script>
-        $(function(){
-            $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
+{#    <script>#}
+{#        $(function(){#}
+{#            $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );#}
 
-            $('#project_creation_date').off();
-            $('#project_creation_date').datepicker();
-        });
-    </script>
+{#            $('#project_creation_date').off();#}
+{#            $('#project_creation_date').datepicker();#}
+{#        });#}
+{#    </script>#}
 {% endblock %}

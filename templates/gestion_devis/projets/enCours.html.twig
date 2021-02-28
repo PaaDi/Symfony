@@ -46,22 +46,73 @@
                 <input type="text" placeholder=". . / . . / . . . ." id="search_date_debut_projet" name="search_date_debut_projet" value="">
             </div>
         </div>
+
+{#    --- Ta version avant mes modifs --- #}
+{#        <div id="affichage_projets" class="flex flex4">#}
+{#            <ul id="liste_projet"class="flex flex4 flex_col">#}
+{#                <li><input type="checkbox">Projet n°1 : Monsieur Dumond - Pau</li>#}
+{#                <li><input type="checkbox">Projet n°2 : Monsieur et Madame Chami - Bayonne</li>#}
+{#                <li><input type="checkbox">Projet n°3 : Monsieur Silva - Bordeaux</li>#}
+{#                <li><input type="checkbox">Projet n°4 : Madame Lafayette - Toulouse</li>#}
+{#                <li><input type="checkbox">Projet n°5 : Monsieur et Madame Legrain - Tarbes</li>#}
+{#            </ul>#}
+{#            <div id="espace_boutons" class="flex flex1 flex_col flex_center">#}
+{#                <button id="visualisation_projet" name="visualisation_projet" class="btn_vert">#}
+{#                    <a href="{{ path('visualiserProjet') }}">Visualiser</a>#}
+{#                </button>#}
+{#                <button id="modification_projet" name="modification_projet" class="btn_vert">Modifier</button>#}
+{#                <button id="archivage_projet" name="archivage_projet" class="btn_vert">Archiver</button>#}
+{#            </div>#}
+{#        </div>#}
+
         <div id="affichage_projets" class="flex flex4">
-            <ul id="liste_projet"class="flex flex4 flex_col">
-                <li><input type="checkbox">Projet n°1 : Monsieur Dumond - Pau</li>
-                <li><input type="checkbox">Projet n°2 : Monsieur et Madame Chami - Bayonne</li>
-                <li><input type="checkbox">Projet n°3 : Monsieur Silva - Bordeaux</li>
-                <li><input type="checkbox">Projet n°4 : Madame Lafayette - Toulouse</li>
-                <li><input type="checkbox">Projet n°5 : Monsieur et Madame Legrain - Tarbes</li>
-            </ul>
-            <div id="espace_boutons" class="flex flex1 flex_col flex_center">
-                <button id="visualisation_projet" name="visualisation_projet" class="btn_vert">
-                    <a href="{{ path('visualiserProjet') }}">Visualiser</a>
-                </button>
-                <button id="modification_projet" name="modification_projet" class="btn_vert">Modifier</button>
-                <button id="archivage_projet" name="archivage_projet" class="btn_vert">Archiver</button>
-            </div>
+            {% for projet in projets %}
+                <a href="#" class="carte_projet">
+                    <p>{{ projet.datecreation|format_datetime('short', 'none', locale='fr') }}</p>
+                    <p style="font-weight: bolder">{{ projet.nom }}</p>
+                    <p class="fas fa-chevron-right" style="font-size: 1.5rem"></p>
+                </a>
+            {% endfor %}
         </div>
+        <style>
+            #affichage_projets{
+                display: flex;
+                flex-flow: column;
+                background-color: #f2f2f2;
+                border-radius: 5px;
+                border: solid 1px #2b2b2b36;
+                padding: 1rem;
+                margin-top: 1rem;
+            }
+            .carte_projet{
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: space-between;
+                background-color: #9ac8b2;
+                padding: 0.5rem;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 1rem;
+                text-decoration: none;
+                color: black;
+            }
+            .carte_projet:first-of-type{
+                margin-top: 0;
+            }
+            .carte_projet p{
+                margin: 0;
+            }
+            .carte_projet:hover{
+                background-color: #57b88a;
+                text-decoration: none;
+                color: black;
+            }
+            .carte_projet:active{
+                background-color: #45946e;
+            }
+        </style>
+
+
     </div>
 
 {% endblock %}

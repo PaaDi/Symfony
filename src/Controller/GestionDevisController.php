@@ -2,7 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
+use App\Entity\Projet;
+use App\Repository\ClientRepository;
+use App\Repository\ProjetRepository;
+use http\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,11 +33,11 @@ class GestionDevisController extends AbstractController
      * @Route("/gestiondevis/projets/enCours/", name="enCours")
      */
 
-    public function toEnCoursProjets()
+    public function toEnCoursProjets(ProjetRepository $projetRepository)
     {
         return $this->render('gestion_devis/projets/enCours.html.twig', [
-            'controller_name' => 'GestionDevisController',
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
+            'projets' => $projetRepository->findBy([], null, 30),
         ]);
     }
 
@@ -53,8 +59,27 @@ class GestionDevisController extends AbstractController
 
     public function toCreerNouveau()
     {
+        //si le formulaire est renseigné
+        $request = Request::createFromGlobals();
+        if (count($request->request->all()) > 0)
+        {
+//            print_r($request->request->all()); die;
+            $projet = new Projet();
+            $projet->setNom($request->request->get('project_name'));
+            $projet->setNotes("");
+            $projet->setEstArchive(false);
+            $projet->setDatecreation(\DateTime::createFromFormat("Y-m-d", $request->request->get('project_creation_date')));
+            $projet->setIdclient($request->request->get('idClient'));
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($projet);
+            $entityManager->flush();
+
+//            return $this->redirectToRoute(''); @todo pointer vers la fiche du projet qui vient d'être creer
+        }
+
         return $this->render('gestion_devis/projets/creerNouveau.html.twig', [
-            'controller_name' => 'GestionDevisController',
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
         ]);
     }
@@ -190,6 +215,48 @@ class GestionDevisController extends AbstractController
 
     public function toCreerNouveauContact()
     {
+        //si le formulaire est renseigné
+        $request = Request::createFromGlobals();
+        if (count($request->request->all()) > 0)
+        {
+//            print_r($request->request->all()); die;
+            $client = new \App\Entity\Client();
+            $client->setNom($request->request->get('nom_client'));
+            $client->setDescription($request->request->get('description_client'));
+            $client->setEstprofessionnel(false);
+            if ($request->request->get('est_pro_client') == "on")
+            {
+                $client->setEstprofessionnel(true);
+            }
+            $client->setSecteuractivite($request->request->get('secteur_activite_client'));
+            $client->setAdresse(
+                $request->request->get('num_adress') . " " .
+                $request->request->get('voie_adress') . "\n" .
+                $request->request->get('complement_adress')
+            );
+            $client->setCodepostal($request->request->get('cp_adress'));
+            $client->setVille($request->request->get('ville_adress'));
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($client);
+            $entityManager->flush();
+
+
+            $contact = new Contact();
+            $contact->setIdclient($client->getIdclient());
+            $contact->setNom($request->request->get('nom_contact'));
+            $contact->setPrenom($request->request->get('prenom_contact'));
+            $contact->setFonction($request->request->get('fonction_contact'));
+            $contact->setMail($request->request->get('email_contact'));
+            $contact->setTelephone($request->request->get('tel_contact'));
+
+
+            $entityManager->persist($contact);
+            $entityManager->flush();
+
+//            return $this->redirectToRoute(''); @todo pointer vers la fiche du client qui vient d'être creer
+        }
+
         return $this->render('gestion_devis/clients/creerNouveauContact.html.twig', [
             'controller_name' => 'GestionDevisController',
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
@@ -232,6 +299,27 @@ class GestionDevisController extends AbstractController
         return $this->render('gestion_devis/outils/prixModules.html.twig', [
             'controller_name' => 'GestionDevisController',
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+        ]);
+
+    }
+
+    /* -- AJAX -- */
+
+
+    /**
+     * @Route("/gestiondevis/clients/ajax/search", name="ajax_search_clients")
+     */
+
+    public function search_clients(ClientRepository $clientRepository)
+    {
+        $request = Request::createFromGlobals();
+
+//        print_r($request->query->get('search'));
+//        print_r($clientRepository->findBy(['nom' => $request->query->get('search')], null, 5)); die;
+
+        return $this->render('gestion_devis/clients/search_client_ajax.html.twig', [
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
+            'clients' => $clientRepository->findBySearch($request->query->get('search'))
         ]);
 
     }
