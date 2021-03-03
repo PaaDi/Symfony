@@ -35,5 +35,4 @@ class Kernel extends BaseKernel
             (require $path)($routes->withPath($path), $this);
         }
     }
-
 }

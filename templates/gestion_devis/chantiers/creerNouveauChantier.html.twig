@@ -1,74 +1,9 @@
 {% extends 'gestion_devis/template.html.twig' %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/flex.css') }}" media="all"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/general_css.css') }}" media="all"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/chantiers/creerNouveauChantier.css') }}" media="all"/>
-{% endblock %}
-
 
 {% block contenu %}
-<h2>Créer un nouveau chantier - Projet n°3</h2>
-
-<div id="wrapper_creation_chantier" class="flex flex_aic flex_sa">
 
 
-    <div id="recap_infos_projet" class="flex flex1 flex_col flex_sa">
-        <h5>Références du projet</h5>
-        <div id="id_projet" name="id_projet">Projet n°3</div>
-        <div id="nom_client" name="nom_client">Monsieur Silva</div>
-        <div id="lieu_projet" name="lieu_projet">Lieu : Bordeaux</div>
-        <div id="date_creation_projet" name="date_creation_projet">Date de création : 01/01/2021</div>
-        <div id="nom_vendeur" name="nom_vendeur">Commercial : Tomasi</div>
-    </div>
-    <div id="div_creation_chantier" class="flex flex4 flex_col">
+    <h1>Créer des nouveaux chantiers </h1>
 
-        <form id="form_creation_chantier" action="" method="post" class="flex flex4 flex_col">
-            <div class="flex fullwidth marges">
-                <label for="chantier_name" class="flex flex1 flex_end pr">Nom :</label>
-                <input type="text" class="flex flex1" placeholder="Nom du chantier" name="chantier_name" value="Chantier finitions Nature - Personnalisé">
-            </div>
-            <div class="flex fullwidth marges">
-                <label for="project_creation_date" class="flex flex1 flex_end pr">   Date de création du projet :</label>
-                <input type="text" class="flex flex1" placeholder="Date de création" id="project_creation_date" name="project_creation_date" value="">
-            </div>
-            <div id="notes" name="notes">
-                <form>
-                    <label for="note">NOTES : </label>
-                    <!--<input id="note" name="note" type="textarea">-->
-                    <div id="editor"></div>
-                </form>
-
-
-            </div>
-            </form>
-            <div class="flex flex_col fullwidth marges">
-                <button type="submit" class="marges btn_vert" id="valid_creation_chantier" name="valid_creation_chantier">Créer le chantier</button>
-            </div>
-        </form>
-
-    </div>
-
-
-
-</div>
-{% endblock %}
-
-{% block javascripts %}
-
-
-    <script>
-        $(function(){
-            $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
-
-            $('#project_creation_date').off();
-            $('#project_creation_date').datepicker();
-
-            InlineEditor.create( document.querySelector( '#editor' ) ).catch( error => {
-                console.error( error );
-            });
-        });
-
-    </script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/inline/ckeditor.js"></script>
 {% endblock %}

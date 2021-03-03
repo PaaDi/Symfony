@@ -23,8 +23,8 @@
 }
 
 .long_input{
-       width: calc(10vw + 10vh);
-   }
+    width: calc(10vw + 10vh);
+}
 
 .separator{
     width: 80%;
