@@ -26,6 +26,39 @@
     width: calc(10vw + 10vh);
 }
 
+#liste_clients_ajax{
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    border: solid 1px #2b2b2b36;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+.carte_client_ajax{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    background-color: #9ac8b2;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+.carte_client_ajax.selectionner{
+    cursor: auto;
+}
+.carte_client_ajax:first-of-type{
+    margin-top: 0;
+}
+.carte_client_ajax p{
+    margin: 0;
+}
+.carte_client_ajax:not(.selectionner):hover{
+    background-color: #57b88a;
+}
+.carte_client_ajax:not(.selectionner):active{
+    background-color: #45946e;
+}
+
 .separator{
     width: 80%;
     height: 2px;
@@ -36,4 +69,21 @@
 
 #valid_creation_projet {
     margin-top: calc(1vw + 1vh);
+}
+
+
+#btn_choix_client.btn_vert {
+    margin-top: 0px;
+    margin-right: calc(0.9vw + 0.9vh);
+}
+
+
+#creer_client, #creer_client:visited {
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+#recherche_clients.col-8{
+    margin-left: calc(0.8vw + 0.8vh);
 }
