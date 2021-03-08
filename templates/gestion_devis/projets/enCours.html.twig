@@ -67,11 +67,18 @@
 
         <div id="affichage_projets" class="flex flex4">
             {% for projet in projets %}
-                <a href="#" class="carte_projet">
-                    <p>{{ projet.datecreation|format_datetime('short', 'none', locale='fr') }}</p>
-                    <p style="font-weight: bolder">{{ projet.nom }}</p>
-                    <p class="fas fa-chevron-right" style="font-size: 1.5rem"></p>
-                </a>
+                <div class="carte_projet">
+                    <div class="flex flex1">
+                        <p>{{ projet.datecreation|format_datetime('short', 'none', locale='fr') }}</p>
+                        <p style="font-weight: bolder">{{ projet.nom }}</p>
+                    </div>
+                    {#<p class="fas fa-chevron-right" style="font-size: 1.5rem"></p>#}
+                    <div id="espace_boutons" class="container flex flex1 flex_end float-right">
+                        <button id="visualisation_projet" name="visualisation_projet" class="btn_vert col-2 flex flex_aic flex_center">Visualiser</button>
+                        <button id="modification_projet" name="modification_projet" class="btn_vert col-2 flex flex_aic flex_center">Modifier</button>
+                        <button id="archivage_projet" name="archivage_projet" class="btn_vert col-2 flex flex_aic flex_center">Archiver</button>
+                    </div>
+                </div>
             {% endfor %}
         </div>
         <style>

@@ -23,7 +23,7 @@
                 <div id="selection_client">
                     <div class="row d-flex justify-content-between">
                         <input type="text" class="col-8" placeholder="Recherche..." id="recherche_clients" oninput="on_recherche_client_input()">
-                        <a href="{{ path('creerNouveauContact') }}" class="col-3 btn_vert" style="margin-top: 0" target="_blank">Créer un client</a>
+                        <div class="btn_vert" id="btn_choix_client"><a href="{{ path('creerNouveauContact') }}" class="col-3" style="margin-top: 0" target="_blank" id="creer_client">Créer un client</a></div>
                     </div>
                     <div id="liste_clients_ajax">
                         <p>Veuillez commencer une recherche.</p>
@@ -40,38 +40,7 @@
                 <button type="submit" class="marges btn_vert" id="valid_creation_projet" name="valid_creation_projet">Créer le projet</button>
 
                 <style>
-                    #liste_clients_ajax{
-                        background-color: #f2f2f2;
-                        border-radius: 5px;
-                        border: solid 1px #2b2b2b36;
-                        padding: 1rem;
-                        margin-top: 1rem;
-                    }
-                    .carte_client_ajax{
-                        display: flex;
-                        flex-flow: row nowrap;
-                        justify-content: space-between;
-                        background-color: #9ac8b2;
-                        padding: 0.5rem;
-                        border-radius: 5px;
-                        cursor: pointer;
-                        margin-top: 1rem;
-                    }
-                    .carte_client_ajax.selectionner{
-                        cursor: auto;
-                    }
-                    .carte_client_ajax:first-of-type{
-                        margin-top: 0;
-                    }
-                    .carte_client_ajax p{
-                        margin: 0;
-                    }
-                    .carte_client_ajax:not(.selectionner):hover{
-                        background-color: #57b88a;
-                    }
-                    .carte_client_ajax:not(.selectionner):active{
-                        background-color: #45946e;
-                    }
+
                 </style>
 
                 <script>

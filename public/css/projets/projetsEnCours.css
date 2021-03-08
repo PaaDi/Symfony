@@ -29,6 +29,8 @@
     list-style: none;
 }
 
+
+
 input[type="checkbox"]{
     margin-right: calc(.15vw + .15vh);
 }
@@ -40,4 +42,17 @@ input::placeholder {
 #visualisation_projet a, #visualisation_projet a:hover, #visualisation_projet a:visited {
     text-decoration: none;
     color: white;
+}
+
+#visualisation_projet.btn_vert, #modification_projet.btn_vert, #archivage_projet.btn_vert{
+    margin-top: 0px;
+    margin-right: calc(0.9vw + 0.9vh);
+}
+
+#espace_boutons{
+    width: auto;
+}
+
+.carte_projet{
+    height: calc(2vw + 2vh);
 }
