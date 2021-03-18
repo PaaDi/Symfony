@@ -1,4 +1,4 @@
-#wrapper_visualisation_projet{
+#wrapper_encours_chantiers{
     width: auto;
     padding: calc(2vw + 2vh);
     box-shadow: 0 0 2em darkgrey;
@@ -7,7 +7,8 @@
     background-color: #FFF;
 }
 
-#div_chantiers{
+
+#affichage_chantiers{
     background-color: white;
     width: calc(35vw + 35vh);
     min-height: calc(15vw + 15vh);
@@ -16,7 +17,8 @@
     border-left:  2px solid #6666;
 }
 
-#recap_infos_projet{
+
+#recherche_chantiers{
     background-color: white;
     width: calc(15vw + 15vh);
     min-height: calc(15vw + 15vh);
@@ -25,37 +27,34 @@
     margin-right: calc(2vw + 2vh);
 }
 
-#liste_chantiers{
+#liste_chantier{
     list-style: none;
 }
 
-.fa-trash-alt{
-    font-size: calc(8px + 0.8vw + 0.8vh);
-    color: #0C8148;
-    line-height: inherit !important;
-    margin-right: calc(0.5vw + 0.5vh);
+
+
+input[type="checkbox"]{
+    margin-right: calc(.15vw + .15vh);
 }
 
-.fa-plus{
-    color: white;
-    margin-left: calc(1vw + 1vh);
+input::placeholder {
+    text-align: center;
 }
 
-.btn_vert{
-    margin: unset;
-    margin-right: calc(2vw + 2vh);
-}
-
-#ajouter_un_chantier{
-    margin-top: calc(2vw + 2vh);
-}
-
-.btn_vert a:visited, .btn_vert a:hover {
+#visualisation_chantier a, #visualisation_chantier a:hover, #visualisation_chantier a:visited {
     text-decoration: none;
     color: white;
 }
 
-p{
-    margin: unset;
+#visualisation_chantier.btn_vert, #modification_chantier.btn_vert, #archivage_chantier.btn_vert{
+    margin-top: 0px;
+    margin-right: calc(0.9vw + 0.9vh);
+}
 
+#espace_boutons{
+    width: auto;
+}
+
+.carte_chantier{
+    height: calc(2vw + 2vh);
 }

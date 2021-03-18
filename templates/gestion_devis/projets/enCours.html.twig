@@ -43,7 +43,7 @@
             <label for="search_date_debut_projet">Date de création du projet :</label>
             <div>
                 <span class="far fa-calendar-alt"></span>
-                <input type="text" placeholder=". . / . . / . . . ." id="search_date_debut_projet" name="search_date_debut_projet" value="">
+                <input type="text" placeholder="jj/mm/aaaa" id="search_date_debut_projet" name="search_date_debut_projet" required>
             </div>
         </div>
 
@@ -74,9 +74,9 @@
                     </div>
                     {#<p class="fas fa-chevron-right" style="font-size: 1.5rem"></p>#}
                     <div id="espace_boutons" class="container flex flex1 flex_end float-right">
-                        <button id="visualisation_projet" name="visualisation_projet" class="btn_vert col-2 flex flex_aic flex_center">Visualiser</button>
-                        <button id="modification_projet" name="modification_projet" class="btn_vert col-2 flex flex_aic flex_center">Modifier</button>
-                        <button id="archivage_projet" name="archivage_projet" class="btn_vert col-2 flex flex_aic flex_center">Archiver</button>
+                        <button id="visualisation_projet" name="visualisation_projet" class="btn_vert col-2 flex flex_aic flex_center"><a href="{{ path('visualiserProjet') }}">Visualiser</a></button>
+                        <button id="modification_projet" name="modification_projet" class="btn_vert col-2 flex flex_aic flex_center"><a href="{{ path('visualiserProjet') }}">Modifier</a></button>
+                        <button id="archivage_projet" name="archivage_projet" class="btn_vert col-2 flex flex_aic flex_center"><a href="#">Archiver</a></button>
                     </div>
                 </div>
             {% endfor %}
@@ -95,10 +95,10 @@
                 display: flex;
                 flex-flow: row nowrap;
                 justify-content: space-between;
-                background-color: #9ac8b2;
+                background-color: white;
                 padding: 0.5rem;
                 border-radius: 5px;
-                cursor: pointer;
+
                 margin-top: 1rem;
                 text-decoration: none;
                 color: black;
@@ -107,16 +107,14 @@
                 margin-top: 0;
             }
             .carte_projet p{
-                margin: 0;
+                margin-right: calc(0.5vw + 0.5vh);
             }
             .carte_projet:hover{
-                background-color: #57b88a;
+                background-color: white;
                 text-decoration: none;
                 color: black;
             }
-            .carte_projet:active{
-                background-color: #45946e;
-            }
+
         </style>
 
 
