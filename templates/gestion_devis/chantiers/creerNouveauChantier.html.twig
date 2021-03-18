@@ -30,7 +30,7 @@
             </div>
             <div class="flex fullwidth marges">
                 <label for="project_creation_date" class="flex flex1 flex_end pr">   Date de création du projet :</label>
-                <input type="text" class="flex flex1" placeholder="Date de création" id="project_creation_date" name="project_creation_date" value="">
+                <input type="text" class="flex flex1" placeholder="jj/mm/aaaa" id="project_creation_date" name="project_creation_date" value="{{ "now"|date("Y-m-d") }}" required>
             </div>
             <div id="notes" name="notes">
                 <form>
@@ -64,11 +64,11 @@
             $('#project_creation_date').off();
             $('#project_creation_date').datepicker();
 
-            InlineEditor.create( document.querySelector( '#editor' ) ).catch( error => {
+            ClassicEditor.create( document.querySelector( '#editor' ) ).catch( error => {
                 console.error( error );
             });
         });
 
     </script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/inline/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/classic/ckeditor.js"></script>
 {% endblock %}

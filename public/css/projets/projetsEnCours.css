@@ -7,6 +7,7 @@
     background-color: #FFF;
 }
 
+
 #affichage_projets{
     background-color: white;
     width: calc(35vw + 35vh);
@@ -15,6 +16,7 @@
     padding-left: calc(4vw + 4vh);
     border-left:  2px solid #6666;
 }
+
 
 #recherche_projets{
     background-color: white;
@@ -44,9 +46,26 @@ input::placeholder {
     color: white;
 }
 
+#modification_projet a, #modification_projet a:hover, #modification_projet a:visited {
+    text-decoration: none;
+    color: white;
+}
+
+#archivage_projet a, #archivage_projet a:hover, #archivage_projet a:visited {
+    text-decoration: none;
+    color: white;
+}
+
+#visualisation_projet:active, #modification_projet:active, #archivage_projet:active {
+    background-color: #0C5A43;
+}
+
+
 #visualisation_projet.btn_vert, #modification_projet.btn_vert, #archivage_projet.btn_vert{
     margin-top: 0px;
     margin-right: calc(0.9vw + 0.9vh);
+    box-shadow: inherit;
+    padding: calc(0.65vw + 0.65vh);
 }
 
 #espace_boutons{
