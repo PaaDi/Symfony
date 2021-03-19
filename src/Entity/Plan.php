@@ -49,6 +49,23 @@ class Plan
      */
     private $idchantier;
 
+    /**
+     * @ORM\Column(name="refPlan", type="string", length=255)
+     */
+    private $refPlan;
+
+    public function getRefPlan(): ?string
+    {
+        return $this->refPlan;
+    }
+
+    public function setRefPlan(string $refPlan): self
+    {
+        $this->refPlan = $refPlan;
+
+        return $this;
+    }
+
     public function getIdplan(): ?int
     {
         return $this->idplan;

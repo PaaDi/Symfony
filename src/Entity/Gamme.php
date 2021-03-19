@@ -49,6 +49,23 @@ class Gamme
      */
     private $anglefermant;
 
+    /**
+     * @ORM\Column(name="refGamme", type="string", length=255)
+     */
+    private $refGamme;
+
+    public function getRefGamme(): ?string
+    {
+        return $this->refGamme;
+    }
+
+    public function setRefGamme(string $refGamme): self
+    {
+        $this->refGamme = $refGamme;
+
+        return $this;
+    }
+
     public function getIdgamme(): ?int
     {
         return $this->idgamme;

@@ -32,6 +32,10 @@ class UserRoleService
             {
                 $userrole = $this->userroleRepository->find($role['idrole']);
             }
+            else
+            {
+                $userrole->setRefuserrole(rand(0,99999999));
+            }
 
             $userrole->setRole($role['role']);
             $userrole->setEstadmin(false);

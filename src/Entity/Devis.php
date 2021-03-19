@@ -98,6 +98,28 @@ class Devis
      */
     private $estpaye;
 
+    /**
+     * @ORM\Column(name="refDevis", type="string", length=255)
+     */
+    private $refDevis;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $idGamme;
+
+    public function getRefDevis(): ?string
+    {
+        return $this->refDevis;
+    }
+
+    public function setRefDevis(string $refDevis): self
+    {
+        $this->refDevis = $refDevis;
+
+        return $this;
+    }
+
     public function getIddevis(): ?int
     {
         return $this->iddevis;
@@ -231,6 +253,18 @@ class Devis
     public function setEstpaye(bool $estpaye): self
     {
         $this->estpaye = $estpaye;
+
+        return $this;
+    }
+
+    public function getIdGamme(): ?int
+    {
+        return $this->idGamme;
+    }
+
+    public function setIdGamme(int $idGamme): self
+    {
+        $this->idGamme = $idGamme;
 
         return $this;
     }

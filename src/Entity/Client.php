@@ -72,6 +72,24 @@ class Client
      */
     private $description;
 
+    /**
+     * @ORM\Column(name="refClient", type="string", length=255)
+     */
+    private $refClient;
+    
+    public function getRefClient(): ?string
+    {
+        return $this->refClient;
+    }
+
+    public function setRefClient(string $refClient): self
+    {
+        $this->refClient = $refClient;
+
+        return $this;
+    }
+    
+
     public function getIdclient(): ?int
     {
         return $this->idclient;

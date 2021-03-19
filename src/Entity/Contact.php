@@ -63,6 +63,23 @@ class Contact
      */
     private $idclient;
 
+    /**
+     * @ORM\Column(name="refContact", type="string", length=255)
+     */
+    private $refContact;
+
+    public function getRefContact(): ?string
+    {
+        return $this->refContact;
+    }
+
+    public function setRefContact(string $refContact): self
+    {
+        $this->refContact = $refContact;
+
+        return $this;
+    }
+
     public function getIdcontact(): ?int
     {
         return $this->idcontact;

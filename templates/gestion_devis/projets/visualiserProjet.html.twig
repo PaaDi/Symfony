@@ -6,28 +6,46 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('css/projets/visualiserProjet.css') }}" media="all"/>
 {% endblock %}
 {% block contenu %}
-<h2>Projet n°3</h2>
+{% if projet is null %}
+    <p>Le projet n'existe pas</p>
+{% else %}
+<h2>{{ projet.nom }}</h2>
 <div id="wrapper_visualisation_projet" class="flex flex_aic flex_sa">
 
 
     <div id="recap_infos_projet" class="flex flex1 flex_col flex_sa">
         <h5>Références du projet</h5>
-        <div id="id_projet" name="id_projet">Projet n°3</div>
-        <div id="nom_client" name="nom_client">Monsieur Silva</div>
-        <div id="lieu_projet" name="lieu_projet">Bordeaux</div>
-        <div id="date_creation_projet" name="date_creation_projet">01/01/2021</div>
-        <div id="nom_vendeur" name="nom_vendeur">Tomasi</div>
+        <div id="id_projet">Référence #{{ projet.refProjet }}</div>
+        <div id="id_projet">Référence interne #{{ projet.idprojet }}</div>
+        <div id="date_creation_projet">Créer le {{ projet.datecreation|date("d/m/Y") }}</div>
+        <div>&nbsp;</div>
+        <h5>Client</h5>
+        <div id="nom_client" ><a href="#">{{ client.nom }}</a></div>
+        <div id="lieu_projet"> - Situé à :  {{ client.ville }}</div>
+        {% if client.estprofessionnel %}
+            <div id="nom_vendeur"> - Professionnel</div>
+        {% else %}
+            <div id="nom_vendeur"> - Particulier</div>
+        {% endif %}
     </div>
     <div id="div_chantiers" class="flex flex4 flex_col">
         <ul id="liste_chantiers">
-            <li><div class="flex"><span class="flex flex_aic fas fa-trash-alt"></span><button class="btn_vert">Chantier n°1</button><p class="flex flex_aic">Modèle rectangle 1 - Gamme nature</p></div></li>
+            {% for chantier in chantiers %}
+            <li>
+                <div class="flex">
+                    <span class="flex flex_aic fas fa-trash-alt"></span>
+                    <a class="btn_vert" href="{{ path('afficherPlan', {idChantier: chantier.idchantier}) }}">{{ chantier.nom }}</a>
+                </div>
+            </li>
+            {% endfor %}
         </ul>
 
-        <button id="ajouter_un_chantier" name="ajouter_un_chantier" class="btn_vert"><a href="{{ path('creerNouveauChantier') }}">Ajouter un chantier</a><span class="fas fa-plus"></span></button>
+        <button id="ajouter_un_chantier" name="ajouter_un_chantier" class="btn_vert"><a href="{{ path('creerNouveauChantier', {idprojet: projet.idprojet}) }}">Ajouter un chantier</a><span class="fas fa-plus"></span></button>
 
     </div>
 
 
-
 </div>
+
+{% endif %}
 {% endblock %}

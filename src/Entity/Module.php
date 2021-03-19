@@ -49,6 +49,23 @@ class Module
      */
     private $qteunite;
 
+    /**
+     * @ORM\Column(name="refModule", type="string", length=255)
+     */
+    private $refModule;
+
+    public function getRefModule(): ?string
+    {
+        return $this->refModule;
+    }
+
+    public function setRefModule(string $refModule): self
+    {
+        $this->refModule = $refModule;
+
+        return $this;
+    }
+
     public function getIdmodule(): ?int
     {
         return $this->idmodule;

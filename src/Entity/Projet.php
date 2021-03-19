@@ -54,6 +54,23 @@ class Projet
      */
     private $estArchive;
 
+    /**
+     * @ORM\Column(name="refProjet", type="string", length=255)
+     */
+    private $refProjet;
+
+    public function getRefProjet(): ?string
+    {
+        return $this->refProjet;
+    }
+
+    public function setRefProjet(string $refProjet): self
+    {
+        $this->refProjet = $refProjet;
+
+        return $this;
+    }
+
     public function getIdprojet(): ?int
     {
         return $this->idprojet;

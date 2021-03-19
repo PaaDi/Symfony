@@ -40,8 +40,8 @@
                     <a class="dropdown-item" href="{{ path('enCoursUsername') }}"><i class="fas fa-paint-roller"></i> En cours (<i>Username</i>)</a>
                     <a class="dropdown-item" href="{{ path('enCoursTous') }}"><i class="fas fa-paint-roller"></i> En cours (Tous)</a>
                     <a class="dropdown-item" href="{{ path('archivesChantiers') }}"><i class="fas fa-archive"></i> Archivés</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ path('creerNouveauChantier') }}"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>
+{#                    <div class="dropdown-divider"></div>#}
+{#                    <a class="dropdown-item" href="{{ path('creerNouveauChantier') }}"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>#}
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -50,19 +50,19 @@
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="{{ path('devisEnAttente') }}"><i class="fas fa-file-invoice"></i> En attentes</a>
                     <a class="dropdown-item" href="{{ path('devisArchives') }}"><i class="fas fa-archive"></i> Archivés</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ path('creerNouveauDevis') }}"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>
+{#                    <div class="dropdown-divider"></div>#}
+{#                    <a class="dropdown-item" href="{{ path('creerNouveauDevis') }}"><i class="fas fa-plus-circle"></i> Créer un nouveau</a>#}
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
                     Clients</button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ path('afficherContacts') }}"><i class="fas fa-id-card"></i></i> Afficher Contacts</a>
-                    <a class="dropdown-item" href="{{ path('afficherEntreprises') }}"><i class="far fa-building"></i> Afficher Entreprises</a>
+                    <a class="dropdown-item" href="{{ path('afficherListeClients') }}"><i class="fas fa-id-card"></i></i> Afficher Clients</a>
+{#                    <a class="dropdown-item" href="{{ path('afficherEntreprises') }}"><i class="far fa-building"></i> Afficher Entreprises</a>#}
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ path('creerNouveauContact') }}"><i class="fas fa-id-card"></i> Nouveau Contact</a>
-                    <a class="dropdown-item" href="{{ path('creerNouvelleEntreprise') }}"><i class="far fa-building"></i> Nouvelle Entreprise</a>
+                    <a class="dropdown-item" href="{{ path('creerNouveauContact') }}"><i class="fas fa-id-card"></i> Nouveau Client</a>
+{#                    <a class="dropdown-item" href="{{ path('creerNouvelleEntreprise') }}"><i class="far fa-building"></i> Nouvelle Entreprise</a>#}
                 </div>
             </li>
             <li class="nav-item dropdown">

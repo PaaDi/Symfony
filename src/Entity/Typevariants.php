@@ -35,6 +35,23 @@ class Typevariants
      */
     private $categorie;
 
+    /**
+     * @ORM\Column(name="refTypevariants", type="string", length=255)
+     */
+    private $refTypevariants;
+
+    public function getRefTypevariants(): ?string
+    {
+        return $this->refTypevariants;
+    }
+
+    public function setRefTypevariants(string $refTypevariants): self
+    {
+        $this->refTypevariants = $refTypevariants;
+
+        return $this;
+    }
+
     public function getIdtypesvariant(): ?int
     {
         return $this->idtypesvariant;

@@ -81,6 +81,10 @@ class LoginService
             {
                 $login = $this->loginRepository->find($user['iduser']);
             }
+            else
+            {
+                $login->setRefLogin(rand(0,99999999));
+            }
 
             $login->setUsername($user['username']);
             $login->setPrenom($user['prenom']);

@@ -1,0 +1,91 @@
+{% extends 'gestion_devis/template.html.twig' %}
+
+
+{% block contenu %}
+
+
+<h1>{{ client.nom }}</h1>
+
+    <div class="row">
+        <div class="col-4">
+            <h5>Infos client</h5>
+            <p>Ref client : {{ client.refClient }}</p>
+            <p>Ref interne : {{ client.idclient }}</p>
+            <p>&nbsp;</p>
+            <p>Nom : {{ client.nom }}</p>
+            <p>Statut : {{ client.estprofessionnel }}</p>
+            <p>Secteur : {{ client.secteuractivite }}</p>
+            <p>&nbsp;</p>
+            <p>Adresse : {{ client.adresse }}</p>
+            <p>Ville : {{ client.ville }}</p>
+            <p>CP : {{ client.codepostal }}</p>
+            <p>&nbsp;</p>
+            <p>Description : {{ client.description }}</p>
+        </div>
+        <div class="col-4" style="display: flex; flex-flow: column wrap">
+            <h5>Contacts</h5>
+            {% for contact in contacts %}
+            <a href="#" style="background-color: #57b88a;
+                border-radius: 5px;
+                width: 80%;
+                margin-bottom: 2rem;
+                padding: 0.4rem 1rem;
+                color: white">
+                {{ contact.nom }} {{ contact.prenom }} -
+                {{ contact.fonction }} -
+                {{ contact.telephone }} -
+                {{ contact.mail }}
+            </a>
+
+            {% endfor %}
+            <a href="#" style="background-color: #57b88a;
+                border-radius: 5px;
+                width: 80%;
+                margin-bottom: 2rem;
+                padding: 0.4rem 1rem;
+                color: white"
+                onclick="$('#form_new_contact').show(0)">
+                Ajouter contact
+            </a>
+            <form action="" method="post" style="display: none" id="form_new_contact">
+                <h5>Nouveau contact :</h5>
+                <input type="text" name="Nom" placeholder="Nom" required>
+                <input type="text" name="Prenom" placeholder="Prenom">
+                <input type="text" name="Fonction" placeholder="Fonction" required>
+                <input type="text" name="E-mail" placeholder="E-mail" required>
+                <input type="text" name="Telephone" placeholder="Telephone">
+                <input type="submit" value="Créer le contact">
+                <style>
+                    form input{
+                        background-color: white;
+                        margin-bottom: 0.5rem;
+                    }
+                    input[type=submit]{
+                        background-color: #0C8148;
+                        color: white;
+                    }
+                </style>
+            </form>
+        </div>
+        <div class="col-4" style="display: flex; flex-flow: column wrap">
+            <h5>Projets</h5>
+            {% for projet in projets %}
+                <a href="{{ path('afficherClient', {id: client.idclient}) }}" style="background-color: #57b88a;
+                border-radius: 5px;
+                width: 80%;
+                margin-bottom: 2rem;
+                padding: 0.4rem 1rem;
+                color: white">
+                    {{ projet.nom }} - {{ projet.datecreation|date("d/m/Y") }}
+                </a>
+
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        p{
+            margin-bottom: 0 !important;
+        }
+    </style>
+{% endblock %}

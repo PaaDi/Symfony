@@ -35,6 +35,23 @@ class Userrole
      */
     private $estadmin;
 
+    /**
+     * @ORM\Column(name="refuserrole", type="string", length=255)
+     */
+    private $refuserrole;
+
+    public function getRefuserrole(): ?string
+    {
+        return $this->refuserrole;
+    }
+
+    public function setRefuserrole(string $refuserrole): self
+    {
+        $this->refuserrole = $refuserrole;
+
+        return $this;
+    }
+
     public function getIdrole(): ?int
     {
         return $this->idrole;

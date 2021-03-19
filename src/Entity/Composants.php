@@ -49,6 +49,23 @@ class Composants
      */
     private $idfournisseur;
 
+    /**
+     * @ORM\Column(name="refComposant", type="string", length=255)
+     */
+    private $refComposant;
+
+    public function getRefComposant(): ?string
+    {
+        return $this->refComposant;
+    }
+
+    public function setRefComposant(string $refComposant): self
+    {
+        $this->refComposant = $refComposant;
+
+        return $this;
+    }
+
     public function getIdcomposant(): ?int
     {
         return $this->idcomposant;

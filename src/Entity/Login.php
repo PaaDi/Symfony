@@ -64,6 +64,23 @@ class Login
      */
     private $idrole;
 
+    /**
+     * @ORM\Column(name="refLogin", type="string", length=255)
+     */
+    private $refLogin;
+
+    public function getRefLogin(): ?string
+    {
+        return $this->refLogin;
+    }
+
+    public function setRefLogin(string $refLogin): self
+    {
+        $this->refLogin = $refLogin;
+
+        return $this;
+    }
+
 
     public function getIduser(): ?int
     {

@@ -35,6 +35,23 @@ class Modalitespaiement
      */
     private $obsolete;
 
+    /**
+     * @ORM\Column(name="refModalitespaiement", type="string", length=255)
+     */
+    private $refModalitespaiement;
+
+    public function getRefModalitespaiement(): ?string
+    {
+        return $this->refModalitespaiement;
+    }
+
+    public function setRefModalitespaiement(string $refModalitespaiement): self
+    {
+        $this->refModalitespaiement = $refModalitespaiement;
+
+        return $this;
+    }
+
     public function getIdmodalite(): ?int
     {
         return $this->idmodalite;

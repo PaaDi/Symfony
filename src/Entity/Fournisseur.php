@@ -49,6 +49,23 @@ class Fournisseur
      */
     private $numerotel;
 
+    /**
+     * @ORM\Column(name="refFournisseur", type="string", length=255)
+     */
+    private $refFournisseur;
+
+    public function getRefFournisseur(): ?string
+    {
+        return $this->refFournisseur;
+    }
+
+    public function setRefFournisseur(string $refFournisseur): self
+    {
+        $this->refFournisseur = $refFournisseur;
+
+        return $this;
+    }
+
     public function getIdfournisseur(): ?int
     {
         return $this->idfournisseur;

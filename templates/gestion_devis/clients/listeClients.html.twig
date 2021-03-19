@@ -1,0 +1,27 @@
+{% extends 'gestion_devis/template.html.twig' %}
+
+
+{% block contenu %}
+
+
+<h1>Liste des clients</h1>
+
+    {% for client in clients %}
+        <a href="{{ path('afficherClient', {id: client.idclient}) }}" style="background-color: #57b88a;
+                border-radius: 5px;
+                width: 80%;
+                margin-left: 10%;
+                margin-bottom: 2rem;
+                padding: 0.4rem 1rem;
+                color: white">
+            {{ client.nom }} -
+            {{ client.ville }} -
+            {{ client.secteuractivite }} -
+            {% if client.estprofessionnel %}Professionnel</a>
+        {% else %}Particulier
+        {% endif %}
+        </a>
+
+    {% endfor %}
+
+{% endblock %}

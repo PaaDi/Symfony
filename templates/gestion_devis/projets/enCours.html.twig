@@ -74,8 +74,8 @@
                     </div>
                     {#<p class="fas fa-chevron-right" style="font-size: 1.5rem"></p>#}
                     <div id="espace_boutons" class="container flex flex1 flex_end float-right">
-                        <button id="visualisation_projet" name="visualisation_projet" class="btn_vert col-2 flex flex_aic flex_center"><a href="{{ path('visualiserProjet') }}">Visualiser</a></button>
-                        <button id="modification_projet" name="modification_projet" class="btn_vert col-2 flex flex_aic flex_center"><a href="{{ path('visualiserProjet') }}">Modifier</a></button>
+                        <button id="visualisation_projet" name="visualisation_projet" class="btn_vert col-2 flex flex_aic flex_center"><a href="{{ path('visualiserProjet', {id: projet.idprojet}) }}">Visualiser</a></button>
+                        <button id="modification_projet" name="modification_projet" class="btn_vert col-2 flex flex_aic flex_center"><a href="#">Modifier</a></button>
                         <button id="archivage_projet" name="archivage_projet" class="btn_vert col-2 flex flex_aic flex_center"><a href="#">Archiver</a></button>
                     </div>
                 </div>

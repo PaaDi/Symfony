@@ -8,43 +8,68 @@
 
 
 {% block contenu %}
-<h2>Créer un nouveau chantier - Projet n°3</h2>
+<h2>Créer un nouveau chantier</h2>
 
 <div id="wrapper_creation_chantier" class="flex flex_aic flex_sa">
 
 
     <div id="recap_infos_projet" class="flex flex1 flex_col flex_sa">
         <h5>Références du projet</h5>
-        <div id="id_projet" name="id_projet">Projet n°3</div>
-        <div id="nom_client" name="nom_client">Monsieur Silva</div>
-        <div id="lieu_projet" name="lieu_projet">Lieu : Bordeaux</div>
-        <div id="date_creation_projet" name="date_creation_projet">Date de création : 01/01/2021</div>
-        <div id="nom_vendeur" name="nom_vendeur">Commercial : Tomasi</div>
+        <div id="nom_projet" ><a href="{{ path('visualiserProjet', {id: projet.idprojet}) }}">{{ projet.nom }}</a></div>
+        <div id="id_projet">Référence #{{ projet.refProjet }}</div>
+        <div id="id_projet">Référence interne #{{ projet.idprojet }}</div>
+        <div id="date_creation_projet">Créer le {{ projet.datecreation|date("d/m/Y") }}</div>
+        <div>&nbsp;</div>
+        <h5>Client</h5>
+        <div id="nom_client" ><a href="#">{{ client.nom }}</a></div>
+        <div id="lieu_projet"> - Situé à :  {{ client.ville }}</div>
+        {% if client.estprofessionnel %}
+            <div id="nom_vendeur"> - Professionnel</div>
+        {% else %}
+            <div id="nom_vendeur"> - Particulier</div>
+        {% endif %}
     </div>
+
     <div id="div_creation_chantier" class="flex flex4 flex_col">
 
-        <form id="form_creation_chantier" action="" method="post" class="flex flex4 flex_col">
+        <form id="form_creation_chantier" action="{{ path('creerNouveauChantier', {idprojet: projet.idprojet}) }}" method="post" class="flex flex4 flex_col">
             <div class="flex fullwidth marges">
                 <label for="chantier_name" class="flex flex1 flex_end pr">Nom :</label>
-                <input type="text" class="flex flex1" placeholder="Nom du chantier" name="chantier_name" value="Chantier finitions Nature - Personnalisé">
+{#                <input type="text" class="flex flex1" placeholder="Nom du chantier" name="chantier_name" value="Chantier finitions Nature - Personnalisé">#}
+                <input type="text" class="flex flex1" placeholder="Nom du chantier" name="chantier_name" required>
             </div>
             <div class="flex fullwidth marges">
-                <label for="project_creation_date" class="flex flex1 flex_end pr">   Date de création du projet :</label>
-                <input type="text" class="flex flex1" placeholder="jj/mm/aaaa" id="project_creation_date" name="project_creation_date" value="{{ "now"|date("Y-m-d") }}" required>
+                <label for="chantier_creation_date" class="flex flex1 flex_end pr">   Date de création du chantier :</label>
+                <input type="date" class="flex flex1" id="project_creation_date" name="project_creation_date" value="{{ "now"|date("Y-m-d") }}" required>
             </div>
-            <div id="notes" name="notes">
-                <form>
+            <div class="flex fullwidth marges">
+                <label for="chantier_lancement_date" class="flex flex1 flex_end pr">   Date de lancement du chantier :</label>
+                <input type="date" class="flex flex1" id="chantier_lancement_date" name="chantier_lancement_date" value="{{ "now"|date("Y-m-d") }}" required>
+            </div>
+            <div class="flex fullwidth marges">
+                <label for="adresse" class="flex flex1 flex_end pr">   Addresse :</label>
+                <input type="text" class="flex flex1" id="adresse" name="adresse" placeholder="Adresse">
+            </div>
+            <div class="flex fullwidth marges">
+                <label for="Ville" class="flex flex1 flex_end pr">   Ville :</label>
+                <input type="text" class="flex flex1" id="Ville" name="Ville" placeholder="Ville">
+            </div>
+            <div class="flex fullwidth marges">
+                <label for="code_postal" class="flex flex1 flex_end pr">   Code Postal :</label>
+                <input type="text" class="flex flex1" id="code_postal" name="code_postal" placeholder="xxxxx">
+            </div>
+
+            <div id="notes">
                     <label for="note">NOTES : </label>
                     <!--<input id="note" name="note" type="textarea">-->
-                    <div id="editor"></div>
-                </form>
-
+                    <textarea name="note" id="editor"></textarea>
 
             </div>
-            </form>
             <div class="flex flex_col fullwidth marges">
-                <button type="submit" class="marges btn_vert" id="valid_creation_chantier" name="valid_creation_chantier">Créer le chantier</button>
+                <input type="submit" class="marges btn_vert" id="valid_creation_chantier" value="Créer le chantier">
             </div>
+        </form>
+
         </form>
 
     </div>
@@ -59,11 +84,6 @@
 
     <script>
         $(function(){
-            $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
-
-            $('#project_creation_date').off();
-            $('#project_creation_date').datepicker();
-
             ClassicEditor.create( document.querySelector( '#editor' ) ).catch( error => {
                 console.error( error );
             });

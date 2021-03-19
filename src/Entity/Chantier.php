@@ -49,6 +49,52 @@ class Chantier
      */
     private $iduser;
 
+    /**
+     * @ORM\Column(name="refChantier", type="string", length=255)
+     */
+    private $refChantier;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $ville;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $codepostal;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $dateCreation;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $dateLancement;
+
+    public function getRefChantier(): ?string
+    {
+        return $this->refChantier;
+    }
+
+    public function setRefChantier(string $refChantier): self
+    {
+        $this->refChantier = $refChantier;
+
+        return $this;
+    }
+
     public function getIdchantier(): ?int
     {
         return $this->idchantier;
@@ -98,6 +144,66 @@ class Chantier
     public function setIduser(int $iduser): self
     {
         $this->iduser = $iduser;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getCodepostal(): ?string
+    {
+        return $this->codepostal;
+    }
+
+    public function setCodepostal(?string $codepostal): self
+    {
+        $this->codepostal = $codepostal;
+
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    public function getDateLancement(): ?\DateTimeInterface
+    {
+        return $this->dateLancement;
+    }
+
+    public function setDateLancement(\DateTimeInterface $dateLancement): self
+    {
+        $this->dateLancement = $dateLancement;
 
         return $this;
     }

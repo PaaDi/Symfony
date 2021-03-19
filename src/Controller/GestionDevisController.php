@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Chantier;
 use App\Entity\Contact;
 use App\Entity\Projet;
+use App\Repository\ChantierRepository;
 use App\Repository\ClientRepository;
+use App\Repository\ContactRepository;
+use App\Repository\LoginRepository;
 use App\Repository\ProjetRepository;
 use http\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -70,6 +74,7 @@ class GestionDevisController extends AbstractController
             $projet->setEstArchive(false);
             $projet->setDatecreation(\DateTime::createFromFormat("Y-m-d", $request->request->get('project_creation_date')));
             $projet->setIdclient($request->request->get('idClient'));
+            $projet->setRefProjet(rand(0,99999999)); // création
 
             $entityManager = $this->getDoctrine()->getManager();
 
@@ -85,13 +90,19 @@ class GestionDevisController extends AbstractController
     }
 
     /**
-     * @Route("/gestiondevis/projets/enCours/visualiserProjet/", name="visualiserProjet")
+     * @Route("/gestiondevis/projets/enCours/visualiserProjet/{id}", name="visualiserProjet")
      */
 
-    public function toVisualiserProjet()
+    public function toVisualiserProjet(int $id,
+                                       ProjetRepository $projetRepository,
+                                       ClientRepository $clientRepository,
+                                       ChantierRepository $chantierRepository)
     {
+        $projet = $projetRepository->find($id);
         return $this->render('gestion_devis/projets/visualiserProjet.html.twig', [
-            'controller_name' => 'GestionDevisController',
+            'projet' => $projet,
+            'client' => $clientRepository->find($projet->getIdclient()),
+            'chantiers' => $chantierRepository->findBy(['idprojet' => $id]),
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
         ]);
     }
@@ -134,13 +145,44 @@ class GestionDevisController extends AbstractController
     }
 
     /**
-     * @Route("/gestiondevis/chantiers/creerNouveau/", name="creerNouveauChantier")
+     * @Route("/gestiondevis/chantiers/creerNouveau/{idprojet}", name="creerNouveauChantier")
      */
 
-    public function toCreerNouveauChantier()
+    public function toCreerNouveauChantier(int $idprojet,
+                                           ProjetRepository $projetRepository,
+                                           ClientRepository $clientRepository,
+                                           LoginRepository $loginRepository)
     {
+        $projet = $projetRepository->find($idprojet);
+
+        //si le formulaire est renseigné
+        $request = Request::createFromGlobals();
+        if (count($request->request->all()) > 0)
+        {
+//            print_r($request->request->all()); die;
+            $chantier = new Chantier();
+            $chantier->setNom($request->request->get('chantier_name'));
+            $chantier->setIdprojet($idprojet);
+            $chantier->setRefChantier(rand(0,99999999));
+            $chantier->setIduser($loginRepository->findOneBy(['username' => $this->getUser()->getUsername()])->getIduser() );
+            $chantier->setNotes($request->request->get('note'));
+            $chantier->setAdresse($request->request->get('adresse'));
+            $chantier->setVille($request->request->get('Ville'));
+            $chantier->setCodepostal($request->request->get('code_postal'));
+            $chantier->setDateCreation(\DateTime::createFromFormat("Y-m-d", $request->request->get('project_creation_date')));
+            $chantier->setDateLancement(\DateTime::createFromFormat("Y-m-d", $request->request->get('chantier_lancement_date')));
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($chantier);
+            $entityManager->flush();
+
+//            return $this->redirectToRoute(''); @todo pointer vers la fiche du projet qui vient d'être creer
+        }
+
         return $this->render('gestion_devis/chantiers/creerNouveauChantier.html.twig', [
-            'controller_name' => 'GestionDevisController',
+            'projet' => $projet,
+            'client' => $clientRepository->find($projet->getIdclient()),
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
         ]);
     }
@@ -184,27 +226,55 @@ class GestionDevisController extends AbstractController
     }
 
     /**
-     * @Route("/gestiondevis/clients/afficherContacts/", name="afficherContacts")
+     * @Route("/gestiondevis/clients/afficherContacts/", name="afficherListeClients")
      */
 
-    public function toAfficherContact()
+    public function toAfficherListeClients(ClientRepository $clientRepository)
     {
-        return $this->render('gestion_devis/clients/afficherContacts.html.twig', [
-            'controller_name' => 'GestionDevisController',
+        return $this->render('gestion_devis/clients/listeClients.html.twig', [
+            'clients' => $clientRepository->findAll(),
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
         ]);
 
     }
 
     /**
-     * @Route("/gestiondevis/clients/afficherEntreprises/", name="afficherEntreprises")
+     * @Route("/gestiondevis/clients/afficherClient/{id}", name="afficherClient")
      */
 
-    public function toAfficherEntreprises()
+    public function toAfficherClient(int $id,
+                                     ClientRepository $clientRepository,
+                                     ContactRepository $contactRepository,
+                                     ProjetRepository $projetRepository)
     {
-        return $this->render('gestion_devis/clients/afficherEntreprises.html.twig', [
-            'controller_name' => 'GestionDevisController',
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+        $client = $clientRepository->find($id);
+
+        //si le formulaire d'ajout de contact est renseigné
+        $request = Request::createFromGlobals();
+        if (count($request->request->all()) > 0)
+        {
+//            print_r($request->request->all()); die;
+            $contact = new Contact();
+            $contact->setIdclient($client->getIdclient());
+            $contact->setNom($request->request->get('Nom'));
+            $contact->setPrenom($request->request->get('Prenom'));
+            $contact->setFonction($request->request->get('Fonction'));
+            $contact->setMail($request->request->get('E-mail'));
+            $contact->setTelephone($request->request->get('Telephone'));
+            $contact->setRefContact(rand(0,99999999));
+
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($contact);
+            $entityManager->flush();
+        }
+
+
+        return $this->render('gestion_devis/clients/afficherClient.html.twig', [
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
+            'client' => $client,
+            'contacts' => $contactRepository->findBy(['idclient' => $id]),
+            'projets' => $projetRepository->findBy(['idclient' => $id]),
         ]);
 
     }
@@ -236,6 +306,7 @@ class GestionDevisController extends AbstractController
             );
             $client->setCodepostal($request->request->get('cp_adress'));
             $client->setVille($request->request->get('ville_adress'));
+            $client->setRefClient(rand(0,99999999));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($client);
@@ -249,6 +320,7 @@ class GestionDevisController extends AbstractController
             $contact->setFonction($request->request->get('fonction_contact'));
             $contact->setMail($request->request->get('email_contact'));
             $contact->setTelephone($request->request->get('tel_contact'));
+            $contact->setRefContact(rand(0,99999999));
 
 
             $entityManager->persist($contact);
@@ -265,14 +337,14 @@ class GestionDevisController extends AbstractController
     }
 
     /**
-     * @Route("/gestiondevis/clients/creerNouvelleEntreprise/", name="creerNouvelleEntreprise")
+     * @Route("/gestiondevis/plan/afficher/{idChantier}", name="afficherPlan")
      */
 
-    public function toCreerNouvelleEntreprise()
+    public function afficherPlan(int $idChantier)
     {
-        return $this->render('gestion_devis/clients/creerNouvelleEntreprise.html.twig', [
+        return $this->render('gestion_devis/chantiers/afficherPlan.html.twig', [
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
             'controller_name' => 'GestionDevisController',
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
         ]);
 
     }
