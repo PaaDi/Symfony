@@ -3,22 +3,51 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('css/flex.css') }}" media="all"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/general_css.css') }}" media="all"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/chantiers/creerNouveauChantier.css') }}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/etat.css') }}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/chantiers/afficherPlan.css') }}" media="all"/>
 {% endblock %}
 
 
 {% block contenu %}
+    <h2>Chantier - Plan</h2>
+    {% include "base/etat.html.twig" %}
+
+    <div id="barre_actions_plan">
+        <ul id="action_buttons">
+            <li>Ajouter un module<div class="fas fa-plus"></div></li>
+            <li>Options du chantier</li>
+            <li>Options du plan</li>
+        </ul>
+        <div id="partie_devis">
+            <div id="button_devis" data-toggle="collapse" href="#liste_devis">Devis</div>
+            <div id="liste_devis" class="flex flex1 flex_col flex_sa collapse">
+                <div><a href="{{ path('creerNouveauDevis') }}">Devis 1</a></div>
+                <div><a href="{{ path('creerNouveauDevis') }}">Devis 2</a></div>
+                <div><a href="{{ path('creerNouveauDevis') }}">Créer un devis</a></div>
+            </div>
+        </div>
+    </div>
+
     <div id="wrapper_creation_chantier" class="flex flex_aic flex_sa">
 
+{#        <div id="icone_collapse" class="fas fa-chevron-circle-right" data-toggle="collapse" href="#recap_infos_projet"></div>#}
+{#        <div id="recap_infos_projet" class="flex flex1 flex_col flex_sa collapse">#}
 
-        <div id="recap_infos_projet" class="flex flex1 flex_col flex_sa">
-            <h5>Références du projet</h5>
+{#            <h5>Références du projet</h5>#}
 
+{#        </div>#}
+
+        <div id="div_creation_chantier" class="flex flex4 flex_sa">
+
+            <div id="partie_modules" class="flex flex2 flex_sa flex_col">
+
+                <div id="onglets_etages">test</div>
+                <div id="liste_modules"></div>
+
+            </div>
+
+            <div id="partie_affichage_plan" class="flex flex5 flex_aic flex_col">plan</div>
         </div>
 
-        <div id="div_creation_chantier" class="flex flex4 flex_col">
-            PAGE
-        </div>
 
-    </div>
 {% endblock %}

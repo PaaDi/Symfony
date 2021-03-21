@@ -3,12 +3,15 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('css/flex.css') }}" media="all"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/general_css.css') }}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/etat.css') }}" media="all"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/chantiers/creerNouveauChantier.css') }}" media="all"/>
 {% endblock %}
 
 
 {% block contenu %}
 <h2>Créer un nouveau chantier</h2>
+
+    {% include "base/etat.html.twig" %}
 
 <div id="wrapper_creation_chantier" class="flex flex_aic flex_sa">
 

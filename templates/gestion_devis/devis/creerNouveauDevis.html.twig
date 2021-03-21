@@ -1,9 +1,16 @@
 {% extends 'gestion_devis/template.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/flex.css') }}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/general_css.css') }}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/etat.css') }}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/devis/creerNouveauDevis.css') }}" media="all"/>
+{% endblock %}
 
 {% block contenu %}
 
 
-    <h1>Création de nouveau devis </h1>
+    <h2>Création de nouveau devis </h2>
+    {% include "base/etat.html.twig" %}
 
 {% endblock %}

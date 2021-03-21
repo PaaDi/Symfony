@@ -3,6 +3,7 @@
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{{ asset('css/flex.css') }}" media="all"/>
 <link rel="stylesheet" type="text/css" href="{{ asset('css/general_css.css') }}" media="all"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('css/etat.css') }}" media="all"/>
 <link rel="stylesheet" type="text/css" href="{{ asset('css/projets/visualiserProjet.css') }}" media="all"/>
 {% endblock %}
 {% block contenu %}
@@ -10,6 +11,7 @@
     <p>Le projet n'existe pas</p>
 {% else %}
 <h2>{{ projet.nom }}</h2>
+    {% include "base/etat.html.twig" %}
 <div id="wrapper_visualisation_projet" class="flex flex_aic flex_sa">
 
 
