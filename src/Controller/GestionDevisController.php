@@ -103,7 +103,8 @@ class GestionDevisController extends AbstractController
             'projet' => $projet,
             'client' => $clientRepository->find($projet->getIdclient()),
             'chantiers' => $chantierRepository->findBy(['idprojet' => $id]),
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
+            'id_page' => 'projet',
         ]);
     }
 
@@ -195,7 +196,8 @@ class GestionDevisController extends AbstractController
     {
         return $this->render('gestion_devis/devis/creerNouveauDevis.html.twig', [
             'controller_name' => 'GestionDevisController',
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
+            'id_page' => 'devis'
         ]);
     }
 
@@ -345,6 +347,7 @@ class GestionDevisController extends AbstractController
         return $this->render('gestion_devis/chantiers/afficherPlan.html.twig', [
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
             'controller_name' => 'GestionDevisController',
+            'id_page'=> 'plan'
         ]);
 
     }

@@ -1,0 +1,12 @@
+<div>
+    <nav>
+        <ul id="navigation_etat">
+            <li {% if id_page == 'projet' %} class="active" {% else %} class="inactive" {% endif %}><a href="#">Projet</a></li>
+            <li class="fas fa-arrow-right"></li>
+            <li {% if id_page == 'plan' %} class="active" {% else %} class="inactive" {% endif %}><a href="#">Plan</a></li>
+            <li class="fas fa-arrow-right"></li>
+            <li {% if id_page == 'devis' %} class="active" {% else %} class="inactive" {% endif %}><a href="{{ path('creerNouveauDevis') }}">Devis</a></li>
+        </ul>
+    </nav>
+
+</div>

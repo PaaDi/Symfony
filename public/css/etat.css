@@ -1,0 +1,42 @@
+nav {
+  background-color: white;
+}
+
+#navigation_etat {
+  text-align: center;
+  width: auto;
+  box-shadow: 0 0 2em darkgrey;
+}
+
+#navigation_etat li a, #navigation_etat li a:visited, #navigation_etat li a:hover, #navigation_etat li a:active {
+  text-decoration: none;
+  color: white;
+}
+
+#navigation_etat li.inactive {
+  display: inline;
+  list-style: none;
+  background-color: #718478;
+  color: white;
+  font-size: x-large;
+  margin: 0;
+  padding: calc(0.5vw + 0.5vh);
+  border-radius: 20px;
+}
+
+#navigation_etat li.active {
+  display: inline;
+  list-style: none;
+  background-color: #0C8148;
+  color: white;
+  font-size: x-large;
+  margin: 0;
+  padding: calc(0.5vw + 0.5vh);
+  border-radius: 20px;
+}
+
+#navigation_etat li.fa-arrow-right {
+  background-color: transparent;
+  color: #718478;
+}
+
