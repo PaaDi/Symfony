@@ -41,8 +41,37 @@
 
             <div id="partie_modules" class="flex flex2 flex_sa flex_col">
 
-                <div id="onglets_etages">test</div>
-                <div id="liste_modules"></div>
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#rdc">RDC</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#etage1">Etage 1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#plus">+</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane container active" id="rdc">
+                        <h5>Liste modules RDC</h5>
+                        <div class="liste_modules"></div>
+                    </div>
+                    <div class="tab-pane container fade" id="etage1">
+                        <h5>Liste modules 1er étage</h5>
+                        <div class="liste_modules"></div>
+                    </div>
+                    <div class="tab-pane container fade" id="plus">
+                        <h5>Ajouter un étage</h5>
+                        <div class="liste_modules"></div>
+                    </div>
+                </div>
+
+
+
 
             </div>
 

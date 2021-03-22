@@ -3,14 +3,118 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('css/flex.css') }}" media="all"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/general_css.css') }}" media="all"/>
+<<<<<<< Updated upstream
     <link rel="stylesheet" type="text/css" href="{{ asset('css/etat.css') }}" media="all"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/devis/creerNouveauDevis.css') }}" media="all"/>
 {% endblock %}
+=======
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/devis/creerNouveauDevis.css') }}" media="all"/>
+{% endblock %}
+
+>>>>>>> Stashed changes
 
 {% block contenu %}
+    <h2>Créer un nouveau Devis - Projet n°3 - Chantier n°1</h2>
+
+    <div id="wrapper_creation_devis" class="flex flex_aic flex_sa">
 
 
+        <div id="recap_infos_projet_chantier" class="flex flex1 flex_col flex_sa">
+            <h5>Références du projet / chantier</h5>
+            <div id="id_projet" name="id_projet">Projet n°3</div>
+            <div id="id_chantier" name="id_chantier">Chantier n°1</div>
+            <div id="nom_client" name="nom_client">Monsieur Silva</div>
+            <div id="lieu_projet" name="lieu_projet">Lieu : Bordeaux</div>
+            <div id="date_creation_projet" name="date_creation_projet">Date de création : 01/01/2021</div>
+            <div id="nom_vendeur" name="nom_vendeur">Commercial : Tomasi</div>
+        </div>
+        <div id="div_creation_devis" class="flex flex4 flex_col">
+
+            <form id="form_creation_devis" action="" method="post" class="flex flex4 flex_col">
+                <div class="flex fullwidth marges">
+                    <label for="choix_modele">Sélection d'un modèle de départ :</label><br>
+                    <select id="choix_modele" name="choix_modele">
+                        <option value="">--Modèle--</option>
+                        <option value="Paris">Rectangle</option>
+                        <option value="Pau">Carré</option>
+                        <option value="Toulouse">En L</option>
+                        <option value="Bayonne">En L avec Tour centrale</option>
+                        <option value="Tarbes">En H</option>
+                    </select><br>
+                </div>
+                <div class="flex fullwidth marges">
+                    <label for="choix_gamme">Sélection d'une gamme :</label><br>
+                    <select id="choix_gamme" name="choix_gamme">
+                        <option value="">--Gamme--</option>
+                        <option value="Paris">Nature</option>
+                        <option value="Pau">Luxe</option>
+                        <option value="Toulouse">Ecologique</option>
+                        <option value="Bayonne">Développement durable</option>
+                        <option value="Tarbes">Economie d'énergie</option>
+                    </select><br>
+                </div>
+                <div class="flex fullwidth marges">
+                    <h6>Ajustement des finitions de la gamme choisie :</h6>
+                    <label for="isolant_toit">Isolant toit</label><br>
+                    <select id="isolant_toit" name="isolant_toit">
+                        <option value="">--Isolant toit--</option>
+                        <option value="Paris">Chanvre</option>
+                        <option value="Pau">Laine de verre</option>
+                        <option value="Toulouse">Coton naturel</option>
+                        <option value="Bayonne">Laine de mouton</option>
+                        <option value="Tarbes">Plastique recyclé</option>
+                    </select><br>
+                </div>
+                <div>
+                    <label for="chantier_name" class="flex flex1 flex_end pr">Nom :</label>
+                    <input type="text" class="flex flex1" placeholder="Nom du chantier" name="chantier_name" value="Chantier finitions Nature - Personnalisé">
+                </div>
+                <div class="flex fullwidth marges">
+                    <label for="project_creation_date" class="flex flex1 flex_end pr">   Date de création du projet :</label>
+                    <input type="text" class="flex flex1" placeholder="jj/mm/aaaa" id="project_creation_date" name="project_creation_date" value="{{ "now"|date("Y-m-d") }}" required>
+                </div>
+                <div id="notes" name="notes">
+                    <form>
+                        <label for="note">NOTES : </label>
+                        <!--<input id="note" name="note" type="textarea">-->
+                        <div id="editor"></div>
+                    </form>
+
+
+                </div>
+            </form>
+            <div class="flex flex_col fullwidth marges">
+                <button type="submit" class="marges btn_vert" id="valid_creation_devis" name="valid_creation_devis">Créer le devis</button>
+            </div>
+            </form>
+
+        </div>
+
+
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+
+    <script>
+        $(function(){
+            $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
+
+            $('#project_creation_date').off();
+            $('#project_creation_date').datepicker();
+
+<<<<<<< Updated upstream
     <h2>Création de nouveau devis </h2>
     {% include "base/etat.html.twig" %}
+=======
+            ClassicEditor.create( document.querySelector( '#editor' ) ).catch( error => {
+                console.error( error );
+            });
+        });
+>>>>>>> Stashed changes
 
+    </script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/classic/ckeditor.js"></script>
 {% endblock %}
