@@ -2,10 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
+use App\Entity\Contact;
 use App\Entity\Login;
+use App\Entity\Projet;
 use App\Repository\ChantierRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ContactRepository;
+use App\Repository\LoginRepository;
 use App\Repository\ProjetRepository;
 use App\Service\APIgestionDevisService;
 use App\Service\baseService;
@@ -78,6 +82,53 @@ class APIgestionDevisController extends AbstractController
     }
 
     /**
+     * @Route("/API/getallusers", name="API-getallusers")
+     * @return Response
+     */
+    public function getAllUsers(LoginRepository $loginRepository)
+    {
+        $request = Request::createFromGlobals();
+
+
+        if ($request->request->get('validrequest') == null)
+        {
+            return new JsonResponse(array(
+                'Erreur' => "Les arguments en POST sont NULL",
+            ));
+        }
+        if ($request->request->get('validrequest') == "OK")
+        {
+            $allUsers = $loginRepository->findAll();
+            $arrayAllUsers = array();
+
+            foreach ($allUsers as $user){
+                array_push($arrayAllUsers, array(
+                    "id" => $user->getIduser(),
+                    "username"=>$user->getUsername(),
+                    "password"=>$user->getPassword(),
+                    "nom"=>$user->getNom(),
+                    "prenom"=>$user->getPrenom(),
+                    "email"=>$user->getEmail(),
+                    "idrole"=>$user->getIdrole(),
+                    "refuser"=>$user->getRefLogin()
+
+                ));
+            }
+
+            $response = new JsonResponse(array(
+                    "users" => $arrayAllUsers
+                )
+
+            );
+            return $response;
+        }
+        return new JsonResponse(array(
+            'Erreur' => "Il y'a une erreur dans la requête"
+        ));
+
+    }
+
+    /**
      * @Route("/API/getallclients", name="API-getallclients")
      * @return Response
      */
@@ -129,26 +180,42 @@ class APIgestionDevisController extends AbstractController
      */
     public function getAllContacts(ContactRepository $contactRepository, ClientRepository $clientRepository)
     {
+        $request = Request::createFromGlobals();
 
-        $allContacts = $contactRepository->findAll();
-        $arrayAllContacts = array();
-
-        foreach ($allContacts as $contact){
-            array_push($arrayAllContacts, array(
-                "refClient" => $clientRepository->find($contact->getIdclient())->getRefClient(),
-                "nom" => $contact->getNom(),
-                "prenom"=>$contact->getPrenom(),
-                "fonction"=>$contact->getFonction(),
-                "telephone"=>$contact->getTelephone(),
-                "mail"=>$contact->getMail(),
-                "refContact"=>$contact->getRefContact()
+        if ($request->request->get('validrequest') == null)
+        {
+            return new JsonResponse(array(
+                'Erreur' => "Les arguments en POST sont NULL",
             ));
         }
+        if ($request->request->get('validrequest') == "OK")
+        {
+            $allContacts = $contactRepository->findAll();
+            $arrayAllContacts = array();
 
-        $response = new JsonResponse(
-            $arrayAllContacts
-        );
-        return $response;
+            foreach ($allContacts as $contact){
+                array_push($arrayAllContacts, array(
+                    "refClient" => $clientRepository->find($contact->getIdclient())->getRefClient(),
+                    "nom" => $contact->getNom(),
+                    "prenom"=>$contact->getPrenom(),
+                    "fonction"=>$contact->getFonction(),
+                    "telephone"=>$contact->getTelephone(),
+                    "mail"=>$contact->getMail(),
+                    "refContact"=>$contact->getRefContact()
+                ));
+            }
+
+            $response = new JsonResponse(array(
+                "contacts"=>$arrayAllContacts
+            )
+
+            );
+            return $response;
+        }
+        return new JsonResponse(array(
+            'Erreur' => "Il y'a une erreur dans la requête"
+        ));
+
     }
 
     /**
@@ -158,25 +225,42 @@ class APIgestionDevisController extends AbstractController
     public function getAllProjets(ProjetRepository $projetRepository, ClientRepository $clientRepository)
     {
 
+        $request = Request::createFromGlobals();
 
-        $allProjets = $projetRepository->findAll();
-        $arrayAllProjets = array();
-
-        foreach ($allProjets as $projet){
-            $StringDate = $projet->getDatecreation()->format("d-m-Y");
-            array_push($arrayAllProjets, array(
-                "refClient" => $clientRepository->find($projet->getIdclient())->getRefClient(),
-                "refProjet" => $projet->getRefProjet(),
-                "nom" => $projet->getNom(),
-                "dateCreation"=>$StringDate,
-                "notes"=>$projet->getNotes(),
+        if ($request->request->get('validrequest') == null)
+        {
+            return new JsonResponse(array(
+                'Erreur' => "Les arguments en POST sont NULL",
             ));
         }
+        if ($request->request->get('validrequest') == "OK")
+        {
+            $allProjets = $projetRepository->findAll();
+            $arrayAllProjets = array();
 
-        $response = new JsonResponse(
-            $arrayAllProjets
-        );
-        return $response;
+            foreach ($allProjets as $projet){
+                $StringDate = $projet->getDatecreation()->format("d-m-Y");
+                array_push($arrayAllProjets, array(
+                    "refClient" => $clientRepository->find($projet->getIdclient())->getRefClient(),
+                    "refProjet" => $projet->getRefProjet(),
+                    "nom" => $projet->getNom(),
+                    "dateCreation"=>$StringDate,
+                    "notes"=>$projet->getNotes(),
+                ));
+            }
+
+            $response = new JsonResponse(array(
+                "projets"=> $arrayAllProjets
+            )
+
+            );
+            return $response;
+
+        }
+        return new JsonResponse(array(
+            'Erreur' => "Il y'a une erreur dans la requête"
+        ));
+
     }
 
     /**
@@ -186,33 +270,221 @@ class APIgestionDevisController extends AbstractController
     public function getAllChantiers(ChantierRepository $chantierRepository,ProjetRepository $projetRepository)
     {
 
+        $request = Request::createFromGlobals();
 
-        $allChantiers = $chantierRepository->findAll();
-        $arrayAllChantiers = array();
-
-        foreach ($allChantiers as $chantier){
-            $StringDateCreation = $chantier->getDatecreation()->format("d-m-Y");
-            $StringDateLancement = $chantier->getDateLancement()->format("d-m-Y");
-            array_push($arrayAllChantiers, array(
-                "idUser" => $chantier->getIduser(),
-                "refProjet" => $projetRepository->find($chantier->getIdprojet())->getRefProjet(),
-                "nom"=>$chantier->getNom(),
-                "notes"=>$chantier->getNotes(),
-                "refChantier"=>$chantier->getRefChantier(),
-                "adresse"=>$chantier->getAdresse(),
-                "ville"=>$chantier->getVille(),
-                "codePostal"=>$chantier->getCodepostal(),
-                "datecreation"=>$StringDateCreation,
-                "datelancement"=>$StringDateLancement
-
+        if ($request->request->get('validrequest') == null)
+        {
+            return new JsonResponse(array(
+                'Erreur' => "Les arguments en POST sont NULL",
             ));
         }
+        if ($request->request->get('validrequest') == "OK")
+        {
+            $allChantiers = $chantierRepository->findAll();
+            $arrayAllChantiers = array();
 
-        $response = new JsonResponse(
-            $arrayAllChantiers
-        );
-        return $response;
+            foreach ($allChantiers as $chantier){
+                $StringDateCreation = $chantier->getDatecreation()->format("d-m-Y");
+                $StringDateLancement = $chantier->getDateLancement()->format("d-m-Y");
+                array_push($arrayAllChantiers, array(
+                    "idUser" => $chantier->getIduser(),
+                    "refProjet" => $projetRepository->find($chantier->getIdprojet())->getRefProjet(),
+                    "nom"=>$chantier->getNom(),
+                    "notes"=>$chantier->getNotes(),
+                    "refChantier"=>$chantier->getRefChantier(),
+                    "adresse"=>$chantier->getAdresse(),
+                    "ville"=>$chantier->getVille(),
+                    "codePostal"=>$chantier->getCodepostal(),
+                    "datecreation"=>$StringDateCreation,
+                    "datelancement"=>$StringDateLancement
+
+                ));
+            }
+
+            $response = new JsonResponse(array(
+                "chantiers"=>$arrayAllChantiers
+            )
+
+            );
+            return $response;
+
+        }
+        return new JsonResponse(array(
+            'Erreur' => "Il y'a une erreur dans la requête"
+        ));
+        /**/
+
+
     }
+
+    /**
+     * @Route("/API/clientinsertion", name="API-clientinsertion")
+     * @return Response
+     */
+    public function clientInsertion(ClientRepository $clientRepository)
+    {
+
+        $request = Request::createFromGlobals();
+
+        if ($request->request->get('create') == null)
+        {
+            return new JsonResponse(array(
+                'Erreur' => "Les arguments en POST sont NULL",
+            ));
+        }
+        if ($request->request->get('create') == "create")
+        {
+            $client = new Client();
+            $client->setNom($request->request->get('nom'));
+            $client->setAdresse($request->request->get('adresse'));
+
+            if ($request->request->get('ispro') == "true"){
+                $client->setEstprofessionnel(true);
+            }else{
+                $client->setEstprofessionnel(false);
+            }
+
+            $client->setSecteuractivite($request->request->get('secteur'));
+            $client->setVille($request->request->get('ville'));
+            $cp = intval($request->request->get('codepostal'));
+            $client->setCodepostal($cp);
+            $client->setDescription($request->request->get('description'));
+            $client->setRefClient($request->request->get('refclient'));
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($client);
+            $entityManager->flush();
+
+            return new JsonResponse(array(
+                'Valide' => "Le client est ajouté sur la base en ligne"
+            ));
+
+        }
+        if ($request->request->get('create') == "update")
+        {
+            $client = $clientRepository->findOneBy(['refClient' => $request->request->get('refclient')]);
+
+            $client->setNom($request->request->get('nom'));
+            $client->setAdresse($request->request->get('adresse'));
+            if ($request->request->get('ispro') == "true"){
+                $client->setEstprofessionnel(true);
+            }else{
+                $client->setEstprofessionnel(false);
+            }
+            $client->setSecteuractivite($request->request->get('secteur'));
+            $client->setVille($request->request->get('ville'));
+            $cp = intval($request->request->get('codepostal'));
+            $client->setCodepostal($cp);
+            $client->setDescription($request->request->get('description'));
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($client);
+            $entityManager->flush();
+
+            return new JsonResponse(array(
+                'Valide' => "Le client est mis à jour sur la base en ligne"
+            ));
+
+
+        }
+        return new JsonResponse(array(
+            'Erreur' => "Il y'a une erreur dans la requête"
+        ));
+
+    }
+
+    /**
+     * @Route("/API/clientsuppression", name="API-clientsuppression")
+     * @return Response
+     */
+    public function clientSuppression(ClientRepository $clientRepository)
+    {
+
+        $request = Request::createFromGlobals();
+
+        if ($request->request->get('refclient') == null)
+        {
+            return new JsonResponse(array(
+                'Erreur' => "Les arguments en POST sont NULL",
+            ));
+        }else{
+            $client = $clientRepository->findOneBy(['refClient' => $request->request->get('refclient')]);
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->remove($client);
+            $entityManager->flush();
+
+            return new JsonResponse(array(
+                'Valide' => "Le client a été supprimé en ligne"
+            ));
+
+        }
+
+    }
+
+    /**
+     * @Route("/API/contactinsertion", name="API-contactinsertion")
+     * @return Response
+     */
+    public function contactInsertion(ClientRepository $clientRepository)
+    {
+
+        $request = Request::createFromGlobals();
+
+
+            $contact = new Contact();
+            $contact->setNom($request->request->get('nom'));
+            $contact->setPrenom($request->request->get('prenom'));
+            $contact->setFonction($request->request->get('fonction'));
+            $contact->setTelephone($request->request->get('telephone'));
+            $contact->setMail($request->request->get('mail'));
+
+            $client = $clientRepository->findOneBy(['refClient' => $request->request->get('refclient')]);
+            $contact->setIdclient($client->getIdclient());
+            $contact->setRefContact($request->request->get('refcontact'));
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($contact);
+            $entityManager->flush();
+
+            return new JsonResponse(array(
+                'Valide' => "Le contact est ajouté sur la base en ligne"
+            ));
+
+    }
+
+    /**
+     * @Route("/API/contactsuppression", name="API-contactsuppression")
+     * @return Response
+     */
+    public function contactSuppression(ContactRepository $contactRepository)
+    {
+
+        $request = Request::createFromGlobals();
+
+        if ($request->request->get('refcontact') == null)
+        {
+            return new JsonResponse(array(
+                'Erreur' => "Les arguments en POST sont NULL",
+            ));
+        }else{
+            $contact = $contactRepository->findOneBy(['refContact' => $request->request->get('refcontact')]);
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->remove($contact);
+            $entityManager->flush();
+
+            return new JsonResponse(array(
+                'Valide' => "Le contact a été supprimé en ligne"
+            ));
+
+        }
+
+    }
+
 }
 
 
