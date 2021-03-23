@@ -62,7 +62,22 @@
                             <h5>Liste modules RDC</h5>
                             <div class="liste_modules">
                                 {% for module in Modules %}
-                                <div class="module" onclick="">
+                                <div class="module"
+
+                                    {% if module['Module'].unite == "unite" %}
+                                    onclick='ouvrirOptionModuleUnite("{{ module['Module'].nom }}",
+                                            "{{ module['ModuleDansPlan'].NomDansPlan }}",{{ module['ModuleDansPlan'].posDebX }},{{ module['ModuleDansPlan'].posDebY }},{{ module['ModuleDansPlan'].Rotation }},
+                                            "{{ module['ModuleDansPlan'].Notes }}",
+                                    {{ module['ModuleDansPlan'].VisibleDansPlan }})'
+
+                                    {% else %}
+                                        onclick='ouvrirOptionModule("{{ module['Module'].nom }}",
+                                                "{{ module['ModuleDansPlan'].NomDansPlan }}",{{ module['ModuleDansPlan'].posDebX }},{{ module['ModuleDansPlan'].posDebY }},{{ module['ModuleDansPlan'].posFinX }},{{ module['ModuleDansPlan'].posFinY }},
+                                                "{{ module['ModuleDansPlan'].Notes }}",
+                                        {{ module['ModuleDansPlan'].VisibleDansPlan }}
+                                                )'
+                                    {% endif %}>
+
                                     <div>
                                         <p>{{ module['ModuleDansPlan'].NomDansPlan }}</p>
                                         <p>Positions : ({{ module['ModuleDansPlan'].posDebX }},{{ module['ModuleDansPlan'].posDebY }}), ({{ module['ModuleDansPlan'].posFinX }},{{ module['ModuleDansPlan'].posFinY }})</p>
@@ -170,16 +185,13 @@
 
                 </div>
 
-                <div id="ajouter_module" class="cacher pos">
-                    <h5> <i class="fas fa-arrow-circle-left" onclick="$('#ajouter_module').hide(300)"></i>Ajouter un module</h5>
-                </div>
 
                 <div id="options_module_unite" class="cacher pos">
-                    <h5>Options du module</h5>
+                    <h5><i class="fas fa-arrow-circle-left" onclick="$('#options_module_unite').hide(300)"></i><i id="option_module_unite_titre"></i></h5>
                     <form method="post" action="#">
                         <div class="flex fullwidth marges">
-                            <label for="nom_affiche">Nom affiché :</label>
-                            <input type="text" id="nom_affiche" required>
+                            <label for="nom_affiche_unite">Nom affiché :</label>
+                            <input type="text" id="nom_affiche_unite" required>
                         </div>
 
                         <div class="flex fullwidth marges">
@@ -215,7 +227,7 @@
 
 
                 <div id="options_module" class="cacher pos">
-                    <h5>Options du module</h5>
+                    <h5><i class="fas fa-arrow-circle-left" onclick="$('#options_module').hide(300)"></i><i id="option_module_titre"></i></h5>
                     <form>
                         <div class="flex fullwidth marges">
                             <label for="nom_affiche">Nom affiché :</label>
@@ -369,15 +381,44 @@
             $('#ajouter_module').show(300).css("z-index",compteurZIndex);
         }
 
-        function ouvrirOptionModule(){
+        function ouvrirOptionModule(nom_module,
+                                    nom_affiche,
+                                    position_depX,
+                                    position_depY,
+                                    position_finX,
+                                    position_finY,
+                                    notes,
+                                    visible_plan){
+            $('#nom_affiche').val(nom_affiche);
+            $('#option_module_titre').text(nom_module);
+            $('#position_departX').val(position_depX);
+            $('#position_departY').val(position_depY);
+            $('#position_finX').val(position_finX);
+            $('#position_finY').val(position_finY);
+            $('#notes_unite').val(notes);
+            $('#visible_plan_unite').prop("checked",visible_plan);
             compteurZIndex++;
             $('#options_module').show(300).css("z-index",compteurZIndex);
         }
 
-        function ouvrirOptionModuleUnite(){
+        function ouvrirOptionModuleUnite(nom_module,
+                                    nom_affiche,
+                                    position_X,
+                                    position_Y,
+                                    rotation,
+                                    notes,
+                                    visible_plan){
+            $('#nom_affiche_unite').val(nom_affiche);
+            $('#option_module_unite_titre').text(nom_module);
+            $('#positionXmodule').val(position_X);
+            $('#positionYmodule').val(position_Y);
+            $('#rotation').val(rotation);
+            $('#notes').val(notes);
+            $('#visible_plan').prop("checked",visible_plan);
             compteurZIndex++;
             $('#options_module_unite').show(300).css("z-index",compteurZIndex);
         }
+
 
 
     </script>
