@@ -83,6 +83,10 @@ p{
     width: auto;
     padding: calc(0.5vw + 0.5vh);
     margin: 5px;
+}
+
+#action_buttons button {
+    box-shadow: inherit;
 
 }
 
@@ -146,3 +150,10 @@ p{
 #partie_modules{
 
 }
+ .invisible{
+     display: none;
+ }
+
+ .pos{
+     position: absolute;
+ }
