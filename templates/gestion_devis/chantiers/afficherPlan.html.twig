@@ -14,7 +14,7 @@
 
     <div id="barre_actions_plan">
         <ul id="action_buttons">
-            <li><button class="btn_vert">Ajouter un module<div class="fas fa-plus"></div></button></li>
+            <li><button class="btn_vert" onclick="ouvrirAjouterModule()">Ajouter un module<div class="fas fa-plus"></div></button></li>
             <li><button class="btn_vert">Options du chantier</button></li>
             <li><button class="btn_vert">Options du plan</button></li>
         </ul>
@@ -40,6 +40,9 @@
         <div id="div_creation_chantier" class="flex flex4 flex_sa">
 
             <div id="partie_modules" class="flex flex2 flex_sa flex_col">
+                <div id="ajouter_module" class="cacher pos">
+                    <h5> <i class="fas fa-arrow-circle-left" onclick="$('#ajouter_module').hide(300)"></i>Ajouter un module</h5>
+                </div>
 
                 <div id="liste_modules" class="pos">
                     <!-- Nav tabs -->
@@ -71,19 +74,20 @@
                     </div>
                 </div>
 
-                <div id="options_chantier" class="invisible pos">
+                <div id="options_chantier" class="cacher pos">
                     <h5>Options du chantier</h5>
 
                 </div>
 
-                <div id="options_plan" class="invisible pos">
+                <div id="options_plan" class="cacher pos">
                     <h5>Options du plan</h5>
 
                 </div>
 
-                <div id="ajouter_module" class="invisible pos"></div>
 
-                <div id="creer_devis" class="invisible pos"></div>
+
+
+                <div id="creer_devis" class="cacher pos"></div>
 
 
             </div>
@@ -91,5 +95,13 @@
             <div id="partie_affichage_plan" class="flex flex5 flex_aic flex_col">plan</div>
         </div>
 
-
+    <script>
+        function hideAll(){
+            $('.cacher').hide(0);
+        }
+        hideAll();
+        function ouvrirAjouterModule(){
+            $('#ajouter_module').show(300);
+        }
+    </script>
 {% endblock %}
