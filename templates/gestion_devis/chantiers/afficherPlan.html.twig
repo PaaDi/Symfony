@@ -16,15 +16,15 @@
     <div id="barre_actions_plan">
         <ul id="action_buttons">
             <li><button class="btn_vert" onclick="ouvrirAjouterModule()">Ajouter un module<div class="fas fa-plus"></div></button></li>
-            <li><button class="btn_vert">Options du chantier</button></li>
-            <li><button class="btn_vert">Options du plan</button></li>
+            <li><button class="btn_vert" onclick="ouvrirOptionsChantier()">Options du chantier</button></li>
+            <li><button class="btn_vert" onclick="ouvrirOptionsPlan()">Options du plan</button></li>
         </ul>
         <div id="partie_devis">
             <div id="button_devis" data-toggle="collapse" href="#liste_devis">Devis</div>
             <div id="liste_devis" class="flex flex1 flex_col flex_sa collapse">
                 <div><a href="{{ path('creerNouveauDevis') }}">Devis 1</a></div>
                 <div><a href="{{ path('creerNouveauDevis') }}">Devis 2</a></div>
-                <div><a href="{{ path('creerNouveauDevis') }}">Créer un devis</a></div>
+                <div><button class="btn_vert" onclick="ouvrirCreerDevis()">Créer un devis</button></div>
             </div>
         </div>
     </div>
@@ -110,20 +110,169 @@
                     </div>
                 </div>
 
-                <div id="options_chantier" class="cacher pos">
-                    <h5>Options du chantier</h5>
+                <div id="options_chantier" class="cacher pos flex flex4 flex_col">
+                    <h5><i class="fas fa-arrow-circle-left" onclick="fermerOptionsChantier()"></i>Options du chantier</h5>
+                    <form action="#" method="post">
+                        <div class="flex fullwidth marges">
+                            <label for="nom_chantier" >Nom du chantier :</label>
+                            <input type="text" id="nom_chantier" required>
+                        </div>
+                        <div class="flex fullwidth marges">
+                            <label for="date_crea_chantier">Date de création :</label>
+                            <input type="date" id="date_crea_chantier" required>
+                        </div>
+                        <div class="flex fullwidth marges">
+                            <label for="date_lancement">Date de lancement :</label>
+                             <input type="date" id="date_lancement"  required>
+                        </div>
+                        <div class="flex fullwidth marges">
+                            <label for="adresse">Adresse :</label>
+                            <input type="text" id="adresse"  required>
+                        </div>
+                        <div class="flex fullwidth marges">
+                            <label for="ville">Ville :</label>
+                            <input type="text" id="ville" required>
+                        </div>
+                        <div class="flex fullwidth marges">
+                            <label for="code_postal" >Code Postal :</label>
+                            <input type="text" id="code_postal" required>
+                        </div>
+                        <div class="flex fullwidth marges">
+                            <div id="notes" >
+                                <label for="note">NOTES : </label>
+                                <!--<input id="note" name="note" type="textarea">-->
+                                <textarea name="note" id="editor" ></textarea>
+                            </div>
+                        </div>
+
+                        <input type="submit" value="Valider" id="valid_options_chantier">
+                    </form>
+                </div>
+
+                <div id="options_plan" class="cacher pos flex flex4 flex_col">
+                    <h5><i class="fas fa-arrow-circle-left" onclick="$('#options_plan').hide(300)"></i>Options du plan</h5>
+                    <form action="#" method="post">
+                        <div class="flex fullwidth marges">
+                            <label for="tailleX">Taille X :</label>
+                            <input type="number" id="tailleX" required>
+                        </div>
+                        <div class="flex fullwidth marges">
+                            <label for="tailleY">Taille Y :</label>
+                            <input type="number" id="tailleY" required>
+                        </div>
+                        <div class="flex fullwidth marges">
+                            <label for="nbre_etage">Nombre d'étage :</label>
+                            <input type="number" id="nbre_etage" required>
+                        </div>
+                        <input type="submit" value="Valider" id="valid_options_plan">
+
+                    </form>
 
                 </div>
 
-                <div id="options_plan" class="cacher pos">
-                    <h5>Options du plan</h5>
+                <div id="ajouter_module" class="cacher pos">
+                    <h5> <i class="fas fa-arrow-circle-left" onclick="$('#ajouter_module').hide(300)"></i>Ajouter un module</h5>
+                </div>
+
+                <div id="options_module_unite" class="cacher pos">
+                    <h5>Options du module</h5>
+                    <form method="post" action="#">
+                        <div class="flex fullwidth marges">
+                            <label for="nom_affiche">Nom affiché :</label>
+                            <input type="text" id="nom_affiche" required>
+                        </div>
+
+                        <div class="flex fullwidth marges">
+                            <label for="positionXmodule">Position X:</label>
+                            <input type="number" id="positionXmodule" required>
+                        </div>
+
+                        <div class="flex fullwidth marges">
+                            <label for="positionYmodule">Position Y:</label>
+                            <input type="number" id="positionYmodule" required>
+                        </div>
+
+                        <div class="flex fullwidth marges">
+                            <label for="rotation">Rotation :</label>
+                            <input type="number" id="rotation" required>
+                        </div>
+
+                        <div class="flex fullwidth marges">
+                            <label for="notes">Notes :</label>
+                            <input type="text" id="notes" required>
+                        </div>
+
+                        <div class="flex fullwidth marges">
+                            <label for="visible_plan">Visible sur le plan :</label>
+                            <input type="checkbox" id="visible_plan" required>
+                        </div>
+
+                        <input type="submit" id="delete_options_module" value="Supprimer">
+                        <input type="submit" id="valid_options_module" value="Valider">
+                    </form>
 
                 </div>
 
 
+                <div id="options_module" class="cacher pos">
+                    <h5>Options du module</h5>
+                    <form>
+                        <div class="flex fullwidth marges">
+                            <label for="nom_affiche">Nom affiché :</label>
+                            <input type="text" id="nom_affiche" required>
+                        </div>
 
+                        <div class="flex fullwidth marges">
+                            <label for="position_departX">Position départ X :</label>
+                            <input type="number" id="position_departX" required>
+                        </div>
 
-                <div id="creer_devis" class="cacher pos"></div>
+                        <div class="flex fullwidth marges">
+                            <label for="position_departY">Position départ Y :</label>
+                            <input type="number" id="position_departY" required>
+                        </div>
+
+                        <div class="flex fullwidth marges">
+                            <label for="position_finX">Position fin X :</label>
+                            <input type="number" id="position_finX" required>
+                        </div>
+
+                        <div class="flex fullwidth marges">
+                            <label for="position_finY">Position fin Y :</label>
+                            <input type="number" id="position_finY" required>
+                        </div>
+
+                        <div class="flex fullwidth marges">
+                            <label for="notes_unite">Notes :</label>
+                            <input type="text" id="notes_unite" required>
+                        </div>
+
+                        <div class="flex fullwidth marges">
+                            <label for="visible_plan_unite">Visible sur le plan :</label>
+                            <input type="checkbox" id="visible_plan_unite" required>
+                        </div>
+
+                        <input type="submit" id="delete_options_module_unite" value="Supprimer">
+                        <input type="submit" id="valid_options_module_unite" value="Valider">
+
+                    </form>
+
+                </div>
+
+                <div id="creer_devis" class="cacher pos">
+                    <h5> <i class="fas fa-arrow-circle-left" onclick="$('#creer_devis').hide(300)"></i>Créer un devis</h5>
+                    <form action="#" method="post">
+                        <div class="flex fullwidth marges">
+                            <label for="nom_devis">Nom du devis :</label>
+                            <input type="text" id="nom_devis">
+                        </div>
+                        <div class="flex fullwidth marges">
+                            <label for="date_creation_devis">Date de création :</label>
+                            <input type="date" id="date_creation_devis">
+                        </div>
+                        <input type="submit" value="Valider">
+                    </form>
+                </div>
 
 
                 <div id="ajouter_module" class="cacher pos">
@@ -183,12 +332,67 @@
         </div>
 
     <script>
+        let compteurZIndex = 10;
+
         function hideAll(){
             $('.cacher').hide(0);
         }
+
         hideAll();
-        function ouvrirAjouterModule(){
-            $('#ajouter_module').show(300);
+
+        function ouvrirOptionsChantier(){
+            compteurZIndex++;
+            $('#partie_modules').removeClass("flex2").addClass("flex5");
+            $('#partie_affichage_plan').removeClass("flex5").addClass("flex2");
+            $('#options_chantier').show(300).css("z-index",compteurZIndex);
         }
+
+        function fermerOptionsChantier(){
+            $('#partie_modules').removeClass("flex5").addClass("flex2");
+            $('#partie_affichage_plan').removeClass("flex2").addClass("flex5");
+            $('#options_chantier').hide(300).css("z-index",compteurZIndex);
+        }
+
+
+        function ouvrirOptionsPlan(){
+            compteurZIndex++;
+            $('#options_plan').show(300).css("z-index",compteurZIndex);
+        }
+
+        function ouvrirCreerDevis(){
+            compteurZIndex++;
+            $('#creer_devis').show(300).css("z-index",compteurZIndex);
+        }
+
+        function ouvrirAjouterModule(){
+            compteurZIndex++;
+            $('#ajouter_module').show(300).css("z-index",compteurZIndex);
+        }
+
+        function ouvrirOptionModule(){
+            compteurZIndex++;
+            $('#options_module').show(300).css("z-index",compteurZIndex);
+        }
+
+        function ouvrirOptionModuleUnite(){
+            compteurZIndex++;
+            $('#options_module_unite').show(300).css("z-index",compteurZIndex);
+        }
+
+
     </script>
+
+
+        <script>
+            $(function(){
+                ClassicEditor.create( document.querySelector( '#editor' ) ).catch( error => {
+                    console.error( error );
+                });
+            });
+
+        </script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/classic/ckeditor.js"></script>
+
+
+
 {% endblock %}
