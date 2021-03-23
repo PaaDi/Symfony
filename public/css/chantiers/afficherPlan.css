@@ -161,3 +161,7 @@ p{
      background-color: white;
      min-height: calc(15vw + 15vh);
  }
+
+ #options_chantier{
+     padding: calc(2vw + 2vh);
+ }
