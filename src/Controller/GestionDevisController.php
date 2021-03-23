@@ -336,7 +336,6 @@ class GestionDevisController extends AbstractController
         }
 
         return $this->render('gestion_devis/clients/creerNouveauContact.html.twig', [
-            'controller_name' => 'GestionDevisController',
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
         ]);
 
@@ -363,8 +362,6 @@ class GestionDevisController extends AbstractController
 
         return $this->render('gestion_devis/chantiers/afficherPlan.html.twig', [
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
-            'controller_name' => 'GestionDevisController',
-            'id_page'=> 'plan',
             'Plan'=> $plan,
             'Chantier'=> $chantierRepository->find($idChantier),
             'Modules'=> $modules,
