@@ -4,11 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Chantier;
 use App\Entity\Contact;
+use App\Entity\Modulesdansplan;
 use App\Entity\Projet;
 use App\Repository\ChantierRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ContactRepository;
 use App\Repository\LoginRepository;
+use App\Repository\ModuledansplanRepository;
+use App\Repository\ModuleRepository;
+use App\Repository\PlanRepository;
 use App\Repository\ProjetRepository;
 use http\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -342,12 +346,28 @@ class GestionDevisController extends AbstractController
      * @Route("/gestiondevis/plan/afficher/{idChantier}", name="afficherPlan")
      */
 
-    public function afficherPlan(int $idChantier)
+    public function afficherPlan(int $idChantier,
+                                 PlanRepository $planRepository,
+                                 ChantierRepository $chantierRepository,
+                                 ModuleRepository $moduleRepository,
+                                 ModuledansplanRepository $moduledansplanRepository)
     {
+        $plan = $planRepository->findOneBy(['idchantier' => $idChantier]);
+        $modules = array();
+        foreach ($moduledansplanRepository->findBy(['idplan' => $plan->getIdplan()]) as $moduledansplan) {
+            array_push($modules, [
+                'Module' => $moduleRepository->find($moduledansplan->getIdmodule()),
+                'ModuleDansPlan' => $moduledansplan,
+            ]);
+        }
+
         return $this->render('gestion_devis/chantiers/afficherPlan.html.twig', [
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
             'controller_name' => 'GestionDevisController',
-            'id_page'=> 'plan'
+            'id_page'=> 'plan',
+            'Plan'=> $plan,
+            'Chantier'=> $chantierRepository->find($idChantier),
+            'Modules'=> $modules,
         ]);
 
     }
@@ -393,9 +413,58 @@ class GestionDevisController extends AbstractController
 //        print_r($clientRepository->findBy(['nom' => $request->query->get('search')], null, 5)); die;
 
         return $this->render('gestion_devis/clients/search_client_ajax.html.twig', [
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
             'clients' => $clientRepository->findBySearch($request->query->get('search'))
         ]);
+
+    }
+
+    /**
+     * @Route("/gestiondevis/modules/ajax/search", name="ajax_search_modules")
+     */
+
+    public function search_modules(ModuleRepository $moduleRepository)
+    {
+        $request = Request::createFromGlobals();
+
+//        print_r($request->query->get('search'));
+//        print_r($clientRepository->findBy(['nom' => $request->query->get('search')], null, 5)); die;
+
+        return $this->render('gestion_devis/chantiers/search_modules_ajax.html.twig', [
+            'modules' => $moduleRepository->findBySearch($request->query->get('search'))
+        ]);
+
+    }
+
+    /* -- OPERATIONS DU PLAN -- */
+
+    /**
+     * @Route("/gestiondevis/plan/addmodule/", name="plan_add_module")
+     */
+
+    public function plan_add_module(ModuleRepository $moduleRepository)
+    {
+        $request = Request::createFromGlobals();
+
+//        print_r($request->query->all());die;
+        $module = $moduleRepository->find($request->query->get('idmodule'));
+
+        $moduledansplan = new Modulesdansplan();
+        $moduledansplan->setIdplan($request->query->get('idplan'));
+        $moduledansplan->setIdmodule($request->query->get('idmodule'));
+        $moduledansplan->setNomDansPlan($module->getNom());
+        $moduledansplan->setNotes("");
+        $moduledansplan->setVisibleDansPlan(true);
+        $moduledansplan->setPosDebX(0);
+        $moduledansplan->setPosDebY(0);
+        $moduledansplan->setPosFinX(0);
+        $moduledansplan->setPosFinY(0);
+        $moduledansplan->setRotation(0);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($moduledansplan);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('afficherPlan', ['idChantier' => $request->query->get('idchantier')]);
 
     }
 

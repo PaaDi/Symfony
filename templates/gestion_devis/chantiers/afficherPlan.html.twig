@@ -40,9 +40,6 @@
         <div id="div_creation_chantier" class="flex flex4 flex_sa">
 
             <div id="partie_modules" class="flex flex2 flex_sa flex_col">
-                <div id="ajouter_module" class="cacher pos">
-                    <h5> <i class="fas fa-arrow-circle-left" onclick="$('#ajouter_module').hide(300)"></i>Ajouter un module</h5>
-                </div>
 
                 <div id="liste_modules" class="pos">
                     <!-- Nav tabs -->
@@ -62,7 +59,45 @@
                     <div class="tab-content">
                         <div class="tab-pane container active" id="rdc">
                             <h5>Liste modules RDC</h5>
-                            <div class="liste_modules"></div>
+                            <div class="liste_modules">
+                                {% for module in Modules %}
+                                <div class="module" onclick="">
+                                    <div>
+                                        <p>{{ module['ModuleDansPlan'].NomDansPlan }}</p>
+                                        <p>Positions : ({{ module['ModuleDansPlan'].posDebX }},{{ module['ModuleDansPlan'].posDebY }}), ({{ module['ModuleDansPlan'].posFinX }},{{ module['ModuleDansPlan'].posFinY }})</p>
+                                    </div>
+                                    <i class="fas fa-caret-right"></i>
+                                </div>
+                                {% endfor %}
+                                <style>
+                                    .module{
+                                        background-color: #0C8148;
+                                        padding: 0.4rem;
+                                        border-radius: 5px;
+                                        color: white;
+                                        width: 100%;
+                                        margin-top: 0.5rem;
+                                        display: flex;
+                                        flex-flow: row wrap;
+                                        justify-content: space-between;
+                                        align-items: center;
+                                        cursor: pointer;
+                                    }
+                                    .module:hover, .module:focus{
+                                        background-color: #57b88a;
+                                    }
+                                    .module p{
+                                        font-size: 1rem;
+                                    }
+                                    .module i{
+                                        font-size: 2rem;
+                                    }
+                                    .module p:last-of-type{
+                                        font-style: italic;
+                                        font-size: 0.8rem;
+                                    }
+                                </style>
+                            </div>
                         </div>
                         <div class="tab-pane container fade" id="etage1">
                             <h5>Liste modules 1er étage</h5>
@@ -88,6 +123,57 @@
 
 
                 <div id="creer_devis" class="cacher pos"></div>
+
+
+                <div id="ajouter_module" class="cacher pos">
+                    <h5> <i class="fas fa-arrow-circle-left" onclick="$('#ajouter_module').hide(300)"></i> Ajouter un module</h5>
+                    <input id="recherche_module_input" type="text" placeholder="Rechercher un module..." oninput="ajax_search_module()">
+                    <div id="recherche_modules_ajax">
+                        Veuillez commencer une recherche.
+                    </div>
+                    <script>
+                        function ajax_search_module()
+                        {
+                            $('#recherche_modules_ajax').load("{{ path('ajax_search_modules') }}?search=" + $('#recherche_module_input').val());
+                        }
+                        function ajout_module(idmodule)
+                        {
+                            window.location.href = '{{ path('plan_add_module') }}?idplan={{ Plan.idplan }}&idchantier={{ Chantier.idchantier }}&idmodule=' + idmodule;
+                        }
+                    </script>
+                    <style>
+                        #ajouter_module input{
+                            width: 100%;
+                        }
+                        .recherche_module{
+                            background-color: #0C8148;
+                            padding: 0.4rem;
+                            border-radius: 5px;
+                            color: white;
+                            width: 100%;
+                            margin-top: 1rem;
+                            display: flex;
+                            flex-flow: row wrap;
+                            justify-content: space-between;
+                            align-items: center;
+                            cursor: pointer;
+                        }
+                        .recherche_module:hover, .recherche_module:focus{
+                            background-color: #57b88a;
+                        }
+                        .recherche_module p{
+                            font-size: 1rem;
+                        }
+                        .recherche_module i{
+                            font-size: 2rem;
+                        }
+                        .recherche_module p:last-of-type{
+                            text-align: right;
+                            font-style: italic;
+                            font-size: 0.8rem;
+                        }
+                    </style>
+                </div>
 
 
             </div>

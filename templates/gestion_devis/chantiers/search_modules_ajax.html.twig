@@ -1,0 +1,11 @@
+{% if modules|length > 0 %}
+    {% for module in modules %}
+        <div class="recherche_module" onclick="ajout_module({{ module.idmodule }})">
+            <p>{{ module.nom }}</p>
+            <p>{{ module.categorie }}</p>
+            <i class="fas fa-caret-right"></i>
+        </div>
+    {% endfor %}
+{% else %}
+<p>Pas de modules trouvés...</p>
+{% endif %}

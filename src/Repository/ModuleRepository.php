@@ -22,19 +22,18 @@ class ModuleRepository extends ServiceEntityRepository
     // /**
     //  * @return Module[] Returns an array of Module objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findBySearch($search)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.nom LIKE :search')
+            ->setParameter('search', "%".$search."%")
+//            ->orderBy('c.id', 'ASC')
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Module
