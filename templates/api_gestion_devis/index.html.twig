@@ -3,11 +3,9 @@
 {% block title %}Hello APIgestionDevisController!{% endblock %}
 
 {% block body %}
-    <form action="{{ path('API-login') }}">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username"><br>
-        <label for="password">Password:</label><br>
-        <input type="text" id="password" name="password">
+    <form action="{{ path('API-getallchantiers') }}">
+        <label for="validrequest">test:</label><br>
+        <input type="text" id="validrequest" name="validrequest"><br>
         <input type="submit" value="Connexion" formmethod="post">
     </form>
 {% endblock %}
