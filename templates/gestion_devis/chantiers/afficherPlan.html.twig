@@ -14,9 +14,9 @@
 
     <div id="barre_actions_plan">
         <ul id="action_buttons">
-            <li>Ajouter un module<div class="fas fa-plus"></div></li>
-            <li>Options du chantier</li>
-            <li>Options du plan</li>
+            <li><button class="btn_vert">Ajouter un module<div class="fas fa-plus"></div></button></li>
+            <li><button class="btn_vert">Options du chantier</button></li>
+            <li><button class="btn_vert">Options du plan</button></li>
         </ul>
         <div id="partie_devis">
             <div id="button_devis" data-toggle="collapse" href="#liste_devis">Devis</div>
@@ -41,36 +41,49 @@
 
             <div id="partie_modules" class="flex flex2 flex_sa flex_col">
 
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#rdc">RDC</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#etage1">Etage 1</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#plus">+</a>
-                    </li>
-                </ul>
+                <div id="liste_modules" class="pos">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#rdc">RDC</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#etage1">Etage 1</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#plus">+</a>
+                        </li>
+                    </ul>
 
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div class="tab-pane container active" id="rdc">
-                        <h5>Liste modules RDC</h5>
-                        <div class="liste_modules"></div>
-                    </div>
-                    <div class="tab-pane container fade" id="etage1">
-                        <h5>Liste modules 1er étage</h5>
-                        <div class="liste_modules"></div>
-                    </div>
-                    <div class="tab-pane container fade" id="plus">
-                        <h5>Ajouter un étage</h5>
-                        <div class="liste_modules"></div>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane container active" id="rdc">
+                            <h5>Liste modules RDC</h5>
+                            <div class="liste_modules"></div>
+                        </div>
+                        <div class="tab-pane container fade" id="etage1">
+                            <h5>Liste modules 1er étage</h5>
+                            <div class="liste_modules"></div>
+                        </div>
+                        <div class="tab-pane container fade" id="plus">
+                            <h5>Ajouter un étage</h5>
+                        </div>
                     </div>
                 </div>
 
+                <div id="options_chantier" class="invisible pos">
+                    <h5>Options du chantier</h5>
 
+                </div>
+
+                <div id="options_plan" class="invisible pos">
+                    <h5>Options du plan</h5>
+
+                </div>
+
+                <div id="ajouter_module" class="invisible pos"></div>
+
+                <div id="creer_devis" class="invisible pos"></div>
 
 
             </div>
