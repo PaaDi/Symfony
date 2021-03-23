@@ -148,12 +148,16 @@ p{
     background-color: #EEEEEE;
 }
 #partie_modules{
+    position:relative;
 
 }
- .invisible{
-     display: none;
+ .cacher{
+
  }
 
  .pos{
      position: absolute;
+     width:100%;
+     background-color: white;
+     min-height: calc(15vw + 15vh);
  }
