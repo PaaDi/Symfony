@@ -35,40 +35,54 @@ class Modulesdansplan
      */
     private $idmodule;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Quantite", type="integer", nullable=false)
-     */
-    private $quantite;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="PosX", type="float", precision=10, scale=0, nullable=false)
+     * @ORM\Column(name="PosDebX", type="float", precision=10, scale=0, nullable=false)
      */
-    private $posx;
+    private $posDebX;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="PosY", type="float", precision=10, scale=0, nullable=false)
+     * @ORM\Column(name="PosDebY", type="float", precision=10, scale=0, nullable=false)
      */
-    private $posy;
+    private $posDebY;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="EpaisseurX", type="float", precision=10, scale=0, nullable=false)
+     * @ORM\Column(name="PosFinX", type="float", precision=10, scale=0, nullable=false)
      */
-    private $epaisseurx;
+    private $posFinX;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="EpaisseurY", type="float", precision=10, scale=0, nullable=false)
+     * @ORM\Column(name="PosFinY", type="float", precision=10, scale=0, nullable=false)
      */
-    private $epaisseury;
+    private $posFinY;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Notes;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $NomDansPlan;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $Rotation;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $VisibleDansPlan;
 
     public function getIdmodulesdansplan(): ?int
     {
@@ -99,62 +113,114 @@ class Modulesdansplan
         return $this;
     }
 
-    public function getQuantite(): ?int
+    /**
+     * @return float
+     */
+    public function getPosDebX(): float
     {
-        return $this->quantite;
+        return $this->posDebX;
     }
 
-    public function setQuantite(int $quantite): self
+    /**
+     * @param float $posDebX
+     */
+    public function setPosDebX(float $posDebX): void
     {
-        $this->quantite = $quantite;
+        $this->posDebX = $posDebX;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPosDebY(): float
+    {
+        return $this->posDebY;
+    }
+
+    /**
+     * @param float $posDebY
+     */
+    public function setPosDebY(float $posDebY): void
+    {
+        $this->posDebY = $posDebY;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPosFinX(): float
+    {
+        return $this->posFinX;
+    }
+
+    /**
+     * @param float $posFinX
+     */
+    public function setPosFinX(float $posFinX): void
+    {
+        $this->posFinX = $posFinX;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPosFinY(): float
+    {
+        return $this->posFinY;
+    }
+
+    /**
+     * @param float $posFinY
+     */
+    public function setPosFinY(float $posFinY): void
+    {
+        $this->posFinY = $posFinY;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->Notes;
+    }
+
+    public function setNotes(?string $Notes): self
+    {
+        $this->Notes = $Notes;
 
         return $this;
     }
 
-    public function getPosx(): ?float
+    public function getNomDansPlan(): ?string
     {
-        return $this->posx;
+        return $this->NomDansPlan;
     }
 
-    public function setPosx(float $posx): self
+    public function setNomDansPlan(string $NomDansPlan): self
     {
-        $this->posx = $posx;
+        $this->NomDansPlan = $NomDansPlan;
 
         return $this;
     }
 
-    public function getPosy(): ?float
+    public function getRotation(): ?float
     {
-        return $this->posy;
+        return $this->Rotation;
     }
 
-    public function setPosy(float $posy): self
+    public function setRotation(?float $Rotation): self
     {
-        $this->posy = $posy;
+        $this->Rotation = $Rotation;
 
         return $this;
     }
 
-    public function getEpaisseurx(): ?float
+    public function getVisibleDansPlan(): ?bool
     {
-        return $this->epaisseurx;
+        return $this->VisibleDansPlan;
     }
 
-    public function setEpaisseurx(float $epaisseurx): self
+    public function setVisibleDansPlan(bool $VisibleDansPlan): self
     {
-        $this->epaisseurx = $epaisseurx;
-
-        return $this;
-    }
-
-    public function getEpaisseury(): ?float
-    {
-        return $this->epaisseury;
-    }
-
-    public function setEpaisseury(float $epaisseury): self
-    {
-        $this->epaisseury = $epaisseury;
+        $this->VisibleDansPlan = $VisibleDansPlan;
 
         return $this;
     }

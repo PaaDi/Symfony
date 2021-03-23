@@ -15,23 +15,23 @@ class Compositionmodule
     /**
      * @var int
      *
-     * @ORM\Column(name="idModule", type="integer", nullable=false)
-     */
-    private $idmodule;
-
-    /**
-     * @var int
-     *
      * @ORM\Column(name="idCompositionModule", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idcompositionmodule;
 
+
     /**
      * @var int
      *
-     * @ORM\Column(name="idTypesVariant", type="integer", nullable=false)
+     * @ORM\Column(name="idModule", type="integer", nullable=false)
+     */
+    private $idmodule;
+/**
+     * @var int
+     *
+     * @ORM\Column(name="idTypesVariant", type="integer", nullable=true)
      */
     private $idtypesvariant;
 
@@ -45,7 +45,7 @@ class Compositionmodule
     /**
      * @var int
      *
-     * @ORM\Column(name="idComposant", type="integer", nullable=false)
+     * @ORM\Column(name="idComposant", type="integer", nullable=true)
      */
     private $idcomposant;
 
