@@ -93,11 +93,11 @@ p{
 #action_buttons li{
     display: inline;
     list-style: none;
-    background-color: #0C8148;
     color:white;
     padding: calc(0.3vw + 0.3vh);
     border-radius: 5px;
 }
+
 .fa-plus{
     margin-left: calc(0.5vw + 0.5vh);
 }
@@ -159,9 +159,38 @@ p{
      position: absolute;
      width:100%;
      background-color: white;
-     min-height: calc(15vw + 15vh);
+     min-height: calc(17vw + 17vh);
+     padding: 20px;
+     left: 0;
+     top:0;
  }
 
  #options_chantier{
      padding: calc(2vw + 2vh);
  }
+
+ #creer_devis.pos {
+
+ }
+
+ .labelform{
+     padding-right: calc(2vw + 2vh);
+ }
+
+ #creer_devis form label{
+     padding-right: calc(0.1vw + 0.1vh);
+ }
+
+ h5 {
+     margin-bottom: calc(1vw + 1vh);
+ }
+
+.fa-arrow-circle-left{
+    color: #0C8148;
+    padding-right: calc(1vw + 1vh);
+}
+
+.fa-arrow-circle-right{
+    color: #FFF;
+    padding-left: calc(1vw + 1vh);
+}

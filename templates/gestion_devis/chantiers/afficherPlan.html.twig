@@ -15,12 +15,12 @@
 
     <div id="barre_actions_plan">
         <ul id="action_buttons">
-            <li><button class="btn_vert" onclick="ouvrirAjouterModule()">Ajouter un module<div class="fas fa-plus"></div></button></li>
-            <li><button class="btn_vert" onclick="ouvrirOptionsChantier()">Options du chantier</button></li>
-            <li><button class="btn_vert" onclick="ouvrirOptionsPlan()">Options du plan</button></li>
+            <li><a class="btn_vert" onclick="ouvrirAjouterModule()">Ajouter un module<div class="fas fa-plus"></div></a></li>
+            <li><a class="btn_vert" onclick="ouvrirOptionsChantier()">Options du chantier</a></li>
+            <li><a class="btn_vert" onclick="ouvrirOptionsPlan()">Options du plan</a></li>
         </ul>
         <div id="partie_devis">
-            <div id="button_devis" data-toggle="collapse" href="#liste_devis">Devis</div>
+            <div id="button_devis" data-toggle="collapse" href="#liste_devis">Devis<i class="fas fa-arrow-circle-right"></i></div>
             <div id="liste_devis" class="flex flex1 flex_col flex_sa collapse">
                 <div><a href="{{ path('creerNouveauDevis') }}">Devis 1</a></div>
                 <div><a href="{{ path('creerNouveauDevis') }}">Devis 2</a></div>
@@ -126,60 +126,60 @@
                 </div>
 
                 <div id="options_chantier" class="cacher pos flex flex4 flex_col">
-                    <h5><i class="fas fa-arrow-circle-left" onclick="fermerOptionsChantier()"></i>Options du chantier</h5>
-                    <form action="#" method="post">
-                        <div class="flex fullwidth marges">
-                            <label for="nom_chantier" >Nom du chantier :</label>
-                            <input type="text" id="nom_chantier" required>
+                    <h5><i class="fas fa-arrow-circle-left" onclick="fermerOptionsChantier()"></i> Options du chantier</h5>
+                    <form action="#" method="post" class="flex flex_col">
+                        <div class="flex fullwidth marges flex1">
+                            <label for="nom_chantier" class="labelform flex flex1 flex_end flex_aic" >Nom du chantier :</label>
+                            <input type="text" id="nom_chantier" class="flex flex1 flex_aic" required>
                         </div>
-                        <div class="flex fullwidth marges">
-                            <label for="date_crea_chantier">Date de création :</label>
-                            <input type="date" id="date_crea_chantier" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="date_crea_chantier" class="labelform flex flex1 flex_end flex_aic">Date de création :</label>
+                            <input type="date" id="date_crea_chantier"  class="flex flex1 flex_aic" required>
                         </div>
-                        <div class="flex fullwidth marges">
-                            <label for="date_lancement">Date de lancement :</label>
-                             <input type="date" id="date_lancement"  required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="date_lancement" class="labelform flex flex1 flex_end flex_aic">Date de lancement :</label>
+                             <input type="date" id="date_lancement" class="flex flex1 flex_aic" required>
                         </div>
-                        <div class="flex fullwidth marges">
-                            <label for="adresse">Adresse :</label>
-                            <input type="text" id="adresse"  required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="adresse" class="labelform flex flex1 flex_end flex_aic">Adresse :</label>
+                            <input type="text" id="adresse" class="flex flex1 flex_aic" required>
                         </div>
-                        <div class="flex fullwidth marges">
-                            <label for="ville">Ville :</label>
-                            <input type="text" id="ville" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="ville" class="labelform flex flex1 flex_end flex_aic">Ville :</label>
+                            <input type="text" id="ville" class="flex flex1 flex_aic" required>
                         </div>
-                        <div class="flex fullwidth marges">
-                            <label for="code_postal" >Code Postal :</label>
-                            <input type="text" id="code_postal" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="code_postal" class="labelform flex flex1 flex_end flex_aic" >Code Postal :</label>
+                            <input type="text" id="code_postal" class="flex flex1 flex_aic" required>
                         </div>
-                        <div class="flex fullwidth marges">
+                        <div class="flex fullwidth marges flex1">
                             <div id="notes" >
-                                <label for="note">NOTES : </label>
+                                <label for="note" class="flex flex1 flex_aic">NOTES : </label>
                                 <!--<input id="note" name="note" type="textarea">-->
-                                <textarea name="note" id="editor" ></textarea>
+                                <textarea name="note" id="editor" class="flex flex1 flex_aic" ></textarea>
                             </div>
                         </div>
 
-                        <input type="submit" value="Valider" id="valid_options_chantier">
+                        <input type="submit" value="Valider" id="valid_options_chantier"  class="btn_vert flex flex_center">
                     </form>
                 </div>
 
                 <div id="options_plan" class="cacher pos flex flex4 flex_col">
-                    <h5><i class="fas fa-arrow-circle-left" onclick="$('#options_plan').hide(300)"></i>Options du plan</h5>
+                    <h5><i class="fas fa-arrow-circle-left" onclick="$('#options_plan').hide(300)"></i> Options du plan</h5>
                     <form action="#" method="post">
-                        <div class="flex fullwidth marges">
-                            <label for="tailleX">Taille X :</label>
-                            <input type="number" id="tailleX" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="tailleX" class="labelform flex flex1 flex_end flex_aic">Taille X :</label>
+                            <input type="number" id="tailleX"  class="flex flex1 flex_aic" required>
                         </div>
-                        <div class="flex fullwidth marges">
-                            <label for="tailleY">Taille Y :</label>
-                            <input type="number" id="tailleY" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="tailleY" class="labelform flex flex1 flex_end flex_aic">Taille Y :</label>
+                            <input type="number" id="tailleY"  class="flex flex1 flex_aic" required>
                         </div>
-                        <div class="flex fullwidth marges">
-                            <label for="nbre_etage">Nombre d'étage :</label>
-                            <input type="number" id="nbre_etage" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="nbre_etage" class="labelform flex flex1 flex_end flex_aic">Nb étage :</label>
+                            <input type="number" id="nbre_etage"  class="flex flex1 flex_aic" required>
                         </div>
-                        <input type="submit" value="Valider" id="valid_options_plan">
+                        <input type="submit" value="Valider" id="valid_options_plan" class="btn_vert flex flex_center">
 
                     </form>
 
@@ -187,102 +187,102 @@
 
 
                 <div id="options_module_unite" class="cacher pos">
-                    <h5><i class="fas fa-arrow-circle-left" onclick="$('#options_module_unite').hide(300)"></i><i id="option_module_unite_titre"></i></h5>
+                    <h5><i class="fas fa-arrow-circle-left" onclick="fermerOptionModulesUnite()"></i><i id="option_module_unite_titre"></i></h5>
                     <form method="post" action="#">
                         <div class="flex fullwidth marges">
-                            <label for="nom_affiche_unite">Nom affiché :</label>
-                            <input type="text" id="nom_affiche_unite" required>
+                            <label for="nom_affiche_unite" class="labelform flex flex1 flex_end flex_aic">Nom affiché :</label>
+                            <input type="text" id="nom_affiche_unite" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges">
-                            <label for="positionXmodule">Position X:</label>
-                            <input type="number" id="positionXmodule" required>
+                            <label for="positionXmodule" class="labelform flex flex1 flex_end flex_aic">Position X:</label>
+                            <input type="number" id="positionXmodule" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges">
-                            <label for="positionYmodule">Position Y:</label>
-                            <input type="number" id="positionYmodule" required>
+                            <label for="positionYmodule" class="labelform flex flex1 flex_end flex_aic">Position Y:</label>
+                            <input type="number" id="positionYmodule" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges">
-                            <label for="rotation">Rotation :</label>
-                            <input type="number" id="rotation" required>
+                            <label for="rotation" class="labelform flex flex1 flex_end flex_aic">Rotation :</label>
+                            <input type="number" id="rotation" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges">
-                            <label for="notes">Notes :</label>
-                            <input type="text" id="notes" required>
+                            <label for="notes" class="labelform flex flex1 flex_end flex_aic">Notes :</label>
+                            <input type="text" id="notes" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges">
-                            <label for="visible_plan">Visible sur le plan :</label>
-                            <input type="checkbox" id="visible_plan" required>
+                            <label for="visible_plan" class="labelform flex flex1 flex_end flex_aic">Visible sur le plan :</label>
+                            <input type="checkbox" id="visible_plan" class="flex flex1 flex_aic" required>
                         </div>
 
-                        <input type="submit" id="delete_options_module" value="Supprimer">
-                        <input type="submit" id="valid_options_module" value="Valider">
+                        <input type="submit" id="delete_options_module" value="Supprimer"  class="btn_vert flex flex_center">
+                        <input type="submit" id="valid_options_module" value="Valider"  class="btn_vert flex flex_center">
                     </form>
 
                 </div>
 
 
                 <div id="options_module" class="cacher pos">
-                    <h5><i class="fas fa-arrow-circle-left" onclick="$('#options_module').hide(300)"></i><i id="option_module_titre"></i></h5>
+                    <h5><i class="fas fa-arrow-circle-left" onclick="fermerOptionsModules()"></i><i id="option_module_titre"></i></h5>
                     <form>
-                        <div class="flex fullwidth marges">
-                            <label for="nom_affiche">Nom affiché :</label>
-                            <input type="text" id="nom_affiche" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="nom_affiche" class="labelform flex flex1 flex_end flex_aic">Nom affiché :</label>
+                            <input type="text" id="nom_affiche" class="flex flex1 flex_aic" required>
                         </div>
 
-                        <div class="flex fullwidth marges">
-                            <label for="position_departX">Position départ X :</label>
-                            <input type="number" id="position_departX" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="position_departX" class="labelform flex flex1 flex_end flex_aic">Position départ X :</label>
+                            <input type="number" id="position_departX" class="flex flex1 flex_aic" required>
                         </div>
 
-                        <div class="flex fullwidth marges">
-                            <label for="position_departY">Position départ Y :</label>
-                            <input type="number" id="position_departY" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="position_departY" class="labelform flex flex1 flex_end flex_aic">Position départ Y :</label>
+                            <input type="number" id="position_departY" class="flex flex1 flex_aic" required>
                         </div>
 
-                        <div class="flex fullwidth marges">
-                            <label for="position_finX">Position fin X :</label>
-                            <input type="number" id="position_finX" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="position_finX" class="labelform flex flex1 flex_end flex_aic">Position fin X :</label>
+                            <input type="number" id="position_finX" class="flex flex1 flex_aic" required>
                         </div>
 
-                        <div class="flex fullwidth marges">
-                            <label for="position_finY">Position fin Y :</label>
-                            <input type="number" id="position_finY" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="position_finY" class="labelform flex flex1 flex_end flex_aic">Position fin Y :</label>
+                            <input type="number" id="position_finY" class="flex flex1 flex_aic" required>
                         </div>
 
-                        <div class="flex fullwidth marges">
-                            <label for="notes_unite">Notes :</label>
-                            <input type="text" id="notes_unite" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="notes_unite" class="labelform flex flex1 flex_end flex_aic">Notes :</label>
+                            <input type="text" id="notes_unite" class="flex flex1 flex_aic" required>
                         </div>
 
-                        <div class="flex fullwidth marges">
-                            <label for="visible_plan_unite">Visible sur le plan :</label>
-                            <input type="checkbox" id="visible_plan_unite" required>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="visible_plan_unite" class="labelform flex flex1 flex_end flex_aic">Visible sur le plan :</label>
+                            <input type="checkbox" id="visible_plan_unite" class="flex flex1 flex_aic" required>
                         </div>
 
-                        <input type="submit" id="delete_options_module_unite" value="Supprimer">
-                        <input type="submit" id="valid_options_module_unite" value="Valider">
+                        <input type="submit" id="delete_options_module_unite" value="Supprimer" class="btn_vert flex flex_center">
+                        <input type="submit" id="valid_options_module_unite" value="Valider"  class="btn_vert flex flex_center">
 
                     </form>
 
                 </div>
 
                 <div id="creer_devis" class="cacher pos">
-                    <h5> <i class="fas fa-arrow-circle-left" onclick="$('#creer_devis').hide(300)"></i>Créer un devis</h5>
+                    <h5> <i class="fas fa-arrow-circle-left" onclick="$('#creer_devis').hide(300)"></i> Créer un devis</h5>
                     <form action="#" method="post">
-                        <div class="flex fullwidth marges">
-                            <label for="nom_devis">Nom du devis :</label>
-                            <input type="text" id="nom_devis">
+                        <div class="flex fullwidth marges flex1">
+                            <label for="nom_devis" class="labelform flex flex1 flex_aic">Nom du devis :</label>
+                            <input type="text" id="nom_devis" class="flex flex1 flex_aic">
                         </div>
-                        <div class="flex fullwidth marges">
-                            <label for="date_creation_devis">Date de création :</label>
-                            <input type="date" id="date_creation_devis">
+                        <div class="flex fullwidth marges flex1">
+                            <label for="date_creation_devis" class="labelform flex flex1 flex_aic">Date de création :</label>
+                            <input type="date" id="date_creation_devis" class="flex flex1 flex_aic">
                         </div>
-                        <input type="submit" value="Valider">
+                        <input type="submit" value="Valider"  class="btn_vert flex flex_center">
                     </form>
                 </div>
 
@@ -398,8 +398,17 @@
             $('#notes_unite').val(notes);
             $('#visible_plan_unite').prop("checked",visible_plan);
             compteurZIndex++;
+            $('#partie_modules').removeClass("flex2").addClass("flex4");
+            $('#partie_affichage_plan').removeClass("flex5").addClass("flex3");
             $('#options_module').show(300).css("z-index",compteurZIndex);
         }
+
+        function fermerOptionsModules() {
+            $('#partie_modules').removeClass("flex4").addClass("flex2");
+            $('#partie_affichage_plan').removeClass("flex3").addClass("flex5");
+            $('#options_module').hide(300).css("z-index",compteurZIndex);
+        }
+
 
         function ouvrirOptionModuleUnite(nom_module,
                                     nom_affiche,
@@ -416,8 +425,18 @@
             $('#notes').val(notes);
             $('#visible_plan').prop("checked",visible_plan);
             compteurZIndex++;
+            $('#partie_modules').removeClass("flex2").addClass("flex4");
+            $('#partie_affichage_plan').removeClass("flex5").addClass("flex3");
             $('#options_module_unite').show(300).css("z-index",compteurZIndex);
         }
+
+
+        function fermerOptionModulesUnite(){
+            $('#partie_modules').removeClass("flex4").addClass("flex2");
+            $('#partie_affichage_plan').removeClass("flex3").addClass("flex5");
+            $('#options_module_unite').hide(300).css("z-index",compteurZIndex);
+        }
+
 
 
 
