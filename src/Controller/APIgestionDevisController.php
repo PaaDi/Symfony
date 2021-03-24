@@ -40,6 +40,34 @@ class APIgestionDevisController extends AbstractController
     }
 
     /**
+     * @Route("/API/checkconnexion", name="API-checkconnexion")
+     * @return Response
+     */
+    public function checkConnexion()
+    {
+        $request = Request::createFromGlobals();
+        if ($request->request->get('validrequest') == null)
+        {
+            return new JsonResponse(array(
+                'valide' => false,
+                'Erreur' => "Les arguments en POST sont NULL",
+            ));
+        }
+        if ($request->request->get('validrequest') == "OK")
+        {
+            return new JsonResponse(array(
+                'valide'=>true
+            ));
+        }
+
+
+        return new JsonResponse(array(
+            'valide' => false,
+            'Erreur' => "Les identifiants sont faux",
+        ));
+    }
+
+    /**
      * @Route("/API/login/", name="API-login")
      * @param LoginService $loginService
      * @param APIgestionDevisService $APIgestionDevisService
