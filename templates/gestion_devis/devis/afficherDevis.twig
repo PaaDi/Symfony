@@ -3,18 +3,11 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('css/flex.css') }}" media="all"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/general_css.css') }}" media="all"/>
-<<<<<<< Updated upstream
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/etat.css') }}" media="all"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/devis/creerNouveauDevis.css') }}" media="all"/>
 {% endblock %}
-=======
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/devis/creerNouveauDevis.css') }}" media="all"/>
-{% endblock %}
-
->>>>>>> Stashed changes
 
 {% block contenu %}
-    <h2>Créer un nouveau Devis - Projet n°3 - Chantier n°1</h2>
+    <h2>Devis</h2>
 
     <div id="wrapper_creation_devis" class="flex flex_aic flex_sa">
 
@@ -100,20 +93,11 @@
 
     <script>
         $(function(){
-            $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
 
-            $('#project_creation_date').off();
-            $('#project_creation_date').datepicker();
-
-<<<<<<< Updated upstream
-    <h2>Création de nouveau devis </h2>
-    {% include "base/etat.html.twig" %}
-=======
             ClassicEditor.create( document.querySelector( '#editor' ) ).catch( error => {
                 console.error( error );
             });
         });
->>>>>>> Stashed changes
 
     </script>
     <script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/classic/ckeditor.js"></script>

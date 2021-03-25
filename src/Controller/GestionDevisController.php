@@ -4,11 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Chantier;
 use App\Entity\Contact;
+use App\Entity\Devis;
 use App\Entity\Modulesdansplan;
 use App\Entity\Projet;
 use App\Repository\ChantierRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ContactRepository;
+use App\Repository\DevisRepository;
+use App\Repository\GammeRepository;
 use App\Repository\LoginRepository;
 use App\Repository\ModuledansplanRepository;
 use App\Repository\ModuleRepository;
@@ -193,19 +196,6 @@ class GestionDevisController extends AbstractController
     }
 
     /**
-     * @Route("/gestiondevis/devis/creerNouveau/", name="creerNouveauDevis")
-     */
-
-    public function toCreerNouveauDevis()
-    {
-        return $this->render('gestion_devis/devis/creerNouveauDevis.html.twig', [
-            'controller_name' => 'GestionDevisController',
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
-            'id_page' => 'devis'
-        ]);
-    }
-
-    /**
      * @Route("/gestiondevis/devis/devisArchives/", name="devisArchives")
      */
 
@@ -349,7 +339,9 @@ class GestionDevisController extends AbstractController
                                  PlanRepository $planRepository,
                                  ChantierRepository $chantierRepository,
                                  ModuleRepository $moduleRepository,
-                                 ModuledansplanRepository $moduledansplanRepository)
+                                 ModuledansplanRepository $moduledansplanRepository,
+                                 GammeRepository $gammeRepository,
+                                 DevisRepository $devisRepository)
     {
         $plan = $planRepository->findOneBy(['idchantier' => $idChantier]);
         $modules = array();
@@ -365,6 +357,8 @@ class GestionDevisController extends AbstractController
             'Plan'=> $plan,
             'Chantier'=> $chantierRepository->find($idChantier),
             'Modules'=> $modules,
+            'Gammes'=> $gammeRepository->findAll(),
+            'Devis'=> $devisRepository->findBy(['idchantier' => $idChantier]),
         ]);
 
     }
@@ -465,6 +459,170 @@ class GestionDevisController extends AbstractController
 
     }
 
+    /**
+     * @Route("/gestiondevis/plan/saveChantier/", name="plan_save_chantier")
+     */
+
+    public function plan_save_chantier(ChantierRepository $chantierRepository)
+    {
+        $request = Request::createFromGlobals();
+
+//        print_r($request->request->all());die;
+        $chantier = $chantierRepository->find($request->request->get('idchantier'));
+
+        $chantier->setNom($request->request->get('nom_chantier'));
+        $chantier->setNotes($request->request->get('note'));
+        $chantier->setAdresse($request->request->get('adresse'));
+        $chantier->setVille($request->request->get('ville'));
+        $chantier->setCodepostal($request->request->get('code_postal'));
+        $chantier->setDateLancement(\DateTime::createFromFormat("Y-m-d", $request->request->get('date_lancement')));
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($chantier);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('afficherPlan', ['idChantier' => $request->request->get('idchantier')]);
+
+    }
+
+    /**
+     * @Route("/gestiondevis/plan/savePlan/", name="plan_save_plan")
+     */
+
+    public function plan_save_plan(PlanRepository $planRepository)
+    {
+        $request = Request::createFromGlobals();
+
+//        print_r($request->request->all());die;
+        $plan = $planRepository->find($request->request->get('idplan'));
+
+        $plan->setTaillex($request->request->get('tailleX'));
+        $plan->setTailley($request->request->get('tailleY'));
+        $plan->setNbetage($request->request->get('nbre_etage'));
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($plan);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('afficherPlan', ['idChantier' => $request->request->get('idchantier')]);
+
+    }
+
+    /**
+     * @Route("/gestiondevis/plan/saveModule/", name="plan_save_module")
+     */
+
+    public function plan_save_module(ModuledansplanRepository $moduledansplanRepository)
+    {
+        $request = Request::createFromGlobals();
+
+//        print_r($request->request->all());die;
+        $module = $moduledansplanRepository->find($request->request->get('idmoduledansplan'));
+
+        $module->setNomDansPlan($request->request->get('nom_affiche'));
+        $module->setPosDebX($request->request->get('position_departX'));
+        $module->setPosDebY($request->request->get('position_departY'));
+        $module->setPosFinX($request->request->get('position_finX'));
+        $module->setPosFinY($request->request->get('position_finY'));
+        $module->setNotes($request->request->get('notes_unite'));
+        $module->setVisibleDansPlan(($request->request->get('visible_plan_unite') == "on"));
+
+        $entityManager = $this->getDoctrine()->getManager();
+        if ($request->request->get('delete_options_module_unite') == "Supprimer")
+        {
+            $entityManager->remove($module);
+        }
+        else
+        {
+            $entityManager->persist($module);
+        }
+        $entityManager->flush();
+
+        return $this->redirectToRoute('afficherPlan', ['idChantier' => $request->request->get('idchantier')]);
+
+    }
+
+    /**
+     * @Route("/gestiondevis/plan/saveModuleUnite/", name="plan_save_module_unite")
+     */
+
+    public function plan_save_module_unite(ModuledansplanRepository $moduledansplanRepository)
+    {
+        $request = Request::createFromGlobals();
+
+//        print_r($request->request->all());die;
+        $module = $moduledansplanRepository->find($request->request->get('idmoduledansplan'));
+
+        $module->setNomDansPlan($request->request->get('nom_affiche_unite'));
+        $module->setPosDebX($request->request->get('positionXmodule'));
+        $module->setPosDebY($request->request->get('positionYmodule'));
+        $module->setRotation($request->request->get('rotation'));
+        $module->setNotes($request->request->get('notes'));
+        $module->setVisibleDansPlan(($request->request->get('visible_plan') == "on"));
+
+        $entityManager = $this->getDoctrine()->getManager();
+        if ($request->request->get('delete_options_module') == "Supprimer")
+        {
+            $entityManager->remove($module);
+        }
+        else
+        {
+            $entityManager->persist($module);
+        }
+        $entityManager->flush();
+
+        return $this->redirectToRoute('afficherPlan', ['idChantier' => $request->request->get('idchantier')]);
+
+    }
+
+    /**
+     * @Route("/gestiondevis/plan/creerDevis/{idchantier}", name="plan_creer_devis")
+     */
+
+    public function plan_creer_devis(int $idchantier)
+    {
+        $request = Request::createFromGlobals();
+
+//        print_r($request->request->all());die;
+
+        $devis = new Devis();
+        $devis->setIdchantier($idchantier);
+        $devis->setNom($request->request->get('nom_devis'));
+        $devis->setIdGamme(intval($request->request->get('gammes_devis')));
+        $devis->setDatecreation(\DateTime::createFromFormat("Y-m-d", $request->request->get('date_creation_devis')));
+        $devis->setTauxTva(20);
+        
+        $devis->setDocument("");
+        $devis->setNotes("");
+        $devis->setEtat("");
+        $devis->setMlineaire(0);
+        $devis->setPrixht(0);
+        $devis->setRemise(0);
+
+        $devis->setEstpaye(false);
+        $devis->setRefDevis(rand(0,99999999));
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($devis);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('afficherPlan', ['idChantier' => $idchantier]);
+
+    }
+
+
+    /* -- DEVIS -- */
+
+    /**
+     * @Route("/gestiondevis/devis/afficher/{iddevis}", name="afficher_devis")
+     */
+    public function afficher_devis()
+    {
+        return $this->render('gestion_devis/devis/afficherDevis.twig', [
+            'controller_name' => 'GestionDevisController',
+            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
+            'id_page' => 'devis'
+        ]);
+    }
 
 }
-

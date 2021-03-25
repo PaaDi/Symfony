@@ -22,8 +22,9 @@
         <div id="partie_devis">
             <div id="button_devis" data-toggle="collapse" href="#liste_devis">Devis<i class="fas fa-arrow-circle-right"></i></div>
             <div id="liste_devis" class="flex flex1 flex_col flex_sa collapse">
-                <div><a href="{{ path('creerNouveauDevis') }}">Devis 1</a></div>
-                <div><a href="{{ path('creerNouveauDevis') }}">Devis 2</a></div>
+                {% for devis in Devis %}
+                <div><a href="{{ path('afficher_devis', {iddevis: devis.iddevis}) }}">{{ devis.nom }}</a></div>
+                {% endfor %}
                 <div><button class="btn_vert" onclick="ouvrirCreerDevis()">Créer un devis</button></div>
             </div>
         </div>
@@ -48,12 +49,12 @@
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#rdc">RDC</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#etage1">Etage 1</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#plus">+</a>
-                        </li>
+                        {% for i in 1..Plan.nbetage %}
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#etage{{ i }}">Etage {{ i }}</a>
+                            </li>
+                        {% endfor %}
+
                     </ul>
 
                     <!-- Tab panes -->
@@ -66,16 +67,11 @@
 
                                     {% if module['Module'].unite == "unite" %}
                                     onclick='ouvrirOptionModuleUnite("{{ module['Module'].nom }}",
-                                            "{{ module['ModuleDansPlan'].NomDansPlan }}",{{ module['ModuleDansPlan'].posDebX }},{{ module['ModuleDansPlan'].posDebY }},{{ module['ModuleDansPlan'].Rotation }},
-                                            "{{ module['ModuleDansPlan'].Notes }}",
-                                    {{ module['ModuleDansPlan'].VisibleDansPlan }})'
+                                            "{{ module['ModuleDansPlan'].NomDansPlan }}",{{ module['ModuleDansPlan'].posDebX }},{{ module['ModuleDansPlan'].posDebY }},{{ module['ModuleDansPlan'].Rotation }},"{{ module['ModuleDansPlan'].Notes }}",{{ module['ModuleDansPlan'].VisibleDansPlan ? "true" : "false" }},{{ module['ModuleDansPlan'].idmodulesdansplan }})'
 
                                     {% else %}
                                         onclick='ouvrirOptionModule("{{ module['Module'].nom }}",
-                                                "{{ module['ModuleDansPlan'].NomDansPlan }}",{{ module['ModuleDansPlan'].posDebX }},{{ module['ModuleDansPlan'].posDebY }},{{ module['ModuleDansPlan'].posFinX }},{{ module['ModuleDansPlan'].posFinY }},
-                                                "{{ module['ModuleDansPlan'].Notes }}",
-                                        {{ module['ModuleDansPlan'].VisibleDansPlan }}
-                                                )'
+                                                "{{ module['ModuleDansPlan'].NomDansPlan }}",{{ module['ModuleDansPlan'].posDebX }},{{ module['ModuleDansPlan'].posDebY }},{{ module['ModuleDansPlan'].posFinX }},{{ module['ModuleDansPlan'].posFinY }},"{{ module['ModuleDansPlan'].Notes }}",{{ module['ModuleDansPlan'].VisibleDansPlan ? "true" : "false" }},{{ module['ModuleDansPlan'].idmodulesdansplan }})'
                                     {% endif %}>
 
                                     <div>
@@ -115,70 +111,71 @@
                                 </style>
                             </div>
                         </div>
-                        <div class="tab-pane container fade" id="etage1">
-                            <h5>Liste modules 1er étage</h5>
+                        {% for i in 1..Plan.nbetage %}
+                        <div class="tab-pane container fade" id="etage{{ i }}">
+                            <h5>Etage n°{{ i }}</h5>
                             <div class="liste_modules"></div>
                         </div>
-                        <div class="tab-pane container fade" id="plus">
-                            <h5>Ajouter un étage</h5>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
 
                 <div id="options_chantier" class="cacher pos flex flex4 flex_col">
                     <h5><i class="fas fa-arrow-circle-left" onclick="fermerOptionsChantier()"></i> Options du chantier</h5>
-                    <form action="#" method="post" class="flex flex_col">
+                    <form action="{{ path('plan_save_chantier') }}" method="post" class="flex flex_col">
                         <div class="flex fullwidth marges flex1">
                             <label for="nom_chantier" class="labelform flex flex1 flex_end flex_aic" >Nom du chantier :</label>
-                            <input type="text" id="nom_chantier" class="flex flex1 flex_aic" required>
+                            <input type="text" name="nom_chantier" class="flex flex1 flex_aic" value="{{ Chantier.nom }}" required>
                         </div>
                         <div class="flex fullwidth marges flex1">
                             <label for="date_crea_chantier" class="labelform flex flex1 flex_end flex_aic">Date de création :</label>
-                            <input type="date" id="date_crea_chantier"  class="flex flex1 flex_aic" required>
+                            <input type="date" name="date_crea_chantier"  class="flex flex1 flex_aic" value="{{ Chantier.datecreation|date('Y-m-d') }}" disabled>
                         </div>
                         <div class="flex fullwidth marges flex1">
                             <label for="date_lancement" class="labelform flex flex1 flex_end flex_aic">Date de lancement :</label>
-                             <input type="date" id="date_lancement" class="flex flex1 flex_aic" required>
+                             <input type="date" name="date_lancement" class="flex flex1 flex_aic" value="{{ Chantier.datelancement|date('Y-m-d') }}" required>
                         </div>
                         <div class="flex fullwidth marges flex1">
                             <label for="adresse" class="labelform flex flex1 flex_end flex_aic">Adresse :</label>
-                            <input type="text" id="adresse" class="flex flex1 flex_aic" required>
+                            <input type="text" name="adresse" class="flex flex1 flex_aic" value="{{ Chantier.adresse }}" required>
                         </div>
                         <div class="flex fullwidth marges flex1">
                             <label for="ville" class="labelform flex flex1 flex_end flex_aic">Ville :</label>
-                            <input type="text" id="ville" class="flex flex1 flex_aic" required>
+                            <input type="text" name="ville" class="flex flex1 flex_aic" value="{{ Chantier.ville }}" required>
                         </div>
                         <div class="flex fullwidth marges flex1">
                             <label for="code_postal" class="labelform flex flex1 flex_end flex_aic" >Code Postal :</label>
-                            <input type="text" id="code_postal" class="flex flex1 flex_aic" required>
+                            <input type="text" name="code_postal" class="flex flex1 flex_aic" value="{{ Chantier.codepostal }}" required>
                         </div>
                         <div class="flex fullwidth marges flex1">
                             <div id="notes" >
                                 <label for="note" class="flex flex1 flex_aic">NOTES : </label>
                                 <!--<input id="note" name="note" type="textarea">-->
-                                <textarea name="note" id="editor" class="flex flex1 flex_aic" ></textarea>
+                                <textarea name="note" id="editor" class="flex flex1 flex_aic" >{{ Chantier.notes }}</textarea>
                             </div>
                         </div>
-
+                        <input type="text" name="idchantier" value="{{ Chantier.idchantier }}" hidden>
                         <input type="submit" value="Valider" id="valid_options_chantier"  class="btn_vert flex flex_center">
                     </form>
                 </div>
 
                 <div id="options_plan" class="cacher pos flex flex4 flex_col">
                     <h5><i class="fas fa-arrow-circle-left" onclick="$('#options_plan').hide(300)"></i> Options du plan</h5>
-                    <form action="#" method="post">
+                    <form action="{{ path('plan_save_plan') }}" method="post">
                         <div class="flex fullwidth marges flex1">
                             <label for="tailleX" class="labelform flex flex1 flex_end flex_aic">Taille X :</label>
-                            <input type="number" id="tailleX"  class="flex flex1 flex_aic" required>
+                            <input type="number" name="tailleX"  class="flex flex1 flex_aic" value="{{ Plan.taillex }}" required>
                         </div>
                         <div class="flex fullwidth marges flex1">
                             <label for="tailleY" class="labelform flex flex1 flex_end flex_aic">Taille Y :</label>
-                            <input type="number" id="tailleY"  class="flex flex1 flex_aic" required>
+                            <input type="number" name="tailleY"  class="flex flex1 flex_aic" value="{{ Plan.tailley }}" required>
                         </div>
                         <div class="flex fullwidth marges flex1">
                             <label for="nbre_etage" class="labelform flex flex1 flex_end flex_aic">Nb étage :</label>
-                            <input type="number" id="nbre_etage"  class="flex flex1 flex_aic" required>
+                            <input type="number" name="nbre_etage"  class="flex flex1 flex_aic" value="{{ Plan.nbetage }}" required>
                         </div>
+                        <input type="text" name="idchantier" value="{{ Chantier.idchantier }}" hidden>
+                        <input type="text" name="idplan" value="{{ Plan.idplan }}" hidden>
                         <input type="submit" value="Valider" id="valid_options_plan" class="btn_vert flex flex_center">
 
                     </form>
@@ -188,39 +185,42 @@
 
                 <div id="options_module_unite" class="cacher pos">
                     <h5><i class="fas fa-arrow-circle-left" onclick="fermerOptionModulesUnite()"></i><i id="option_module_unite_titre"></i></h5>
-                    <form method="post" action="#">
+                    <form method="post" action="{{ path('plan_save_module_unite') }}">
                         <div class="flex fullwidth marges">
                             <label for="nom_affiche_unite" class="labelform flex flex1 flex_end flex_aic">Nom affiché :</label>
-                            <input type="text" id="nom_affiche_unite" class="flex flex1 flex_aic" required>
+                            <input type="text" id="nom_affiche_unite" name="nom_affiche_unite" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges">
                             <label for="positionXmodule" class="labelform flex flex1 flex_end flex_aic">Position X:</label>
-                            <input type="number" id="positionXmodule" class="flex flex1 flex_aic" required>
+                            <input type="number" id="positionXmodule" name="positionXmodule" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges">
                             <label for="positionYmodule" class="labelform flex flex1 flex_end flex_aic">Position Y:</label>
-                            <input type="number" id="positionYmodule" class="flex flex1 flex_aic" required>
+                            <input type="number" id="positionYmodule" name="positionYmodule" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges">
                             <label for="rotation" class="labelform flex flex1 flex_end flex_aic">Rotation :</label>
-                            <input type="number" id="rotation" class="flex flex1 flex_aic" required>
+                            <input type="number" id="rotation" name="rotation" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges">
                             <label for="notes" class="labelform flex flex1 flex_end flex_aic">Notes :</label>
-                            <input type="text" id="notes" class="flex flex1 flex_aic" required>
+                            <input type="text" id="notes_module" name="notes" class="flex flex1 flex_aic">
                         </div>
 
                         <div class="flex fullwidth marges">
                             <label for="visible_plan" class="labelform flex flex1 flex_end flex_aic">Visible sur le plan :</label>
-                            <input type="checkbox" id="visible_plan" class="flex flex1 flex_aic" required>
+                            <input type="checkbox" id="visible_plan" name="visible_plan" class="flex flex1 flex_aic">
                         </div>
 
-                        <input type="submit" id="delete_options_module" value="Supprimer"  class="btn_vert flex flex_center">
-                        <input type="submit" id="valid_options_module" value="Valider"  class="btn_vert flex flex_center">
+                        <input type="text" id="idmoduledansplanunite" name="idmoduledansplan" hidden>
+                        <input type="text" name="idchantier" value="{{ Chantier.idchantier }}" hidden>
+
+                        <input type="submit" id="delete_options_module" name="delete_options_module" value="Supprimer"  class="btn_vert flex flex_center">
+                        <input type="submit" id="valid_options_module" name="valid_options_module" value="Valider"  class="btn_vert flex flex_center">
                     </form>
 
                 </div>
@@ -228,44 +228,47 @@
 
                 <div id="options_module" class="cacher pos">
                     <h5><i class="fas fa-arrow-circle-left" onclick="fermerOptionsModules()"></i><i id="option_module_titre"></i></h5>
-                    <form>
+                    <form method="post" action="{{ path('plan_save_module') }}">
                         <div class="flex fullwidth marges flex1">
                             <label for="nom_affiche" class="labelform flex flex1 flex_end flex_aic">Nom affiché :</label>
-                            <input type="text" id="nom_affiche" class="flex flex1 flex_aic" required>
+                            <input type="text" id="nom_affiche" name="nom_affiche" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges flex1">
                             <label for="position_departX" class="labelform flex flex1 flex_end flex_aic">Position départ X :</label>
-                            <input type="number" id="position_departX" class="flex flex1 flex_aic" required>
+                            <input type="number" id="position_departX" name="position_departX" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges flex1">
                             <label for="position_departY" class="labelform flex flex1 flex_end flex_aic">Position départ Y :</label>
-                            <input type="number" id="position_departY" class="flex flex1 flex_aic" required>
+                            <input type="number" id="position_departY" name="position_departY" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges flex1">
                             <label for="position_finX" class="labelform flex flex1 flex_end flex_aic">Position fin X :</label>
-                            <input type="number" id="position_finX" class="flex flex1 flex_aic" required>
+                            <input type="number" id="position_finX" name="position_finX" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges flex1">
                             <label for="position_finY" class="labelform flex flex1 flex_end flex_aic">Position fin Y :</label>
-                            <input type="number" id="position_finY" class="flex flex1 flex_aic" required>
+                            <input type="number" id="position_finY" name="position_finY" class="flex flex1 flex_aic" required>
                         </div>
 
                         <div class="flex fullwidth marges flex1">
                             <label for="notes_unite" class="labelform flex flex1 flex_end flex_aic">Notes :</label>
-                            <input type="text" id="notes_unite" class="flex flex1 flex_aic" required>
+                            <input type="text" id="notes_unite" name="notes_unite" class="flex flex1 flex_aic">
                         </div>
 
                         <div class="flex fullwidth marges flex1">
                             <label for="visible_plan_unite" class="labelform flex flex1 flex_end flex_aic">Visible sur le plan :</label>
-                            <input type="checkbox" id="visible_plan_unite" class="flex flex1 flex_aic" required>
+                            <input type="checkbox" id="visible_plan_unite" name="visible_plan_unite" class="flex flex1 flex_aic">
                         </div>
 
-                        <input type="submit" id="delete_options_module_unite" value="Supprimer" class="btn_vert flex flex_center">
-                        <input type="submit" id="valid_options_module_unite" value="Valider"  class="btn_vert flex flex_center">
+                        <input type="text" id="idmoduledansplan" name="idmoduledansplan" hidden>
+                        <input type="text" name="idchantier" value="{{ Chantier.idchantier }}" hidden>
+
+                        <input type="submit" id="delete_options_module_unite" name="delete_options_module_unite" value="Supprimer" class="btn_vert flex flex_center">
+                        <input type="submit" id="valid_options_module_unite" name="valid_options_module_unite" value="Valider"  class="btn_vert flex flex_center">
 
                     </form>
 
@@ -273,14 +276,22 @@
 
                 <div id="creer_devis" class="cacher pos">
                     <h5> <i class="fas fa-arrow-circle-left" onclick="$('#creer_devis').hide(300)"></i> Créer un devis</h5>
-                    <form action="#" method="post">
+                    <form action="{{ path('plan_creer_devis', {idchantier: Chantier.idchantier}) }}" method="post">
                         <div class="flex fullwidth marges flex1">
                             <label for="nom_devis" class="labelform flex flex1 flex_aic">Nom du devis :</label>
-                            <input type="text" id="nom_devis" class="flex flex1 flex_aic">
+                            <input type="text" id="nom_devis" name="nom_devis" class="flex flex1 flex_aic">
                         </div>
                         <div class="flex fullwidth marges flex1">
                             <label for="date_creation_devis" class="labelform flex flex1 flex_aic">Date de création :</label>
-                            <input type="date" id="date_creation_devis" class="flex flex1 flex_aic">
+                            <input type="date" id="date_creation_devis" name="date_creation_devis" class="flex flex1 flex_aic">
+                        </div>
+                        <div class="flex fullwidth marges flex1">
+                            <label for="gammes_devis" class="labelform flex flex1 flex_aic">Gamme :</label>
+                            <select id="gammes_devis" name="gammes_devis" class="flex flex1 flex_aic">
+                                {% for gamme in Gammes %}
+                                    <option value="{{ gamme.idgamme }}">{{ gamme.nom }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <input type="submit" value="Valider"  class="btn_vert flex flex_center">
                     </form>
@@ -388,7 +399,8 @@
                                     position_finX,
                                     position_finY,
                                     notes,
-                                    visible_plan){
+                                    visible_plan,
+                                    idmoduledansplan){
             $('#nom_affiche').val(nom_affiche);
             $('#option_module_titre').text(nom_module);
             $('#position_departX').val(position_depX);
@@ -396,6 +408,7 @@
             $('#position_finX').val(position_finX);
             $('#position_finY').val(position_finY);
             $('#notes_unite').val(notes);
+            $('#idmoduledansplan').val(idmoduledansplan);
             $('#visible_plan_unite').prop("checked",visible_plan);
             compteurZIndex++;
             $('#partie_modules').removeClass("flex2").addClass("flex4");
@@ -416,13 +429,15 @@
                                     position_Y,
                                     rotation,
                                     notes,
-                                    visible_plan){
+                                    visible_plan,
+                                    idmoduledansplanunite){
             $('#nom_affiche_unite').val(nom_affiche);
             $('#option_module_unite_titre').text(nom_module);
             $('#positionXmodule').val(position_X);
             $('#positionYmodule').val(position_Y);
             $('#rotation').val(rotation);
-            $('#notes').val(notes);
+            $('#notes_module').val(notes);
+            $('#idmoduledansplanunite').val(idmoduledansplanunite);
             $('#visible_plan').prop("checked",visible_plan);
             compteurZIndex++;
             $('#partie_modules').removeClass("flex2").addClass("flex4");
