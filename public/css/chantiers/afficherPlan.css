@@ -1,6 +1,6 @@
 #wrapper_creation_chantier{
     width: auto;
-    padding: calc(2vw + 2vh);
+    padding: calc(1.5vw + 1.5vh);
     box-shadow: 0 0 0.5em darkgrey;
     min-height: calc(15vw + 15vh);
     height: auto;
@@ -129,6 +129,19 @@ p{
     margin-left:calc(-7vw + -7vh);
 }
 
+#liste_modules{
+    padding-top: 0px;
+}
+
+#liste_modules ul li a{
+    color: #0C8148;
+    font-weight: bolder;
+}
+
+#liste_modules h5 {
+    margin: calc(1vw + 1vh);
+}
+
 #liste_devis a, #liste_devis a:visited, #liste_devis a:active{
     color: #718478;
     text-decoration: none;
@@ -149,6 +162,7 @@ p{
 }
 #partie_modules{
     position:relative;
+    min-height: calc(15vw + 15vh);
 
 }
  .cacher{
