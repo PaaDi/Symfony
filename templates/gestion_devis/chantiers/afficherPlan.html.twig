@@ -9,23 +9,46 @@
 
 
 {% block contenu %}
-    <h2>Chantier - Plan</h2>
-    {% set id_page = 'plan' %}
-    {% include "base/etat.html.twig" %}
+    <p class="filAriane">
+        <a href="{{ path('afficherClient', {id: Client.idclient}) }}">
+            <i class="fas fa-user-tie"></i>&nbsp;{{ Client.nom }}
+        </a>
+        &nbsp;>&nbsp;
+        <a href="{{ path('visualiserProjet', {id: Projet.idprojet}) }}">
+            <i class="fas fa-project-diagram"></i>&nbsp;{{ Projet.nom }}
+        </a>
+        &nbsp;>&nbsp;
+        <strong>
+            <i class="fas fa-shapes"></i>&nbsp;{{ Chantier.nom }}
+        </strong>
+    </p>
+    <div class="bandeau_titre">
+        <div class="bandeau_bloc">
+{#            <i class="fas fa-project-diagram"></i>#}
+                        <i class="fas fa-shapes"></i>
+            {#            <i class="fas fa-file-contract"></i>#}
+            <div class="bandeau_bloc_titres">
+                <p>Chantier</p>
+                <p>{{ Chantier.nom }}</p>
+            </div>
+        </div>
+        <div class="bandeau_bloc">
+            <a class="btn_vert" href="#" style="margin-right: 1rem"
+               onclick="ouvrirAjouterModule()"><span class="fas fa-plus"></span> Ajouter un module</a>
+            <a class="btn_vert" href="#"  style="margin-right: 1rem"
+               onclick="ouvrirOptionsChantier()">Options du chantier</a>
+            <a class="btn_vert" href="#" style="margin-right: 1rem"
+               onclick="ouvrirOptionsPlan()">Options du plan</a>
 
-    <div id="barre_actions_plan">
-        <ul id="action_buttons">
-            <li><a class="btn_vert" onclick="ouvrirAjouterModule()">Ajouter un module<div class="fas fa-plus"></div></a></li>
-            <li><a class="btn_vert" onclick="ouvrirOptionsChantier()">Options du chantier</a></li>
-            <li><a class="btn_vert" onclick="ouvrirOptionsPlan()">Options du plan</a></li>
-        </ul>
-        <div id="partie_devis">
-            <div id="button_devis" data-toggle="collapse" href="#liste_devis">Devis<i class="fas fa-arrow-circle-right"></i></div>
-            <div id="liste_devis" class="flex flex1 flex_col flex_sa collapse">
+            <button class="btn_vert mr-2 dropdown-toggle" data-toggle="dropdown"><span class="fas fa-file-contract"></span>&nbsp;&nbsp;Devis</button>
+            <div class="dropdown-menu">
                 {% for devis in Devis %}
-                <div><a href="{{ path('afficher_devis', {iddevis: devis.iddevis}) }}">{{ devis.nom }}</a></div>
+                    <a class="dropdown-item" href="{{ path('afficher_devis', {iddevis: devis.iddevis}) }}">
+                        <span class="fas fa-file-contract"></span> {{ devis.nom }}</a>
                 {% endfor %}
-                <div><button class="btn_vert" onclick="ouvrirCreerDevis()">Créer un devis</button></div>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" style="color: #0C8148" onclick="ouvrirCreerDevis()">
+                    <span class="fas fa-plus" style="color: #0C8148; margin-left: 0"></span> Créer un devis</a>
             </div>
         </div>
     </div>
@@ -464,6 +487,32 @@
                     console.error( error );
                 });
             });
+
+
+            //HAUTEUR AUTO LISTE
+            function hauteurAuto()
+            {
+                let maxHeight = $('#liste_modules').height();
+                console.log("maxHeight : " + maxHeight + " | item : " + $('#liste_modules').height());
+                if (maxHeight < $('#options_module').height()) { maxHeight = $('#options_module').height(); }
+                console.log("maxHeight : " + maxHeight + " | item : " + $('#options_module').height());
+                if (maxHeight < $('#options_module_unite').height()) { maxHeight = $('#options_module_unite').height(); }
+                console.log("maxHeight : " + maxHeight + " | item : " + $('#options_module_unite').height());
+                if (maxHeight < $('#options_plan').height()) { maxHeight = $('#options_plan').height(); }
+                console.log("maxHeight : " + maxHeight + " | item : " + $('#options_plan').height());
+                if (maxHeight < $('#creer_devis').height()) { maxHeight = $('#creer_devis').height(); }
+                console.log("maxHeight : " + maxHeight + " | item : " + $('#creer_devis').height());
+                if (maxHeight < $('#ajouter_module').height()) { maxHeight = $('#ajouter_module').height(); }
+                console.log("maxHeight : " + maxHeight + " | item : " + $('#ajouter_module').height());
+                if (maxHeight < $('#options_chantier').height()) { maxHeight = $('#options_chantier').height(); }
+                console.log("maxHeight : " + maxHeight + " | item : " + $('#options_chantier').height());
+
+                // $('#partie_modules').css('min-height', maxHeight + "px");
+                $('#partie_modules').css('min-height', "calc(4rem + " + maxHeight + "px)");
+
+            }
+            hauteurAuto();
+
 
         </script>
         <script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/classic/ckeditor.js"></script>

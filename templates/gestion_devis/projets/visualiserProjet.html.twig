@@ -10,8 +10,30 @@
 {% if projet is null %}
     <p>Le projet n'existe pas</p>
 {% else %}
-<h2>{{ projet.nom }}</h2>
-    {% include "base/etat.html.twig" %}
+
+    <p class="filAriane"><a href="{{ path('afficherClient', {id: client.idclient}) }}"><i class="fas fa-user-tie"></i>{{ client.nom }}</a> > <strong><i class="fas fa-project-diagram"></i>{{ projet.nom }}</strong></p>
+    <div class="bandeau_titre">
+        <div class="bandeau_bloc">
+            <i class="fas fa-project-diagram"></i>
+{#            <i class="fas fa-shapes"></i>#}
+{#            <i class="fas fa-file-contract"></i>#}
+            <div class="bandeau_bloc_titres">
+                <p>Projet</p>
+                <p>{{ projet.nom }}</p>
+            </div>
+        </div>
+        <div class="bandeau_bloc">
+            <a class="btn_vert" style="margin-right: 1rem"
+               href="{{ path('creerNouveauChantier', {idprojet: projet.idprojet}) }}">
+                <span class="fas fa-plus"></span> Ajouter un chantier
+            </a>
+            <a class="btn_vert" href="#">Archiver le projet</a>
+        </div>
+    </div>
+{#    {% include "base/etat.html.twig" %}#}
+
+
+
 <div id="wrapper_visualisation_projet" class="flex flex_aic flex_sa">
 
 
@@ -22,7 +44,7 @@
         <div id="date_creation_projet">Créer le {{ projet.datecreation|date("d/m/Y") }}</div>
         <div>&nbsp;</div>
         <h5>Client</h5>
-        <div id="nom_client" ><a href="#">{{ client.nom }}</a></div>
+        <div id="nom_client" ><a href="{{ path('afficherClient', {id: client.idclient}) }}">{{ client.nom }}</a></div>
         <div id="lieu_projet"> - Situé à :  {{ client.ville }}</div>
         {% if client.estprofessionnel %}
             <div id="nom_vendeur"> - Professionnel</div>
@@ -31,18 +53,20 @@
         {% endif %}
     </div>
     <div id="div_chantiers" class="flex flex4 flex_col">
-        <ul id="liste_chantiers">
-            {% for chantier in chantiers %}
-            <li>
-                <div class="flex">
-                    <span class="flex flex_aic fas fa-trash-alt"></span>
-                    <a class="btn_vert" href="{{ path('afficherPlan', {idChantier: chantier.idchantier}) }}">{{ chantier.nom }}</a>
+        {% for chantier in chantiers %}
+            <a class="btn_vert" style="margin-bottom: 1rem; display: flex; flex-flow: row wrap; justify-content: space-between"
+               href="{{ path('afficherPlan', {idChantier: chantier.idchantier}) }}">
+                <div>
+                    {{ chantier.datecreation|date('d/m/Y') }} - <strong>{{ chantier.nom }}</strong>
                 </div>
-            </li>
-            {% endfor %}
-        </ul>
-
-        <button id="ajouter_un_chantier" name="ajouter_un_chantier" class="btn_vert"><a href="{{ path('creerNouveauChantier', {idprojet: projet.idprojet}) }}">Ajouter un chantier</a><span class="fas fa-plus"></span></button>
+                <div>
+                    Statut : En attente
+                </div>
+                <div>
+                    4 modules, 2 devis.
+                </div>
+            </a>
+        {% endfor %}
 
     </div>
 

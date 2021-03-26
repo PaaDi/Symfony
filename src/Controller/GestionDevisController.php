@@ -341,7 +341,9 @@ class GestionDevisController extends AbstractController
                                  ModuleRepository $moduleRepository,
                                  ModuledansplanRepository $moduledansplanRepository,
                                  GammeRepository $gammeRepository,
-                                 DevisRepository $devisRepository)
+                                 DevisRepository $devisRepository,
+                                 ProjetRepository $projetRepository,
+                                 ClientRepository $clientRepository)
     {
         $plan = $planRepository->findOneBy(['idchantier' => $idChantier]);
         $modules = array();
@@ -351,14 +353,17 @@ class GestionDevisController extends AbstractController
                 'ModuleDansPlan' => $moduledansplan,
             ]);
         }
-
+        $chantier = $chantierRepository->find($idChantier);
+        $projet = $projetRepository->find($chantier->getIdprojet());
         return $this->render('gestion_devis/chantiers/afficherPlan.html.twig', [
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
             'Plan'=> $plan,
-            'Chantier'=> $chantierRepository->find($idChantier),
+            'Chantier'=> $chantier,
             'Modules'=> $modules,
+            'Projet'=> $projet,
             'Gammes'=> $gammeRepository->findAll(),
             'Devis'=> $devisRepository->findBy(['idchantier' => $idChantier]),
+            'Client'=> $clientRepository->find($projet->getIdclient()),
         ]);
 
     }
@@ -616,12 +621,37 @@ class GestionDevisController extends AbstractController
     /**
      * @Route("/gestiondevis/devis/afficher/{iddevis}", name="afficher_devis")
      */
-    public function afficher_devis()
+    public function afficher_devis(int $iddevis,
+                                 PlanRepository $planRepository,
+                                 ChantierRepository $chantierRepository,
+                                 ModuleRepository $moduleRepository,
+                                 ModuledansplanRepository $moduledansplanRepository,
+                                 GammeRepository $gammeRepository,
+                                 DevisRepository $devisRepository,
+                                 ProjetRepository $projetRepository,
+                                 ClientRepository $clientRepository)
     {
+        $devis = $devisRepository->find($iddevis);
+        $chantier = $chantierRepository->find($devis->getIdchantier());
+        $plan = $planRepository->findOneBy(['idchantier' => $chantier->getIdchantier()]);
+        $projet = $projetRepository->find($chantier->getIdprojet());
+        $modules = array();
+        foreach ($moduledansplanRepository->findBy(['idplan' => $plan->getIdplan()]) as $moduledansplan) {
+            array_push($modules, [
+                'Module' => $moduleRepository->find($moduledansplan->getIdmodule()),
+                'ModuleDansPlan' => $moduledansplan,
+            ]);
+        }
+
         return $this->render('gestion_devis/devis/afficherDevis.twig', [
-            'controller_name' => 'GestionDevisController',
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
-            'id_page' => 'devis'
+            'Plan'=> $plan,
+            'Chantier'=> $chantier,
+            'Modules'=> $modules,
+            'Projet'=> $projet,
+            'Gammes'=> $gammeRepository->findAll(),
+            'Devis'=> $devis,
+            'Client'=> $clientRepository->find($projet->getIdclient()),
         ]);
     }
 

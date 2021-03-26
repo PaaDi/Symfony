@@ -1,6 +1,6 @@
 #wrapper_creation_chantier{
     width: auto;
-    padding: calc(1.5vw + 1.5vh);
+    padding: 2rem;
     box-shadow: 0 0 0.5em darkgrey;
     min-height: calc(15vw + 15vh);
     height: auto;
@@ -54,13 +54,11 @@
 
 .fa-plus{
     color: white;
-    margin-left: calc(1vw + 1vh);
+    /*margin-left: calc(1vw + 1vh);*/
 }
 
 .btn_vert{
-    margin: auto;
-    margin-top: calc(1vw + 1vh);
-    width: calc(10vw + 10vh);
+    margin: unset;
 }
 
 #ajouter_un_chantier{
@@ -99,7 +97,7 @@ p{
 }
 
 .fa-plus{
-    margin-left: calc(0.5vw + 0.5vh);
+    /*margin-left: calc(0.5vw + 0.5vh);*/
 }
 
 #partie_devis{
@@ -174,7 +172,9 @@ p{
      width:100%;
      background-color: white;
      min-height: calc(17vw + 17vh);
-     padding: 20px;
+     /*padding: 20px;*/
+     padding: 0 !important;
+     padding-right: 2rem !important;
      left: 0;
      top:0;
  }
@@ -199,12 +199,12 @@ p{
      margin-bottom: calc(1vw + 1vh);
  }
 
-.fa-arrow-circle-left{
-    color: #0C8148;
-    padding-right: calc(1vw + 1vh);
-}
+/*.fa-arrow-circle-left{*/
+/*    color: #0C8148;*/
+/*    padding-right: calc(1vw + 1vh);*/
+/*}*/
 
-.fa-arrow-circle-right{
-    color: #FFF;
-    padding-left: calc(1vw + 1vh);
-}
+/*.fa-arrow-circle-right{*/
+/*    color: #FFF;*/
+/*    padding-left: calc(1vw + 1vh);*/
+/*}*/

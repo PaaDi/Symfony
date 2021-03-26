@@ -3,15 +3,50 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('css/flex.css') }}" media="all"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/general_css.css') }}" media="all"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/devis/creerNouveauDevis.css') }}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/chantiers/afficherPlan.css') }}" media="all"/>
 {% endblock %}
 
 {% block contenu %}
-    <h2>Devis</h2>
+    <p class="filAriane">
+        <a href="{{ path('afficherClient', {id: Client.idclient}) }}">
+            <i class="fas fa-user-tie"></i>&nbsp;{{ Client.nom }}
+        </a>
+        &nbsp;>&nbsp;
+        <a href="{{ path('visualiserProjet', {id: Projet.idprojet}) }}">
+            <i class="fas fa-project-diagram"></i>&nbsp;{{ Projet.nom }}
+        </a>
+        &nbsp;>&nbsp;
+        <a href="{{ path('afficherPlan', {idChantier: Chantier.idchantier}) }}">
+            <i class="fas fa-shapes"></i>&nbsp;{{ Chantier.nom }}
+        </a>
+        &nbsp;>&nbsp;
+        <strong>
+            <i class="fas fa-file-contract"></i>&nbsp;{{ Devis.nom }}
+        </strong>
+    </p>
+    <div class="bandeau_titre">
+        <div class="bandeau_bloc">
+            {#            <i class="fas fa-project-diagram"></i>#}
+{#            <i class="fas fa-shapes"></i>#}
+            <i class="fas fa-file-contract"></i>
+            <div class="bandeau_bloc_titres">
+                <p>Devis</p>
+                <p>{{ Devis.nom }}</p>
+            </div>
+        </div>
+        <div class="bandeau_bloc">
+            <a class="btn_vert" href="#"  style="margin-right: 1rem"
+               onclick="ouvrirOptionsChantier()">Enregistrer</a>
+            <a class="btn_vert" href="#"
+               onclick="ouvrirOptionsPlan()">Générer un PDF</a>
+        </div>
+    </div>
 
-    <div id="wrapper_creation_devis" class="flex flex_aic flex_sa">
 
 
+
+    
+    <div id="wrapper_creation_chantier" class="flex flex_aic flex_sa">
         <div id="recap_infos_projet_chantier" class="flex flex1 flex_col flex_sa">
             <h5>Références du projet / chantier</h5>
             <div id="id_projet" name="id_projet">Projet n°3</div>

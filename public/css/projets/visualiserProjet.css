@@ -1,7 +1,7 @@
 #wrapper_visualisation_projet{
     width: auto;
-    padding: calc(2vw + 2vh);
-    box-shadow: 0 0 2em darkgrey;
+    padding: 1rem;
+    box-shadow: 1px 1px 3px #2222227f;
     min-height: calc(15vw + 15vh);
     height: auto;
     background-color: #FFF;
@@ -38,22 +38,18 @@
 
 .fa-plus{
     color: white;
-    margin-left: calc(1vw + 1vh);
+    /*margin-left: calc(1vw + 1vh);*/
 }
 
 .btn_vert{
     margin: unset;
-    margin-right: calc(2vw + 2vh);
+    /*margin-right: calc(2vw + 2vh);*/
 }
 
 #ajouter_un_chantier{
     margin-top: calc(2vw + 2vh);
 }
 
-.btn_vert a:visited, .btn_vert a:hover {
-    text-decoration: none;
-    color: white;
-}
 
 p{
     margin: unset;

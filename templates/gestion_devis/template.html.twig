@@ -2,7 +2,9 @@
 
 {% block title %}Pyramide - Gestion de devis{% endblock %}
 
-{% block stylesheets %}  <link rel="stylesheet" type="text/css" href="../css/nav_gestion_devis.css" media="all"/> {% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/nav_gestion_devis.css') }}" media="all"/>
+{% endblock %}
 {% block body %}
 
     {% include "base/header.html.twig" %}
