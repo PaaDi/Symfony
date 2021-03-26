@@ -26,8 +26,35 @@
 }
 
 #form_creation_devis {
-    width: calc(35vw + 35vh);
+    width: 100%;
     padding: calc(2vw + 2vh);
+    background-color: #0C8148;
+    color: #FFF;
+}
+
+#partie_finitions{
+    width: 100%;
+    padding: calc(2vw + 2vh);
+    background-color: #DDD;
+}
+
+#detail_modules{
+    width: 100%;
+    padding: calc(2vw + 2vh);
+    background-color: #ededed;
+}
+
+#bilan_devis{
+    width: 100%;
+    padding: calc(2vw + 2vh);
+    background-color: #0C8148;
+    color: #FFF;
+}
+
+#prix_final{
+    text-align: center;
+    font-size: larger;
+    font-weight: bold;
 }
 
 .marges{
