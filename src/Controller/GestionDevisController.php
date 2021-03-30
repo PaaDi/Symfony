@@ -7,8 +7,11 @@ use App\Entity\Contact;
 use App\Entity\Devis;
 use App\Entity\Modulesdansplan;
 use App\Entity\Projet;
+use App\Entity\VariantsDansDevis;
 use App\Repository\ChantierRepository;
 use App\Repository\ClientRepository;
+use App\Repository\ComposantsRepository;
+use App\Repository\CompositionModuleRepository;
 use App\Repository\ContactRepository;
 use App\Repository\DevisRepository;
 use App\Repository\GammeRepository;
@@ -17,6 +20,10 @@ use App\Repository\ModuledansplanRepository;
 use App\Repository\ModuleRepository;
 use App\Repository\PlanRepository;
 use App\Repository\ProjetRepository;
+use App\Repository\TypevariantRepository;
+use App\Repository\VariantDefautGammeRepository;
+use App\Repository\VariantsDansDevisRepository;
+use App\Repository\VariantsRepository;
 use http\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -629,19 +636,185 @@ class GestionDevisController extends AbstractController
                                  GammeRepository $gammeRepository,
                                  DevisRepository $devisRepository,
                                  ProjetRepository $projetRepository,
-                                 ClientRepository $clientRepository)
+                                 ClientRepository $clientRepository,
+                                 CompositionModuleRepository $compositionModuleRepository,
+                                 TypevariantRepository $typevariantRepository,
+                                 VariantsDansDevisRepository $variantsDansDevisRepository,
+                                 VariantDefautGammeRepository $variantDefautGammeRepository,
+                                 VariantsRepository $variantsRepository,
+                                 ComposantsRepository $composantsRepository)
     {
         $devis = $devisRepository->find($iddevis);
         $chantier = $chantierRepository->find($devis->getIdchantier());
         $plan = $planRepository->findOneBy(['idchantier' => $chantier->getIdchantier()]);
         $projet = $projetRepository->find($chantier->getIdprojet());
+
+
         $modules = array();
+        $totalHT = 0;
         foreach ($moduledansplanRepository->findBy(['idplan' => $plan->getIdplan()]) as $moduledansplan) {
+            $module = $moduleRepository->find($moduledansplan->getIdmodule());
+            $compoModules = $compositionModuleRepository->findBy(['idmodule' => $moduledansplan->getIdmodule()]);
+
+            $multiplicateurAvecUnite = 0;
+            if ($module->getUnite() == "unite")
+            {
+                $multiplicateurAvecUnite = 1;
+            }
+            if ($module->getUnite() == "m")
+            {
+                $x1 = $moduledansplan->getPosDebX();
+                $y1 = $moduledansplan->getPosDebY();
+
+                $x2 = $moduledansplan->getPosFinX();
+                $y2 = $moduledansplan->getPosFinY();
+
+                $x = ( pow($x2,2) - pow($x1,2));
+                $y = ( pow($y2,2) - pow($y1,2));
+
+                $distance = ( sqrt($x + $y) );
+
+                $longueur = round($distance,2);
+
+                $multiplicateurAvecUnite = $longueur / $module->getQteunite();
+            }
+            if ($module->getUnite() == "m2")
+            {
+                $x1 = $moduledansplan->getPosDebX();
+                $y1 = $moduledansplan->getPosDebY();
+
+                $x2 = $moduledansplan->getPosFinX();
+                $y2 = $moduledansplan->getPosFinY();
+
+                $x = $x2 - $x1;
+                $y = $y2 - $y1;
+
+                $distance = $x * $y;
+
+                $longueur = round($distance,2);
+
+                $multiplicateurAvecUnite = $longueur / $module->getQteunite();;
+            }
+
+            $composantsDansModule = array();
+            $prixTotal = 0;
+            foreach ($compoModules as $compoModule)
+            {
+                if ($compoModule->getIdtypesvariant() != null) //Variant
+                {
+                    $variant_user_selected_value = $variantsDansDevisRepository->findOneBy(
+                        ['idTypevariant' => $compoModule->getIdtypesvariant(),
+                            'idDevis' => $iddevis]
+                    );
+                    if ($variant_user_selected_value == null)//pas de preselection
+                    {
+                        $leVariant = $variantsRepository->find($variantDefautGammeRepository->findOneBy(['idTypeVariant' => $compoModule->getIdtypesvariant(),
+                            'idgamme' => $devis->getIdGamme()])->getIdvariant());
+                        $composant = $composantsRepository->find($leVariant->getIdcomposant());
+                        array_push($composantsDansModule, [
+                            'Composant' => $composant,
+                            'Quantite' => $compoModule->getQuantite(),
+                            'QuantiteCalc' => $compoModule->getQuantite() * $multiplicateurAvecUnite,
+                            'Prix' => $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite(),
+                        ]);
+                        $prixTotal += $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite();
+                    }
+                    else{
+                        $leVariant = $variantsRepository->find($variant_user_selected_value->getIdVariant());
+                        $composant = $composantsRepository->find($leVariant->getIdcomposant());
+                        array_push($composantsDansModule, [
+                            'Composant' => $composant,
+                            'Quantite' => $compoModule->getQuantite(),
+                            'QuantiteCalc' => $compoModule->getQuantite() * $multiplicateurAvecUnite,
+                            'Prix' => $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite(),
+                        ]);
+                        $prixTotal += $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite();
+                    }
+                }
+                else // Composant
+                {
+                    $composant = $composantsRepository->find($compoModule->getIdcomposant());
+                    array_push($composantsDansModule, [
+                        'Composant' => $composant,
+                        'Quantite' => $compoModule->getQuantite(),
+                        'QuantiteCalc' => $compoModule->getQuantite() * $multiplicateurAvecUnite,
+                        'Prix' => $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite(),
+                    ]);
+                    $prixTotal += $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite();
+                }
+            }
             array_push($modules, [
-                'Module' => $moduleRepository->find($moduledansplan->getIdmodule()),
+                'Module' => $module,
                 'ModuleDansPlan' => $moduledansplan,
+                'Composants' => $composantsDansModule,
+                'Longueur' => $module->getQteunite() * $multiplicateurAvecUnite,
+                'Prix' => $prixTotal,
             ]);
+            $totalHT += $prixTotal;
         }
+
+
+        $finitions = array();
+        foreach ($moduledansplanRepository->findBy(['idplan' => $plan->getIdplan()]) as $moduledansplan) {
+            $compoModules = $compositionModuleRepository->findBy(['idmodule' => $moduledansplan->getIdmodule()]);
+            foreach ($compoModules as $compoModule)
+            {
+                if ($compoModule->getIdtypesvariant() != null)
+                {
+                    $variant_user_selected_value = $variantsDansDevisRepository->findOneBy(
+                        ['idTypevariant' => $compoModule->getIdtypesvariant(),
+                            'idDevis' => $iddevis]
+                    );
+                    if ($variant_user_selected_value == null)//pas de preselection
+                    {
+                        $leVariant = $variantsRepository->find($variantDefautGammeRepository->findOneBy(['idTypeVariant' => $compoModule->getIdtypesvariant(),
+                            'idgamme' => $devis->getIdGamme()])->getIdvariant());
+                        $optionsVariant = array();
+                        foreach ($variantsRepository->findBy(['idtypesvariant' => $compoModule->getIdtypesvariant()]) as $variant) {
+                            $variant_is_selected = false;
+                            if ($variant->getIdvariant() == $leVariant->getIdvariant())
+                            {
+                                $variant_is_selected = true;
+                            }
+                            array_push($optionsVariant, [
+                                'variant' => $variant,
+                                'selected' => $variant_is_selected
+                            ]);
+                        }
+                        array_push($finitions, [
+                            'typeVariant' => $typevariantRepository->find($compoModule->getIdtypesvariant()),
+                            'Variant' => $leVariant,
+                            'EstGammeDefaut' => true,
+                            'optionsVariants' => $optionsVariant,
+                        ]);
+                    }
+                    else{
+                        $leVariant = $variantsRepository->find($variant_user_selected_value->getIdVariant());
+                        $optionsVariant = array();
+                        foreach ($variantsRepository->findBy(['idtypesvariant' => $compoModule->getIdtypesvariant()]) as $variant) {
+                            $variant_is_selected = false;
+                            if ($variant->getIdvariant() == $leVariant->getIdvariant())
+                            {
+                                $variant_is_selected = true;
+                            }
+                            array_push($optionsVariant, [
+                                'variant' => $variant,
+                                'selected' => $variant_is_selected
+                            ]);
+                        }
+                        array_push($finitions, [
+                            'typeVariant' => $typevariantRepository->find($compoModule->getIdtypesvariant()),
+                            'Variant' => $leVariant,
+                            'EstGammeDefaut' => false,
+                            'optionsVariants' => $optionsVariant,
+                        ]);
+                    }
+                }
+            }
+
+        }
+
+//        print_r($finitions);
 
         return $this->render('gestion_devis/devis/afficherDevis.twig', [
             'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
@@ -651,8 +824,66 @@ class GestionDevisController extends AbstractController
             'Projet'=> $projet,
             'Gammes'=> $gammeRepository->findAll(),
             'Devis'=> $devis,
+            'Finitions'=> $finitions,
             'Client'=> $clientRepository->find($projet->getIdclient()),
+            'TotalHT'=> $totalHT,
+            'TotalTTC'=> ($totalHT * $devis->getTauxTva() / 100) + $totalHT,
         ]);
+    }
+
+
+
+
+    /**
+     * @Route("/gestiondevis/devis/save/{iddevis}", name="save_devis")
+     */
+    public function save_devis(int $iddevis,
+                               DevisRepository $devisRepository,
+                               VariantsRepository $variantsRepository,
+                               VariantsDansDevisRepository $variantsDansDevisRepository)
+    {
+        $devis = $devisRepository->find($iddevis);
+        $request = Request::createFromGlobals();
+        $entityManager = $this->getDoctrine()->getManager();
+
+//        print_r($request->request->all());die;
+
+        $devis->setNom($request->request->get('nom_devis'));
+        $devis->setEtat($request->request->get('etat'));
+        if ($request->request->get('paye_oui') == "on")
+        {
+            $devis->setEstpaye(true);
+        }
+        if ($request->request->get('paye_non') == "on")
+        {
+            $devis->setEstpaye(false);
+        }
+        $devis->setNotes($request->request->get('notes'));
+        $devis->setIdGamme(intval($request->request->get('choix_gamme')));
+        $devis->setRemise(intval($request->request->get('remise_devis')));
+        $devis->setTauxTva(intval($request->request->get('tauxTVA_devis')));
+
+        foreach ($request->request->get('finition') as $variantid) {
+            $variant = $variantsRepository->find($variantid);
+            $variantDansDevis = $variantsDansDevisRepository->findOneBy(['idTypevariant' => $variant->getIdtypesvariant(), 'idDevis' => $iddevis]);
+            if ($variantDansDevis == null)
+            {
+                $variantDansDevis = new VariantsDansDevis();
+            }
+
+            $variantDansDevis->setIdVariant($variantid);
+            $variantDansDevis->setIdDevis($iddevis);
+            $variantDansDevis->setIdTypevariant($variant->getIdtypesvariant());
+
+            $entityManager->persist($variantDansDevis);
+
+        }
+
+        $entityManager->persist($devis);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('afficher_devis', ["iddevis" => $iddevis]);
     }
 
 }

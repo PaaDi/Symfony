@@ -35,6 +35,11 @@ class Variantsdefautgamme
      */
     private $idvariant;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $idTypeVariant;
+
     public function getIdvariantsdefautgamme(): ?int
     {
         return $this->idvariantsdefautgamme;
@@ -60,6 +65,18 @@ class Variantsdefautgamme
     public function setIdvariant(int $idvariant): self
     {
         $this->idvariant = $idvariant;
+
+        return $this;
+    }
+
+    public function getIdTypeVariant(): ?int
+    {
+        return $this->idTypeVariant;
+    }
+
+    public function setIdTypeVariant(int $idTypeVariant): self
+    {
+        $this->idTypeVariant = $idTypeVariant;
 
         return $this;
     }

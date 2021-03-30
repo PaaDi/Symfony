@@ -36,10 +36,8 @@
             </div>
         </div>
         <div class="bandeau_bloc">
-            <a class="btn_vert" href="#"  style="margin-right: 1rem"
-               onclick="ouvrirOptionsChantier()">Enregistrer</a>
-            <a class="btn_vert" href="#"
-               onclick="ouvrirOptionsPlan()">Générer un PDF</a>
+            <button class="btn_vert" form="form_creation_devis" style="margin-right: 1rem">Enregistrer</button>
+            <a class="btn_vert" href="#">Générer un PDF</a>
         </div>
     </div>
 
@@ -60,166 +58,129 @@
         </div>
 
         <div id="div_creation_devis" class="flex flex4 flex_col">
-            <form id="form_creation_devis" action="" method="post" class="flex flex4 flex_col">
-                <div class="flex fullwidth marges">
-                    <label for="nom_devis">Nom du devis :</label><br>
-                    <input type="text" id="nom_devis" name="nom_devis">
-                </div>
-                <div class="flex fullwidth marges">
-                    <label for="etat">Etat du devis :</label><br>
-                    <select id="etat" name="etat">
-                        <option value="">--Etat devis--</option>
-                        <option value="nonpropose">Non proposé</option>
-                        <option value="attenteretourclient">Attente retour client</option>
-                        <option value="valide">Validé</option>
-                        <option value="annule">Annulé</option>
-                    </select><br>
-                </div>
-                <div>
-                    <p> Est payé :</p>
-                    <!-- OUI -->
-                    <div class="form-check form-check-inline">
-                        <input type="radio" class="form-check-input" id="oui" name="paye">
-                        <label class="form-check-label" for="oui">Oui</label>
-                    </div>
 
-                    <!-- NON -->
-                    <div class="form-check form-check-inline">
-                        <input type="radio" class="form-check-input" id="non" name="paye">
-                        <label class="form-check-label" for="non">Non</label>
-                    </div>
-                </div>
-                <div class="flex fullwidth marges">
-                    <label for="devis_creation_date" class="flex flex1 flex_end pr">   Date de création du devis :</label>
-                    <input type="date" class="flex flex1" id="devis_creation_date" name="devis_creation_date" value="{{ "now"|date("Y-m-d") }}" required>
-                </div>
-                <div id="notes" name="notes">
+            <form id="form_creation_devis" action="{{ path('save_devis', {iddevis: Devis.iddevis}) }}" method="post" class="flex flex4 flex_col">
+            <div id="infos_devis">
+<div class="row">
+    <div class="col-6">
+        <div class="flex fullwidth marges">
+            <label for="nom_devis">Nom du devis : </label><br>
+            <input type="text" id="nom_devis" name="nom_devis" value="{{ Devis.nom }}">
+        </div>
+        <div class="flex fullwidth marges">
+            <label for="etat">Etat du devis : </label><br>
+            <select id="etat" name="etat">
+                <option value="nonpropose" {% if Devis.etat == "Non proposé" %}selected{% endif %}>Non proposé</option>
+                <option value="attenteretourclient" {% if Devis.etat == "Attente retour client" %}selected{% endif %}>Attente retour client</option>
+                <option value="valide" {% if Devis.etat == "Validé" %}selected{% endif %}>Validé</option>
+                <option value="annule" {% if Devis.etat == "Annulé" %}selected{% endif %}>Annulé</option>
+            </select><br>
+        </div>
+        <div class="flex fullwidth marges">
+            <label for="devis_creation_date" class="flex pr">   Date de création du devis : </label>
+            <input type="date" class="flex" id="devis_creation_date" name="devis_creation_date" value="{{ Devis.datecreation|date("Y-m-d") }}" disabled>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="flex fullwidth marges">
+            <label for="nom_devis">Taux de TVA (en %) : </label><br>
+            <input type="number" name="tauxTVA_devis" value="{{ Devis.tauxtva }}">
+        </div>
+        <div class="flex fullwidth marges">
+            <label for="nom_devis">Remise (en €) : </label><br>
+            <input type="number" name="remise_devis" value="{{ Devis.remise }}">
+        </div>
+        <div>
+            <!-- OUI -->
+            <div class="form-check form-check-inline">
+                <p style="margin-right: 1rem"> Est payé :</p>
+                <input type="radio" class="form-check-input" id="oui" name="paye_oui" {% if Devis.estpaye %}checked{% endif %}>
+                <label class="form-check-label" for="oui">Oui</label>
+            </div>
+
+            <!-- NON -->
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="non" name="paye_non" {% if Devis.estpaye == false %}checked{% endif %}>
+                <label class="form-check-label" for="non">Non</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+                <div id="notes" name="notes" style="margin-top: 1rem">
                         <label for="note">NOTES : </label>
-                        <!--<input id="note" name="note" type="textarea">-->
-                        <div id="editor"></div>
+                        <textarea name="notes" id="editor">
+                            {{ Devis.notes }}
+                        </textarea>
                 </div>
-            </form>
+            </div>
 
-             <form id="partie_finitions" name="partie_finitions">
+                <style>
+                    input{
+                        margin-left: 15px;
+                        padding-left: 5px !important;
+                    }
+                </style>
+
+
+            <div id="partie_finitions" name="partie_finitions">
                 <div class="flex fullwidth marges">
                     <label for="choix_gamme">Sélection d'une gamme :</label><br>
                     <select id="choix_gamme" name="choix_gamme">
-                        <option value="">--Gamme--</option>
-                        <option value="Nature">Nature</option>
-                        <option value="Luxe">Luxe</option>
-                        <option value="Ecologique">Ecologique</option>
-                        <option value="DéveloppementDurable">Développement durable</option>
-                        <option value="EconomieEnergie">Economie d'énergie</option>
+                        {% for gamme in Gammes %}
+                            <option value="{{ gamme.idgamme }}" {% if gamme.idgamme == Devis.idgamme %}selected{% endif %}>{{ gamme.nom }}</option>
+                        {% endfor %}
                     </select><br>
                 </div>
                 <div class="flex flex_col">
                     <h5>Ajustement des finitions de la gamme choisie :</h5>
+                    {% for finition in Finitions %}
                     <div class="flex fullwidth marges">
-                        <label for="isolant_toit" >Isolant toit</label><br>
-                        <select id="isolant_toit" name="isolant_toit" class=>
-                        <option value="">--Isolant toit--</option>
-                        <option value="Chanvre">Chanvre</option>
-                        <option value="LaineVerre">Laine de verre</option>
-                        <option value="CotonNaturel">Coton naturel</option>
-                        <option value="LaineMouton">Laine de mouton</option>
-                        <option value="PlastiqueRecycle">Plastique recyclé</option>
+                        <label for="finition_{{ finition['typeVariant'].idtypesvariant }}" >{{ finition['typeVariant'].nom }}</label><br>
+                        <select name="finition[]">
+                            {% for optionVariant in finition['optionsVariants'] %}
+                                <option value="{{ optionVariant['variant'].idvariant }}"
+                                        {% if optionVariant['selected'] %}selected{% endif %}>
+                                    {{ optionVariant['variant'].nom }}
+                                </option>
+                            {% endfor %}
                         </select><br>
                     </div>
-                    <div class="flex fullwidth marges">
-                        <label for="couverture">Couverture</label><br>
-                        <select id="couverture" name="couverture">
-                            <option value="">--Couverture--</option>
-                            <option value="Ardoise">Ardoise</option>
-                            <option value="TuileArgile">Tuile argile</option>
-                            <option value="TuileRomaine">Tuile romaine</option>
-                            <option value="Zinc">Zinc</option>
-                        </select><br>
-                    </div>
-                    <div class="flex fullwidth marges">
-                        <label for="isolants_murs">Isolant murs exterieurs</label><br>
-                        <select id="isolants_murs" name="isolants_murs">
-                            <option value="">--Isolants_murs--</option>
-                            <option value="LaineVerre">Laine de verre</option>
-                            <option value="LaineRoche">Laine de roche</option>
-                            <option value="LaineNaturelle">Laine naturelle</option>
-                            <option value="ComposantRecycle">Composant recyclé</option>
-                        </select><br>
-                    </div>
-                    <div class="flex fullwidth marges">
-                        <label for="finition_exterieure">Finition extérieure</label><br>
-                        <select id="finition_exterieure" name="finition_exterieure">
-                            <option value="">--Finition_exterieure--</option>
-                            <option value="CrépisBlanc">Crépis blanc</option>
-                            <option value="CrépisCouleur">Crépis couleur</option>
-                            <option value="BoisBrut">Bois brut</option>
-                            <option value="BetonCire">Béton ciré</option>
-                        </select><br>
-                    </div>
+                    {% endfor %}
                 </div>
-             </form>
+             </div>
+            </form>
 
-            <div id="detail_modules" name="detail_modules">
-                <div>
-                    <p>Module 1 : 12,56m² - 2355,00€</p>
+            <div id="detail_modules">
+                <div style="display: flex; flex-flow: row wrap; justify-content: space-between">
+                    <h5>Recap complet</h5>
+                    <button class="btn_vert" form="form_creation_devis" style="height: 2rem;">Actualiser</button>
+                </div>
+                {% for module in Modules %}
+                    <div>
+                        <p>
+                            Nom : {{ module['Module'].nom }} - {{ module['Longueur'] }}{{ module['Module'].unite }} - {{ module['Prix'] }}€
+                            <i> (Base : {{ module['Module'].qteunite }}{{ module['Module'].unite }})</i>
+                        </p>
                         <ul>
-                            <li>Composant1 - 2 unités - 45,00€</li>
-                            <li>Composant2 - 154 unités - 1045,00€</li>
-                            <li>Composant3 - 35 unités - 445,00€</li>
-                            <li>Composant4 - 68 unités - 886,00€</li>
+                            {% for composant in module['Composants'] %}
+                                <li>
+                                    Nom : {{ composant['Composant'].nom }} - Qte : {{ composant['QuantiteCalc'] }} - {{ composant['Prix'] }}€
+                                    <i> (Réf : Pour {{ module['Module'].qteunite }}{{ module['Module'].unite }}, il en faut {{ composant['Quantite'] }} ({{ composant['Composant'].prix }}€ à l'unité))</i>
+                                </li>
+                            {% endfor %}
                         </ul>
-                </div>
-                <div>
-                    <p>Module 2 : 12,56m² - 2355,00€</p>
-                    <ul>
-                        <li>Composant1 - 2 unités - 45,00€</li>
-                        <li>Composant2 - 154 unités - 1045,00€</li>
-                        <li>Composant3 - 35 unités - 445,00€</li>
-                        <li>Composant4 - 68 unités - 886,00€</li>
-                    </ul>
-                </div>
-                <div>
-                    <p>Module 3 : 12,56m² - 2355,00€</p>
-                    <ul>
-                        <li>Composant1 - 2 unités - 45,00€</li>
-                        <li>Composant2 - 154 unités - 1045,00€</li>
-                        <li>Composant3 - 35 unités - 445,00€</li>
-                        <li>Composant4 - 68 unités - 886,00€</li>
-                    </ul>
-                </div>
-                <div>
-                    <p>Module 4 : 11,56m² - 2355,00€</p>
-                    <ul>
-                        <li>Composant1 - 2 unités - 45,00€</li>
-                        <li>Composant2 - 154 unités - 1045,00€</li>
-                        <li>Composant3 - 35 unités - 445,00€</li>
-                        <li>Composant4 - 68 unités - 886,00€</li>
-                    </ul>
-                </div>
+                    </div>
+                {% endfor %}
             </div>
 
-            <div id="bilan_devis">
-                <p>Tous les prix dans le corps du devis sont exprimés hors taxes (HT) - TVA en vigueur : 20%</p>
-                <p>Total devis HT : 125 059,00 €</p>
-                <p id="prix_final">Total devis TTC : 148 647,00 € </p>
+            <div id="bilan_devis" style="text-align: right">
+                <i>*Tous les prix dans le corps du devis sont exprimés hors taxes (HT)</i>
+                <p>Total devis HT : {{ TotalHT }}€</p>
+                <p>Taux TVA : {{ Devis.tauxtva }}%</p>
+                <strong>Total devis TTC : <strong style="font-size: 1.3rem">{{ TotalTTC }}€ </strong></strong>
             </div>
-{#                <div>#}
-{#                    <label for="chantier_name" class="flex flex1 flex_end pr">Nom :</label>#}
-{#                    <input type="text" class="flex flex1" placeholder="Nom du chantier" name="chantier_name" value="Chantier finitions Nature - Personnalisé">#}
-{#                </div>#}
-{#                <div class="flex fullwidth marges">#}
-{#                    <label for="project_creation_date" class="flex flex1 flex_end pr">   Date de création du projet :</label>#}
-{#                    <input type="text" class="flex flex1" placeholder="jj/mm/aaaa" id="project_creation_date" name="project_creation_date" value="{{ "now"|date("Y-m-d") }}" required>#}
-{#                </div>#}
-{#                <div>#}
-{#                    <input type="checkbox" checked data-toggle="toggle">#}
-{#                </div>#}
-
-            </form>
-            <div class="flex flex_col fullwidth marges">
-                <button type="submit" class="marges btn_vert" id="valid_creation_devis" name="valid_creation_devis">Créer le devis</button>
-            </div>
-            </form>
-
         </div>
 
 

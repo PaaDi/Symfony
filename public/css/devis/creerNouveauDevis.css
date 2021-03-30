@@ -25,7 +25,7 @@
     margin-right: calc(2vw + 2vh);
 }
 
-#form_creation_devis {
+#infos_devis {
     width: 100%;
     padding: calc(2vw + 2vh);
     background-color: #0C8148;
@@ -36,6 +36,7 @@
     width: 100%;
     padding: calc(2vw + 2vh);
     background-color: #DDD;
+    color: black;
 }
 
 #detail_modules{
@@ -86,11 +87,11 @@
     margin-left: calc(1vw + 1vh);
 }
 
-.btn_vert{
-    margin: auto;
-    margin-top: calc(1vw + 1vh);
-    width: calc(10vw + 10vh);
-}
+/*.btn_vert{*/
+/*    margin: auto;*/
+/*    margin-top: calc(1vw + 1vh);*/
+/*    width: calc(10vw + 10vh);*/
+/*}*/
 
 #ajouter_un_devis{
     margin-top: calc(2vw + 2vh);
