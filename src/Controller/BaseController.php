@@ -24,7 +24,7 @@ class BaseController extends AbstractController
         $cheminImagesSite = "Content/site-images/";
 
         $listeDesApps = array(
-            array("nom" => "Gestion de devis", "description" => "Gérez les projet, chantiers devis et clients de l'entreprise.",
+            array("nom" => "Gestion de devis", "description" => "Gérez les projet, chantiers, devis et clients de l'entreprise.",
                 "chemin_image" => $cheminImagesSite."ico-comm.png",
                 "chemin_app" => $this->generateUrl('gestion_devis')),
 
@@ -44,12 +44,8 @@ class BaseController extends AbstractController
                 "chemin_image" => $cheminImagesSite."ico-services.png",
                 "chemin_app" => $this->generateUrl('base-appSelection')),
 
-            array("nom" => "Administrateur", "description" => "Gerez les tickets des utilisateurs et reglez le site.",
+            array("nom" => "Administrateur", "description" => "Gerez les tickets des utilisateurs et parametrez le site.",
                 "chemin_image" => $cheminImagesSite."ico-settings.png",
-                "chemin_app" => $this->generateUrl('base-appSelection')),
-
-            array("nom" => "Blog", "description" => "Gerez les indicateurs et les newsletters pour les clients",
-                "chemin_image" => $cheminImagesSite."ico-blog.png",
                 "chemin_app" => $this->generateUrl('base-appSelection')),
         );
         return $this->render('base/appSelection.html.twig', [

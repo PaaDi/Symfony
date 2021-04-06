@@ -29,6 +29,15 @@ select {
     margin-left: 15px;
 }
 
+#btn-recherche-header{
+    background-color: #fff;
+    border-color: #ced4da;
+    color: #0e9453;
+}
+#btn-recherche-header i{
+    transform: rotate(90deg);
+}
+
 .btn_vert {
     background-color: #0C8148;
     color: #FFF;

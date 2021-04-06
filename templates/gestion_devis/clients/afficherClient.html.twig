@@ -4,9 +4,26 @@
 {% block contenu %}
 
 
-<h1>{{ client.nom }}</h1>
+    <p class="filAriane"><a href="{{ path('afficherListeClients') }}"><i class="fas fa-users"></i> Liste des clients</a> > <strong><i class="fas fa-user-tie"></i> {{ client.nom }}</strong></p>
+    <div class="bandeau_titre">
+        <div class="bandeau_bloc">
+            <i class="fas fa-user-tie"></i>
+            {#            <i class="fas fa-shapes"></i>#}
+            {#            <i class="fas fa-file-contract"></i>#}
+            <div class="bandeau_bloc_titres">
+                <p>Client</p>
+                <p>{{ client.nom }}</p>
+            </div>
+        </div>
+        <div class="bandeau_bloc">
+            <a class="btn_vert" style="margin-right: 1rem" href="#">Modifier</a>
+            <a class="btn_vert" style="margin-right: 1rem" href="#">Appeler</a>
+            <a class="btn_vert" style="margin-right: 1rem" href="#">Envoyer un e-mail</a>
+            <a class="btn_vert" href="#">Supprimer</a>
+        </div>
+    </div>
 
-    <div class="row">
+    <div class="flex flex_aic flex_sa row" id="wrapper_visualisation_projet" style="margin-left: 0; margin-right: 0">
         <div class="col-4">
             <h5>Infos client</h5>
             <p>Ref client : {{ client.refClient }}</p>
@@ -25,7 +42,7 @@
         <div class="col-4" style="display: flex; flex-flow: column wrap">
             <h5>Contacts</h5>
             {% for contact in contacts %}
-            <a href="#" style="background-color: #57b88a;
+            <a href="#" style="background-color: #0C8148;
                 border-radius: 5px;
                 width: 80%;
                 margin-bottom: 2rem;
@@ -38,14 +55,14 @@
             </a>
 
             {% endfor %}
-            <a href="#" style="background-color: #57b88a;
+            <a href="#" style="background-color: #0C8148;
                 border-radius: 5px;
                 width: 80%;
                 margin-bottom: 2rem;
                 padding: 0.4rem 1rem;
                 color: white"
                 onclick="$('#form_new_contact').show(0)">
-                Ajouter contact
+                <i class="fas fa-plus"></i> Ajouter contact
             </a>
             <form action="" method="post" style="display: none" id="form_new_contact">
                 <h5>Nouveau contact :</h5>
@@ -70,7 +87,7 @@
         <div class="col-4" style="display: flex; flex-flow: column wrap">
             <h5>Projets</h5>
             {% for projet in projets %}
-                <a href="{{ path('afficherClient', {id: client.idclient}) }}" style="background-color: #57b88a;
+                <a href="{{ path('visualiserProjet', {id: projet.idprojet}) }}" style="background-color: #0C8148;
                 border-radius: 5px;
                 width: 80%;
                 margin-bottom: 2rem;
@@ -85,7 +102,18 @@
 
     <style>
         p{
-            margin-bottom: 0 !important;
+            margin: unset;
+        }
+        .btn_vert{
+            margin-top: unset;
+        }
+        #wrapper_visualisation_projet {
+            width: auto;
+            padding: 1rem;
+            box-shadow: 1px 1px 3px #2222227f;
+            min-height: calc(15vw + 15vh);
+            height: auto;
+            background-color: #FFF;
         }
     </style>
 {% endblock %}

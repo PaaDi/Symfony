@@ -6,9 +6,47 @@
 
     {% include "base/header.html.twig" %}
 
-    <div class="row mt-2">
+    <div class="row mx-4 my-2">
         <div class="col mt-auto mb-auto font-weight-bold">Bonjour, {{ app.user.prenom }}.</div>
-        <img src="Content/temp-images/indics.png" class="img-fluid w-75 mx-auto" alt="">
+{#        <img src="Content/temp-images/indics.png" class="img-fluid w-75 mx-auto" alt="">#}
+        <div class="w-75 rounded py-2" id="indicateurs">
+            <div>
+                <h5>INDICATEURS</h5>
+                <p>(Pour les 30 derniers jours)</p>
+            </div>
+            <div style="display: flex; align-items: center; flex-direction: column">
+                <h5>5</h5>
+                <p>Ventes</p>
+            </div>
+            <div style="display: flex; align-items: center; flex-direction: column">
+                <h5>12</h5>
+                <p>Devis signés</p>
+            </div>
+            <div style="display: flex; align-items: center; flex-direction: column">
+                <h5>12</h5>
+                <p>Maison en construction</p>
+            </div>
+            <div style="display: flex; align-items: center; flex-direction: column">
+                <h5>154 000€</h5>
+                <p>Bénéfice net</p>
+            </div>
+        </div>
+        <style>
+            #indicateurs{
+                display: flex;
+                background-color: #57b88a;
+                align-items: center;
+                justify-content: space-evenly;
+                color: white
+            }
+            #indicateurs p{
+                margin: 0;
+            }
+            #indicateurs h5{
+                margin: 0;
+                font-size: 1.4rem;
+            }
+        </style>
     </div>
     <div class="row mt-3 mb-2">
         <h4 class="col text-center">Toutes les applis :</h4>

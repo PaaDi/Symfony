@@ -37,7 +37,8 @@
         </div>
         <div class="bandeau_bloc">
             <button class="btn_vert" form="form_creation_devis" style="margin-right: 1rem">Enregistrer</button>
-            <a class="btn_vert" href="#">Générer un PDF</a>
+            <a class="btn_vert" href="{{ path('pdf_devis', {iddevis: Devis.iddevis}) }}" style="margin-right: 1rem">Générer un PDF</a>
+            <a class="btn_vert" href="{{ path('pdf_devis', {iddevis: Devis.iddevis}) }}">Supprimer le devis</a>
         </div>
     </div>
 
@@ -48,14 +49,26 @@
     <div id="wrapper_creation_chantier" class="flex flex_aic flex_sa">
 
         <div id="recap_infos_projet_chantier" class="flex flex1 flex_col flex_sa">
-            <h5>Références du projet / chantier</h5>
-            <div id="id_projet" name="id_projet">Projet n°3</div>
-            <div id="id_chantier" name="id_chantier">Chantier n°1</div>
-            <div id="nom_client" name="nom_client">Monsieur Silva</div>
-            <div id="lieu_projet" name="lieu_projet">Lieu : Bordeaux</div>
-            <div id="date_creation_projet" name="date_creation_projet">Date de création : 01/01/2021</div>
-            <div id="nom_vendeur" name="nom_vendeur">Commercial : Tomasi</div>
+            <h5>Références du projet</h5>
+            <div id="nom_projet" ><a href="{{ path('visualiserProjet', {id: Projet.idprojet}) }}">{{ Projet.nom }}</a></div>
+            <div id="id_projet">Référence #{{ Projet.refProjet }}</div>
+            <div id="id_projet">Référence interne #{{ Projet.idprojet }}</div>
+            <div id="date_creation_projet">Créer le {{ Projet.datecreation|date("d/m/Y") }}</div>
+            <div>&nbsp;</div>
+            <h5>Client</h5>
+            <div id="nom_client" ><a href="#">{{ Client.nom }}</a></div>
+            <div id="lieu_projet"> - Situé à :  {{ Client.ville }}</div>
+            {% if Client.estprofessionnel %}
+                <div id="nom_vendeur"> - Professionnel</div>
+            {% else %}
+                <div id="nom_vendeur"> - Particulier</div>
+            {% endif %}
         </div>
+        <style>
+            #recap_infos_projet_chantier h5{
+                margin-bottom: 0;
+            }
+        </style>
 
         <div id="div_creation_devis" class="flex flex4 flex_col">
 
@@ -70,10 +83,13 @@
         <div class="flex fullwidth marges">
             <label for="etat">Etat du devis : </label><br>
             <select id="etat" name="etat">
-                <option value="nonpropose" {% if Devis.etat == "Non proposé" %}selected{% endif %}>Non proposé</option>
-                <option value="attenteretourclient" {% if Devis.etat == "Attente retour client" %}selected{% endif %}>Attente retour client</option>
-                <option value="valide" {% if Devis.etat == "Validé" %}selected{% endif %}>Validé</option>
-                <option value="annule" {% if Devis.etat == "Annulé" %}selected{% endif %}>Annulé</option>
+                <option value="Brouillon" {% if Devis.etat == "Brouillon" %}selected{% endif %}>Brouillon</option>
+                <option value="Accepté" {% if Devis.etat == "Accepté" %}selected{% endif %}>Accepté</option>
+                <option value="En attente" {% if Devis.etat == "En attente" %}selected{% endif %}>En attente</option>
+                <option value="Refusé" {% if Devis.etat == "Refusé" %}selected{% endif %}>Refusé</option>
+                <option value="En commande" {% if Devis.etat == "En commande" %}selected{% endif %}>En commande</option>
+                <option value="Transfert en facturation" {% if Devis.etat == "Transfert en facturation" %}selected{% endif %}>Transfert en facturation</option>
+                <option value="Validé" {% if Devis.etat == "Validé" %}selected{% endif %}>Validé</option>
             </select><br>
         </div>
         <div class="flex fullwidth marges">

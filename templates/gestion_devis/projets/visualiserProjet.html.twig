@@ -55,15 +55,19 @@
     <div id="div_chantiers" class="flex flex4 flex_col">
         {% for chantier in chantiers %}
             <a class="btn_vert" style="margin-bottom: 1rem; display: flex; flex-flow: row wrap; justify-content: space-between"
-               href="{{ path('afficherPlan', {idChantier: chantier.idchantier}) }}">
-                <div>
-                    {{ chantier.datecreation|date('d/m/Y') }} - <strong>{{ chantier.nom }}</strong>
+               href="{{ path('afficherPlan', {idChantier: chantier['Chantier'].idchantier}) }}">
+                <div style="min-width: 25%">
+                    {{ chantier['Chantier'].datecreation|date('d/m/Y') }} - <strong>{{ chantier['Chantier'].nom }}</strong>
                 </div>
                 <div>
-                    Statut : En attente
+                    {% if chantier['Devis']|length > 1 %}
+                        Statut : {% for devis in chantier['Devis'] %}{{ devis.etat }} - {% endfor %}
+                    {% else %}
+                        Statut : {% for devis in chantier['Devis'] %}{{ devis.etat }}{% endfor %}
+                    {% endif %}
                 </div>
                 <div>
-                    4 modules, 2 devis.
+                    {{ chantier['Modules']|length }} modules, {{ chantier['Devis']|length }} devis.
                 </div>
             </a>
         {% endfor %}

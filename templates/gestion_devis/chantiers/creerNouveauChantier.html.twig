@@ -65,6 +65,15 @@
                 <input type="text" class="flex flex1" id="code_postal" name="code_postal" placeholder="xxxxx">
             </div>
 
+            <div class="flex fullwidth marges">
+                <label for="modele" class="flex flex1 flex_end pr">   Modèle de départ :</label>
+                <select name="modele" id="modele" class="flex flex1">
+                    {% for modele in modeles %}
+                    <option value="{{ modele.idchantier }}">{{ modele.nom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
             <div id="notes">
                     <label for="note">NOTES : </label>
                     <!--<input id="note" name="note" type="textarea">-->

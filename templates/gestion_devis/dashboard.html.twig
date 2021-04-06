@@ -4,6 +4,8 @@
 
 {% block contenu %}
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.2/chart.min.js"></script>
+
     <div class="row mt-2">
         <div class="col mt-auto mb-auto font-weight-bold">Bonjour, {{ app.user.prenom }}.</div>
         <div class="col text-right">
@@ -15,12 +17,56 @@
 
     <div class="row mt-2 ml-2">
         <div class="col-6 ">
-            <h5>Résultats sur 30 jours</h5>
-            <img class="img-float w-100" src="../Content/temp-images/sales.jpg" alt="">
+            <h5>Vos résultats sur 30 jours</h5>
+{#            <img class="img-float w-100" src="../Content/temp-images/sales.jpg" alt="">#}
+            <canvas id="line-chart" width="800" height="250"></canvas>
+
+            <script>
+                new Chart(document.getElementById("line-chart"), {
+                    type: 'line',
+                    data: {
+                        labels: [-9,-8,-7,-6,-5,-4,-3,-2,-1,0],
+                        datasets: [{
+                            data: [8,11,10,10,10,11,13,22,28,24],
+                            label: "Validés",
+                            borderColor: "#3e95cd",
+                            fill: false
+                        }, {
+                            data: [28,35,41,32,43,20,34,14,37,52],
+                            label: "Refusés",
+                            borderColor: "#8e5ea2",
+                            fill: false
+                        }, {
+                            data: [16,17,17,19,20,27,40,54,67,73],
+                            label: "Brouillons",
+                            borderColor: "#3cba9f",
+                            fill: false
+                        }, {
+                            data: [4,2,1,1,2,8,7,16,8,7],
+                            label: "Terminés",
+                            borderColor: "#e8c3b9",
+                            fill: false
+                        }, {
+                            data: [6,3,2,2,7,2,8,17,31,43],
+                            label: "En attente client",
+                            borderColor: "#c45850",
+                            fill: false
+                        }
+                        ]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Ventes'
+                        }
+                    }
+                });
+
+            </script>
         </div>
 
         <div class="col-6">
-            <h5>Taches</h5>
+            <h5>Taches rapides</h5>
             {% for tache in tachesRapides %}
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -40,8 +86,47 @@
         </div>
     </div>
 
-    <div class="row mt-4 ml-2">
-        <h5 class="col-12">Résultats à l'année</h5>
-        <img class="col img-float w-100" src="../Content/temp-images/sales2.png" alt="">
+    <div class="row mt-5 ml-2">
+        <h5 class="col-12">Vos résultats à la demie-année</h5>
+{#        <img class="col img-float w-100" src="../Content/temp-images/sales2.png" alt="">#}
+        <canvas id="myChart" width="400" height="100" class="w-100" style="height: 25vh"></canvas>
+        <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Novembre', 'Décembre', 'Janvier', 'Février', 'Mars', 'Avril'],
+                    datasets: [{
+                        label: '# de ventes',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+
     </div>
 {% endblock %}

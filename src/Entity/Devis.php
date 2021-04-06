@@ -80,7 +80,7 @@ class Devis
     /**
      * @var string
      *
-     * @ORM\Column(name="notes", type="string", length=45, nullable=false)
+     * @ORM\Column(name="notes", type="string", length=2000, nullable=false)
      */
     private $notes;
 

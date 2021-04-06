@@ -6,6 +6,7 @@ use App\Entity\Chantier;
 use App\Entity\Contact;
 use App\Entity\Devis;
 use App\Entity\Modulesdansplan;
+use App\Entity\Plan;
 use App\Entity\Projet;
 use App\Entity\VariantsDansDevis;
 use App\Repository\ChantierRepository;
@@ -24,6 +25,8 @@ use App\Repository\TypevariantRepository;
 use App\Repository\VariantDefautGammeRepository;
 use App\Repository\VariantsDansDevisRepository;
 use App\Repository\VariantsRepository;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use http\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,7 +57,7 @@ class GestionDevisController extends AbstractController
     public function toEnCoursProjets(ProjetRepository $projetRepository)
     {
         return $this->render('gestion_devis/projets/enCours.html.twig', [
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
+            'headerRechercheOptions' => array("Tout", "Projets", "Chantiers", "Clients", "Devis"),
             'projets' => $projetRepository->findBy([], null, 30),
         ]);
     }
@@ -95,7 +98,7 @@ class GestionDevisController extends AbstractController
             $entityManager->persist($projet);
             $entityManager->flush();
 
-//            return $this->redirectToRoute(''); @todo pointer vers la fiche du projet qui vient d'être creer
+            return $this->redirectToRoute('visualiserProjet', ['id' => $projet->getIdprojet()]); // @todo pointer vers la fiche du projet qui vient d'être creer
         }
 
         return $this->render('gestion_devis/projets/creerNouveau.html.twig', [
@@ -110,14 +113,27 @@ class GestionDevisController extends AbstractController
     public function toVisualiserProjet(int $id,
                                        ProjetRepository $projetRepository,
                                        ClientRepository $clientRepository,
-                                       ChantierRepository $chantierRepository)
+                                       ChantierRepository $chantierRepository,
+                                       ModuledansplanRepository $moduledansplanRepository,
+                                       DevisRepository $devisRepository,
+                                       PlanRepository $planRepository)
     {
         $projet = $projetRepository->find($id);
+        $chantiers = array();
+        foreach ($chantierRepository->findBy(['idprojet' => $id]) as $chantier) {
+            array_push($chantiers, [
+                "Chantier" => $chantier,
+                "Devis" => $devisRepository->findBy(['idchantier' => $chantier->getIdchantier()]),
+                "Modules" => $moduledansplanRepository->findBy([
+                    'idplan' => $planRepository->findOneBy(['idchantier' => $chantier->getIdchantier()])
+                ]),
+            ]);
+        }
         return $this->render('gestion_devis/projets/visualiserProjet.html.twig', [
             'projet' => $projet,
             'client' => $clientRepository->find($projet->getIdclient()),
-            'chantiers' => $chantierRepository->findBy(['idprojet' => $id]),
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
+            'chantiers' => $chantiers,
+            'headerRechercheOptions' => array("Tout", "Projets", "Chantiers", "Clients", "Devis"),
             'id_page' => 'projet',
         ]);
     }
@@ -166,7 +182,11 @@ class GestionDevisController extends AbstractController
     public function toCreerNouveauChantier(int $idprojet,
                                            ProjetRepository $projetRepository,
                                            ClientRepository $clientRepository,
-                                           LoginRepository $loginRepository)
+                                           LoginRepository $loginRepository,
+                                           ChantierRepository $chantierRepository,
+                                           PlanRepository $planRepository,
+                                           DevisRepository $devisRepository,
+                                           ModuledansplanRepository $moduledansplanRepository)
     {
         $projet = $projetRepository->find($idprojet);
 
@@ -192,13 +212,65 @@ class GestionDevisController extends AbstractController
             $entityManager->persist($chantier);
             $entityManager->flush();
 
-//            return $this->redirectToRoute(''); @todo pointer vers la fiche du projet qui vient d'être creer
+            $chantierModele = $chantierRepository->find($request->request->get("modele"));
+            $planModele = $planRepository->findOneBy(['idchantier' => $chantierModele->getIdchantier()]);
+            $devisModele = $devisRepository->findOneBy(['idchantier' => $chantierModele->getIdchantier()]);
+            $modDansPlanModele = $moduledansplanRepository->findBy(['idplan' => $planModele->getIdplan()]);
+
+            $plan = new Plan();
+            $plan->setIdchantier($chantier->getIdchantier());
+            $plan->setNbetage($planModele->getNbetage());
+            $plan->setTailley($planModele->getNbetage());
+            $plan->setTaillex($planModele->getNbetage());
+            $plan->setRefPlan(rand(0,99999999));
+
+            $entityManager->persist($plan);
+
+            $devis = new Devis();
+            $devis->setIdchantier($chantier->getIdchantier());
+            $devis->setTauxTva($devisModele->getTauxTva());
+            $devis->setRemise($devisModele->getRemise());
+            $devis->setIdGamme($devisModele->getIdGamme());
+            $devis->setNotes($devisModele->getNotes());
+            $devis->setNom($devisModele->getNom());
+            $devis->setEtat($devisModele->getEtat());
+            $devis->setEstpaye($devisModele->getEstpaye());
+            $devis->setPrixht($devisModele->getPrixht());
+            $devis->setMlineaire($devisModele->getMlineaire());
+            $devis->setDocument($devisModele->getDocument());
+            $devis->setDatecreation(\DateTime::createFromFormat("Y-m-d", $request->request->get('project_creation_date')));
+            $devis->setRefDevis(rand(0,99999999));
+
+            $entityManager->persist($devis);
+
+            $entityManager->flush();
+
+            foreach ($modDansPlanModele as $mdpModele) {
+                $mdp = new Modulesdansplan();
+                $mdp->setIdplan($plan->getIdplan());
+                $mdp->setIdmodule($mdpModele->getIdmodule());
+                $mdp->setNotes($mdpModele->getNotes());
+                $mdp->setVisibleDansPlan($mdpModele->getVisibleDansPlan());
+                $mdp->setPosDebX($mdpModele->getPosDebX());
+                $mdp->setPosFinX($mdpModele->getPosFinX());
+                $mdp->setPosDebY($mdpModele->getPosDebY());
+                $mdp->setPosFinY($mdpModele->getPosFinY());
+                $mdp->setNomDansPlan($mdpModele->getNomDansPlan());
+                $mdp->setRotation($mdpModele->getRotation());
+
+                $entityManager->persist($mdp);
+            }
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('afficherPlan', ['idChantier' => $chantier->getIdchantier()]); // @todo pointer vers la fiche du projet qui vient d'être creer
         }
 
         return $this->render('gestion_devis/chantiers/creerNouveauChantier.html.twig', [
             'projet' => $projet,
             'client' => $clientRepository->find($projet->getIdclient()),
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients")
+            'headerRechercheOptions' => array("Tout", "Projets", "Chantiers", "Clients", "Devis"),
+            'modeles' => $chantierRepository->findBy(['idprojet' => $projetRepository->findOneBy(['nom' => "_modeles"])]),
         ]);
     }
 
@@ -274,7 +346,7 @@ class GestionDevisController extends AbstractController
 
 
         return $this->render('gestion_devis/clients/afficherClient.html.twig', [
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
+            'headerRechercheOptions' => array("Tout", "Projets", "Chantiers", "Clients", "Devis"),
             'client' => $client,
             'contacts' => $contactRepository->findBy(['idclient' => $id]),
             'projets' => $projetRepository->findBy(['idclient' => $id]),
@@ -329,7 +401,7 @@ class GestionDevisController extends AbstractController
             $entityManager->persist($contact);
             $entityManager->flush();
 
-//            return $this->redirectToRoute(''); @todo pointer vers la fiche du client qui vient d'être creer
+            return $this->redirectToRoute('afficherClient', ['id' => $client->getIdclient()]); // @todo pointer vers la fiche du client qui vient d'être creer
         }
 
         return $this->render('gestion_devis/clients/creerNouveauContact.html.twig', [
@@ -363,7 +435,7 @@ class GestionDevisController extends AbstractController
         $chantier = $chantierRepository->find($idChantier);
         $projet = $projetRepository->find($chantier->getIdprojet());
         return $this->render('gestion_devis/chantiers/afficherPlan.html.twig', [
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
+            'headerRechercheOptions' => array("Tout", "Projets", "Chantiers", "Clients", "Devis"),
             'Plan'=> $plan,
             'Chantier'=> $chantier,
             'Modules'=> $modules,
@@ -817,7 +889,7 @@ class GestionDevisController extends AbstractController
 //        print_r($finitions);
 
         return $this->render('gestion_devis/devis/afficherDevis.twig', [
-            'headerRechercheOptions' => array("En cours", "Archivés", "Clients"),
+            'headerRechercheOptions' => array("Tout", "Projets", "Chantiers", "Clients", "Devis"),
             'Plan'=> $plan,
             'Chantier'=> $chantier,
             'Modules'=> $modules,
@@ -884,6 +956,445 @@ class GestionDevisController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('afficher_devis', ["iddevis" => $iddevis]);
+    }
+
+    /**
+     * @Route("/gestiondevis/devis/afficherPDF/{iddevis}", name="pdf_devis")
+     */
+    public function pdf_devis(int $iddevis,
+                                   PlanRepository $planRepository,
+                                   ChantierRepository $chantierRepository,
+                                   ModuleRepository $moduleRepository,
+                                   ModuledansplanRepository $moduledansplanRepository,
+                                   GammeRepository $gammeRepository,
+                                   DevisRepository $devisRepository,
+                                   ProjetRepository $projetRepository,
+                                   ClientRepository $clientRepository,
+                                   CompositionModuleRepository $compositionModuleRepository,
+                                   TypevariantRepository $typevariantRepository,
+                                   VariantsDansDevisRepository $variantsDansDevisRepository,
+                                   VariantDefautGammeRepository $variantDefautGammeRepository,
+                                   VariantsRepository $variantsRepository,
+                                   ComposantsRepository $composantsRepository)
+    {
+        $devis = $devisRepository->find($iddevis);
+        $chantier = $chantierRepository->find($devis->getIdchantier());
+        $plan = $planRepository->findOneBy(['idchantier' => $chantier->getIdchantier()]);
+        $projet = $projetRepository->find($chantier->getIdprojet());
+
+
+        $modules = array();
+        $totalHT = 0;
+        foreach ($moduledansplanRepository->findBy(['idplan' => $plan->getIdplan()]) as $moduledansplan) {
+            $module = $moduleRepository->find($moduledansplan->getIdmodule());
+            $compoModules = $compositionModuleRepository->findBy(['idmodule' => $moduledansplan->getIdmodule()]);
+
+            $multiplicateurAvecUnite = 0;
+            if ($module->getUnite() == "unite")
+            {
+                $multiplicateurAvecUnite = 1;
+            }
+            if ($module->getUnite() == "m")
+            {
+                $x1 = $moduledansplan->getPosDebX();
+                $y1 = $moduledansplan->getPosDebY();
+
+                $x2 = $moduledansplan->getPosFinX();
+                $y2 = $moduledansplan->getPosFinY();
+
+                $x = ( pow($x2,2) - pow($x1,2));
+                $y = ( pow($y2,2) - pow($y1,2));
+
+                $distance = ( sqrt($x + $y) );
+
+                $longueur = round($distance,2);
+
+                $multiplicateurAvecUnite = $longueur / $module->getQteunite();
+            }
+            if ($module->getUnite() == "m2")
+            {
+                $x1 = $moduledansplan->getPosDebX();
+                $y1 = $moduledansplan->getPosDebY();
+
+                $x2 = $moduledansplan->getPosFinX();
+                $y2 = $moduledansplan->getPosFinY();
+
+                $x = $x2 - $x1;
+                $y = $y2 - $y1;
+
+                $distance = $x * $y;
+
+                $longueur = round($distance,2);
+
+                $multiplicateurAvecUnite = $longueur / $module->getQteunite();;
+            }
+
+            $composantsDansModule = array();
+            $prixTotal = 0;
+            foreach ($compoModules as $compoModule)
+            {
+                if ($compoModule->getIdtypesvariant() != null) //Variant
+                {
+                    $variant_user_selected_value = $variantsDansDevisRepository->findOneBy(
+                        ['idTypevariant' => $compoModule->getIdtypesvariant(),
+                            'idDevis' => $iddevis]
+                    );
+                    if ($variant_user_selected_value == null)//pas de preselection
+                    {
+                        $leVariant = $variantsRepository->find($variantDefautGammeRepository->findOneBy(['idTypeVariant' => $compoModule->getIdtypesvariant(),
+                            'idgamme' => $devis->getIdGamme()])->getIdvariant());
+                        $composant = $composantsRepository->find($leVariant->getIdcomposant());
+                        array_push($composantsDansModule, [
+                            'Composant' => $composant,
+                            'Quantite' => $compoModule->getQuantite(),
+                            'QuantiteCalc' => $compoModule->getQuantite() * $multiplicateurAvecUnite,
+                            'Prix' => $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite(),
+                        ]);
+                        $prixTotal += $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite();
+                    }
+                    else{
+                        $leVariant = $variantsRepository->find($variant_user_selected_value->getIdVariant());
+                        $composant = $composantsRepository->find($leVariant->getIdcomposant());
+                        array_push($composantsDansModule, [
+                            'Composant' => $composant,
+                            'Quantite' => $compoModule->getQuantite(),
+                            'QuantiteCalc' => $compoModule->getQuantite() * $multiplicateurAvecUnite,
+                            'Prix' => $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite(),
+                        ]);
+                        $prixTotal += $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite();
+                    }
+                }
+                else // Composant
+                {
+                    $composant = $composantsRepository->find($compoModule->getIdcomposant());
+                    array_push($composantsDansModule, [
+                        'Composant' => $composant,
+                        'Quantite' => $compoModule->getQuantite(),
+                        'QuantiteCalc' => $compoModule->getQuantite() * $multiplicateurAvecUnite,
+                        'Prix' => $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite(),
+                    ]);
+                    $prixTotal += $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite();
+                }
+            }
+            array_push($modules, [
+                'Module' => $module,
+                'ModuleDansPlan' => $moduledansplan,
+                'Composants' => $composantsDansModule,
+                'Longueur' => $module->getQteunite() * $multiplicateurAvecUnite,
+                'Prix' => $prixTotal,
+            ]);
+            $totalHT += $prixTotal;
+        }
+
+
+        $finitions = array();
+        foreach ($moduledansplanRepository->findBy(['idplan' => $plan->getIdplan()]) as $moduledansplan) {
+            $compoModules = $compositionModuleRepository->findBy(['idmodule' => $moduledansplan->getIdmodule()]);
+            foreach ($compoModules as $compoModule)
+            {
+                if ($compoModule->getIdtypesvariant() != null)
+                {
+                    $variant_user_selected_value = $variantsDansDevisRepository->findOneBy(
+                        ['idTypevariant' => $compoModule->getIdtypesvariant(),
+                            'idDevis' => $iddevis]
+                    );
+                    if ($variant_user_selected_value == null)//pas de preselection
+                    {
+                        $leVariant = $variantsRepository->find($variantDefautGammeRepository->findOneBy(['idTypeVariant' => $compoModule->getIdtypesvariant(),
+                            'idgamme' => $devis->getIdGamme()])->getIdvariant());
+                        $optionsVariant = array();
+                        foreach ($variantsRepository->findBy(['idtypesvariant' => $compoModule->getIdtypesvariant()]) as $variant) {
+                            $variant_is_selected = false;
+                            if ($variant->getIdvariant() == $leVariant->getIdvariant())
+                            {
+                                $variant_is_selected = true;
+                            }
+                            array_push($optionsVariant, [
+                                'variant' => $variant,
+                                'selected' => $variant_is_selected
+                            ]);
+                        }
+                        array_push($finitions, [
+                            'typeVariant' => $typevariantRepository->find($compoModule->getIdtypesvariant()),
+                            'Variant' => $leVariant,
+                            'EstGammeDefaut' => true,
+                            'optionsVariants' => $optionsVariant,
+                        ]);
+                    }
+                    else{
+                        $leVariant = $variantsRepository->find($variant_user_selected_value->getIdVariant());
+                        $optionsVariant = array();
+                        foreach ($variantsRepository->findBy(['idtypesvariant' => $compoModule->getIdtypesvariant()]) as $variant) {
+                            $variant_is_selected = false;
+                            if ($variant->getIdvariant() == $leVariant->getIdvariant())
+                            {
+                                $variant_is_selected = true;
+                            }
+                            array_push($optionsVariant, [
+                                'variant' => $variant,
+                                'selected' => $variant_is_selected
+                            ]);
+                        }
+                        array_push($finitions, [
+                            'typeVariant' => $typevariantRepository->find($compoModule->getIdtypesvariant()),
+                            'Variant' => $leVariant,
+                            'EstGammeDefaut' => false,
+                            'optionsVariants' => $optionsVariant,
+                        ]);
+                    }
+                }
+            }
+
+        }
+
+//        print_r($finitions);
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        global $_dompdf_warnings;
+        $_dompdf_warnings = array();
+        global $_dompdf_show_warnings;
+        $_dompdf_show_warnings = true;
+
+        $dompdf = new Dompdf($options);
+
+        $data = array(
+            'headline' => 'my headline'
+        );
+
+        $html =  $this->renderView('gestion_devis/PDF/afficherDevis.html.twig', [
+            'headerRechercheOptions' => array("Tout", "Projets", "Chantiers", "Clients", "Devis"),
+            'Plan'=> $plan,
+            'Chantier'=> $chantier,
+            'Modules'=> $modules,
+            'Projet'=> $projet,
+            'Gammes'=> $gammeRepository->findAll(),
+            'Devis'=> $devis,
+            'Finitions'=> $finitions,
+            'Client'=> $clientRepository->find($projet->getIdclient()),
+            'TotalHT'=> $totalHT,
+            'TotalTTC'=> ($totalHT * $devis->getTauxTva() / 100) + $totalHT,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+//        header('Content-type: text/plain');
+//        var_dump($_dompdf_warnings);
+//        die();
+
+        $dompdf->stream("Devis.pdf", [
+            "Attachment" => true
+        ]);
+
+        return $this->redirectToRoute('afficherdevis', ['iddevis' => $iddevis]);
+    }
+
+    /**
+     * @Route("/gestiondevis/devis/afficherPDFvue/{iddevis}", name="pdf_devis_vue")
+     */
+    public function pdf_devis_vue(int $iddevis,
+                                   PlanRepository $planRepository,
+                                   ChantierRepository $chantierRepository,
+                                   ModuleRepository $moduleRepository,
+                                   ModuledansplanRepository $moduledansplanRepository,
+                                   GammeRepository $gammeRepository,
+                                   DevisRepository $devisRepository,
+                                   ProjetRepository $projetRepository,
+                                   ClientRepository $clientRepository,
+                                   CompositionModuleRepository $compositionModuleRepository,
+                                   TypevariantRepository $typevariantRepository,
+                                   VariantsDansDevisRepository $variantsDansDevisRepository,
+                                   VariantDefautGammeRepository $variantDefautGammeRepository,
+                                   VariantsRepository $variantsRepository,
+                                   ComposantsRepository $composantsRepository)
+    {
+        $devis = $devisRepository->find($iddevis);
+        $chantier = $chantierRepository->find($devis->getIdchantier());
+        $plan = $planRepository->findOneBy(['idchantier' => $chantier->getIdchantier()]);
+        $projet = $projetRepository->find($chantier->getIdprojet());
+
+
+        $modules = array();
+        $totalHT = 0;
+        foreach ($moduledansplanRepository->findBy(['idplan' => $plan->getIdplan()]) as $moduledansplan) {
+            $module = $moduleRepository->find($moduledansplan->getIdmodule());
+            $compoModules = $compositionModuleRepository->findBy(['idmodule' => $moduledansplan->getIdmodule()]);
+
+            $multiplicateurAvecUnite = 0;
+            if ($module->getUnite() == "unite")
+            {
+                $multiplicateurAvecUnite = 1;
+            }
+            if ($module->getUnite() == "m")
+            {
+                $x1 = $moduledansplan->getPosDebX();
+                $y1 = $moduledansplan->getPosDebY();
+
+                $x2 = $moduledansplan->getPosFinX();
+                $y2 = $moduledansplan->getPosFinY();
+
+                $x = ( pow($x2,2) - pow($x1,2));
+                $y = ( pow($y2,2) - pow($y1,2));
+
+                $distance = ( sqrt($x + $y) );
+
+                $longueur = round($distance,2);
+
+                $multiplicateurAvecUnite = $longueur / $module->getQteunite();
+            }
+            if ($module->getUnite() == "m2")
+            {
+                $x1 = $moduledansplan->getPosDebX();
+                $y1 = $moduledansplan->getPosDebY();
+
+                $x2 = $moduledansplan->getPosFinX();
+                $y2 = $moduledansplan->getPosFinY();
+
+                $x = $x2 - $x1;
+                $y = $y2 - $y1;
+
+                $distance = $x * $y;
+
+                $longueur = round($distance,2);
+
+                $multiplicateurAvecUnite = $longueur / $module->getQteunite();;
+            }
+
+            $composantsDansModule = array();
+            $prixTotal = 0;
+            foreach ($compoModules as $compoModule)
+            {
+                if ($compoModule->getIdtypesvariant() != null) //Variant
+                {
+                    $variant_user_selected_value = $variantsDansDevisRepository->findOneBy(
+                        ['idTypevariant' => $compoModule->getIdtypesvariant(),
+                            'idDevis' => $iddevis]
+                    );
+                    if ($variant_user_selected_value == null)//pas de preselection
+                    {
+                        $leVariant = $variantsRepository->find($variantDefautGammeRepository->findOneBy(['idTypeVariant' => $compoModule->getIdtypesvariant(),
+                            'idgamme' => $devis->getIdGamme()])->getIdvariant());
+                        $composant = $composantsRepository->find($leVariant->getIdcomposant());
+                        array_push($composantsDansModule, [
+                            'Composant' => $composant,
+                            'Quantite' => $compoModule->getQuantite(),
+                            'QuantiteCalc' => $compoModule->getQuantite() * $multiplicateurAvecUnite,
+                            'Prix' => $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite(),
+                        ]);
+                        $prixTotal += $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite();
+                    }
+                    else{
+                        $leVariant = $variantsRepository->find($variant_user_selected_value->getIdVariant());
+                        $composant = $composantsRepository->find($leVariant->getIdcomposant());
+                        array_push($composantsDansModule, [
+                            'Composant' => $composant,
+                            'Quantite' => $compoModule->getQuantite(),
+                            'QuantiteCalc' => $compoModule->getQuantite() * $multiplicateurAvecUnite,
+                            'Prix' => $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite(),
+                        ]);
+                        $prixTotal += $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite();
+                    }
+                }
+                else // Composant
+                {
+                    $composant = $composantsRepository->find($compoModule->getIdcomposant());
+                    array_push($composantsDansModule, [
+                        'Composant' => $composant,
+                        'Quantite' => $compoModule->getQuantite(),
+                        'QuantiteCalc' => $compoModule->getQuantite() * $multiplicateurAvecUnite,
+                        'Prix' => $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite(),
+                    ]);
+                    $prixTotal += $composant->getPrix() * $multiplicateurAvecUnite * $compoModule->getQuantite();
+                }
+            }
+            array_push($modules, [
+                'Module' => $module,
+                'ModuleDansPlan' => $moduledansplan,
+                'Composants' => $composantsDansModule,
+                'Longueur' => $module->getQteunite() * $multiplicateurAvecUnite,
+                'Prix' => $prixTotal,
+            ]);
+            $totalHT += $prixTotal;
+        }
+
+
+        $finitions = array();
+        foreach ($moduledansplanRepository->findBy(['idplan' => $plan->getIdplan()]) as $moduledansplan) {
+            $compoModules = $compositionModuleRepository->findBy(['idmodule' => $moduledansplan->getIdmodule()]);
+            foreach ($compoModules as $compoModule)
+            {
+                if ($compoModule->getIdtypesvariant() != null)
+                {
+                    $variant_user_selected_value = $variantsDansDevisRepository->findOneBy(
+                        ['idTypevariant' => $compoModule->getIdtypesvariant(),
+                            'idDevis' => $iddevis]
+                    );
+                    if ($variant_user_selected_value == null)//pas de preselection
+                    {
+                        $leVariant = $variantsRepository->find($variantDefautGammeRepository->findOneBy(['idTypeVariant' => $compoModule->getIdtypesvariant(),
+                            'idgamme' => $devis->getIdGamme()])->getIdvariant());
+                        $optionsVariant = array();
+                        foreach ($variantsRepository->findBy(['idtypesvariant' => $compoModule->getIdtypesvariant()]) as $variant) {
+                            $variant_is_selected = false;
+                            if ($variant->getIdvariant() == $leVariant->getIdvariant())
+                            {
+                                $variant_is_selected = true;
+                            }
+                            array_push($optionsVariant, [
+                                'variant' => $variant,
+                                'selected' => $variant_is_selected
+                            ]);
+                        }
+                        array_push($finitions, [
+                            'typeVariant' => $typevariantRepository->find($compoModule->getIdtypesvariant()),
+                            'Variant' => $leVariant,
+                            'EstGammeDefaut' => true,
+                            'optionsVariants' => $optionsVariant,
+                        ]);
+                    }
+                    else{
+                        $leVariant = $variantsRepository->find($variant_user_selected_value->getIdVariant());
+                        $optionsVariant = array();
+                        foreach ($variantsRepository->findBy(['idtypesvariant' => $compoModule->getIdtypesvariant()]) as $variant) {
+                            $variant_is_selected = false;
+                            if ($variant->getIdvariant() == $leVariant->getIdvariant())
+                            {
+                                $variant_is_selected = true;
+                            }
+                            array_push($optionsVariant, [
+                                'variant' => $variant,
+                                'selected' => $variant_is_selected
+                            ]);
+                        }
+                        array_push($finitions, [
+                            'typeVariant' => $typevariantRepository->find($compoModule->getIdtypesvariant()),
+                            'Variant' => $leVariant,
+                            'EstGammeDefaut' => false,
+                            'optionsVariants' => $optionsVariant,
+                        ]);
+                    }
+                }
+            }
+
+        }
+
+//        print_r($finitions);
+
+        return $this->render('gestion_devis/PDF/afficherDevis.html.twig', [
+            'headerRechercheOptions' => array("Tout", "Projets", "Chantiers", "Clients", "Devis"),
+            'Plan'=> $plan,
+            'Chantier'=> $chantier,
+            'Modules'=> $modules,
+            'Projet'=> $projet,
+            'Gammes'=> $gammeRepository->findAll(),
+            'Devis'=> $devis,
+            'Finitions'=> $finitions,
+            'Client'=> $clientRepository->find($projet->getIdclient()),
+            'TotalHT'=> $totalHT,
+            'TotalTTC'=> ($totalHT * $devis->getTauxTva() / 100) + $totalHT,
+        ]);
     }
 
 }

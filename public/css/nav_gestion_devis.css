@@ -1,4 +1,4 @@
-.btn-success{
+.btn-success:not(#btn-recherche-header){
     background-color: #0e9453ff;
     box-shadow: none;
 }

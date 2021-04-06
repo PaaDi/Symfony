@@ -32,6 +32,10 @@
     color: #FFF;
 }
 
+.ck-editor{
+    color: black;
+}
+
 #partie_finitions{
     width: 100%;
     padding: calc(2vw + 2vh);

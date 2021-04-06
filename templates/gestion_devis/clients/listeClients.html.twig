@@ -1,27 +1,107 @@
 {% extends 'gestion_devis/template.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/flex.css') }}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/general_css.css') }}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/projets/projetsEnCours.css') }}" media="all"/>
+{% endblock %}
 
 {% block contenu %}
+    <h2>Liste des clients</h2>
 
+    <div id="wrapper_encours_projets" class="flex flex_aic flex_sa">
+        <div id="recherche_projets" class="flex flex1 flex_col flex_sa">
+            <h5>Recherche</h5>
+            <label for="filtre_projet">Filtres :</label><br>
+            <select id="filtre_projet1" name="filtre_projet">
+                <option value="">--Ville Projet--</option>
+                <option value="Paris">Paris</option>
+                <option value="Pau">Pau</option>
+                <option value="Toulouse">Toulouse</option>
+                <option value="Bayonne">Bayonne</option>
+                <option value="Tarbes">Tarbes</option>
+                <option value="Bordeaux">Bordeaux</option>
+            </select><br>
+            <select id="filtre_projet2" name="filtre_projet">
+                <option value="">--Nom Client--</option>
+                <option value="Martin">Dumond</option>
+                <option value="Durand">Lafayette</option>
+                <option value="Lesage">Chami</option>
+                <option value="Maidi">Legrain</option>
+                <option value="Jones">Jones</option>
+                <option value="Costa">Silva</option>
+            </select><br>
+            <select id="filtre_projet3" name="filtre_projet">
+                <option value="">--Nom Vendeur--</option>
+                <option value="Neels">Neels</option>
+                <option value="Simon">Simon</option>
+                <option value="Lee">Lee</option>
+                <option value="Heddle">Heddle</option>
+                <option value="Bonnet">Bonnet</option>
+                <option value="Tomasi">Tomasi</option>
+            </select><br>
+            <label for="search_date_debut_projet">Date de création du client :</label>
+            <div>
+                <span class="far fa-calendar-alt"></span>
+                <input type="text" placeholder="jj/mm/aaaa" id="search_date_debut_projet" name="search_date_debut_projet" required>
+            </div>
+        </div>
 
-<h1>Liste des clients</h1>
+        <div id="affichage_projets" class="flex flex4">
+            {% for client in clients %}
+                <div class="carte_projet">
+                    <div class="flex" style="justify-content: space-between; flex: 0.8">
+                        <p style="font-weight: bolder; min-width: 33%">{{ client.nom }}</p>
+                        <p>Ville : {{ client.ville }}</p>
+                        <p>Secteur d'activité : {{ client.secteuractivite }}</p>
+                        <p>Statut :
+                            {% if client.estprofessionnel %}Professionnel
+                            {% else %}Particulier
+                            {% endif %}
+                        </p>
+                    </div>
+                        <a href="{{ path('afficherClient', {id: client.idclient}) }}" class="btn_vert col-2 flex flex_aic flex_center" style="margin-top: 0">Visualiser</a>
+                </div>
+            {% endfor %}
 
-    {% for client in clients %}
-        <a href="{{ path('afficherClient', {id: client.idclient}) }}" style="background-color: #57b88a;
+        </div>
+        <style>
+            #affichage_projets{
+                display: flex;
+                flex-flow: column;
+                background-color: #f2f2f2;
                 border-radius: 5px;
-                width: 80%;
-                margin-left: 10%;
-                margin-bottom: 2rem;
-                padding: 0.4rem 1rem;
-                color: white">
-            {{ client.nom }} -
-            {{ client.ville }} -
-            {{ client.secteuractivite }} -
-            {% if client.estprofessionnel %}Professionnel</a>
-        {% else %}Particulier
-        {% endif %}
-        </a>
+                border: solid 1px #2b2b2b36;
+                padding: 1rem;
+                margin-top: 1rem;
+            }
+            .carte_projet{
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: space-between;
+                background-color: white;
+                padding: 0.5rem;
+                border-radius: 5px;
 
-    {% endfor %}
+                margin-top: 1rem;
+                text-decoration: none;
+                color: black;
+            }
+            .carte_projet:first-of-type{
+                margin-top: 0;
+            }
+            .carte_projet p{
+                margin-right: calc(0.5vw + 0.5vh);
+            }
+            .carte_projet:hover{
+                background-color: white;
+                text-decoration: none;
+                color: black;
+            }
+
+        </style>
+
+
+    </div>
 
 {% endblock %}

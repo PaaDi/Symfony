@@ -156,8 +156,13 @@ p{
 }
 
 #partie_affichage_plan {
-    background-color: #EEEEEE;
+    background-color: #FFF;
 }
+#partie_affichage_plan img{
+    width: 100%;
+    object-fit: contain;
+}
+
 #partie_modules{
     position:relative;
     min-height: calc(15vw + 15vh);
