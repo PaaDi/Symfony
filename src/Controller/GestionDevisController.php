@@ -42,9 +42,9 @@ class GestionDevisController extends AbstractController
     {
         return $this->render('gestion_devis/dashboard.html.twig', [
             'headerRechercheOptions' => array("Tout", "Projets", "Chantiers", "Devis", "Clients"),
-            'tachesRapides' => array('Appeler someCompagny, urgent!'
+            'tachesRapides' => array('Appeler BTP de la Creuse, urgent!'
             , 'Erreur dans le devis #454'
-            , 'Virer Paul, quel relou'
+            , 'Envoyer un email à Martine de la compta'
             , 'MAJ coordonnées Mr. Brabantia')
         ]);
     }
