@@ -45,7 +45,10 @@
                 <img src="http://madera.melvinkr.fr/Contenus/logo2.2.2.png" class="img-fluid float-left" style="max-height: 50vh">
             </div>
 
-            <div class="col-lg-6 col-md-12 text-left" style="margin-top: 2rem">
+            <div class="col-lg-6 col-md-12 text-left" style="display: flex;
+                                                                flex-flow: column;
+                                                                align-content: center;
+                                                                justify-content: center;">
                 <h1 class="text-center text-monospace">PYRAMIDE</h1>
                 <h6 class="text-center w-100 font-italic lead">Propulsé par Madera</h6>
 
@@ -82,6 +85,9 @@
                     <input type="hidden" name="_csrf_token"
                            value="{{ csrf_token('authenticate') }}"
                     >
+                    <div class="col-12 mt-3 text-right">
+                        <a href="#">Mot de passe oublié ?</a>
+                    </div>
                 </form>
 
             </div>

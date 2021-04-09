@@ -71,6 +71,9 @@
                 </div>
             </a>
         {% endfor %}
+        {% if chantiers|length == 0 %}
+            <i>Aucun chantier trouvé pour ce projet.</i>
+        {% endif %}
 
     </div>
 
