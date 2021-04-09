@@ -39,7 +39,7 @@
                 <button class="btn btn-secondary btn-outline-success dropdown-toggle" style="border-radius: 0 !important;color: white; border-color: transparent" data-toggle="dropdown">
                     Chantiers</button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ path('enCoursUsername') }}"><i class="fas fa-paint-roller"></i> En cours (<i>Username</i>)</a>
+                    <a class="dropdown-item" href="{{ path('enCoursUsername') }}"><i class="fas fa-paint-roller"></i> En cours (<i>{{ app.user.username }}</i>)</a>
                     <a class="dropdown-item" href="{{ path('enCoursTous') }}"><i class="fas fa-paint-roller"></i> En cours (Tous)</a>
                     <a class="dropdown-item" href="{{ path('archivesChantiers') }}"><i class="fas fa-archive"></i> Archivés</a>
 {#                    <div class="dropdown-divider"></div>#}
