@@ -30,7 +30,11 @@
             <p>Ref interne : {{ client.idclient }}</p>
             <p>&nbsp;</p>
             <p>Nom : {{ client.nom }}</p>
-            <p>Statut : {{ client.estprofessionnel }}</p>
+            <p>Statut :
+                {% if client.estprofessionnel %} Professionnel
+                {% else %} Particulier
+                {% endif %}
+            </p>
             <p>Secteur : {{ client.secteuractivite }}</p>
             <p>&nbsp;</p>
             <p>Adresse : {{ client.adresse }}</p>
