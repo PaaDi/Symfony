@@ -72,12 +72,13 @@
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#rdc">RDC</a>
                         </li>
-                        {% for i in 1..Plan.nbetage %}
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#etage{{ i }}">Etage {{ i }}</a>
-                            </li>
-                        {% endfor %}
-
+                        {% if Plan.nbetage > 0 %}
+                            {% for i in 1..Plan.nbetage %}
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#etage{{ i }}">Etage {{ i }}</a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
                     </ul>
 
                     <!-- Tab panes -->
